@@ -1,0 +1,365 @@
+/* Main Container */
+#AboutPageContainer {
+    position: relative;
+    margin: 1.1rem;
+    background-color: white;
+    border-radius: 1.1vw 1.1vw 1.1vw 0;
+    overflow: hidden;
+    padding-bottom: 3rem;
+}
+
+/* Hero Section */
+#AboutPageContainer .aboutHero-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../images/homeBG.png"), linear-gradient(to bottom, #e7f6ff, #e5f2fa);
+    background-size: cover;
+    background-blend-mode: multiply;
+    background-position: center;
+    border-radius: 1.1vw;
+    min-height: 75vh;
+    /* Increased height for better visual balance */
+    position: relative;
+    z-index: 1;
+    /* Keeps it below the header */
+    padding-bottom: 0;
+}
+
+#AboutPageContainer .aboutHero-section p {
+    font-size: 2.5rem;
+    display: block;
+    color: #123449;
+}
+
+#AboutPageContainer .aboutHero-section span {
+    display: inline-block;
+    font-size: 1.2rem;
+    color: rgba(18, 52, 73, 0.4);
+}
+
+#AboutPageContainer .aboutheroimg {
+    object-fit: contain;
+    width: 40vw;
+    position: absolute;
+    bottom: -55px;
+    left: 20px;
+}
+
+/* story */
+#AboutPageContainer .aboutOurStory {
+    margin-top: 5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+#AboutPageContainer .OurstoryBox {
+    width: 50%;
+    font-size: 0.9rem;
+    position: relative;
+}
+
+#AboutPageContainer .OurstoryBox img {
+    width: 100%;
+}
+
+#AboutPageContainer .ourstory-head {
+    padding: 2rem;
+    background-image: url('../images/Our\ Story.png');
+    background-position: 30px 0px;
+    background-size: 20rem;
+    font-size: 2rem;
+    color: #123449;
+    background-repeat: no-repeat;
+    padding-bottom: 1rem;
+}
+
+#AboutPageContainer .ourstory-content {
+    padding: 0 2rem;
+    color: rgba(18, 52, 73, 0.4);
+}
+
+#AboutPageContainer .outstory-singlediamond {
+    position: absolute;
+    right: -2rem;
+    width: 15vw !important;
+    transform: rotate(-10deg);
+    top: -3rem;
+}
+
+/* TradingExperience */
+#AboutPageContainer .TradingExperience {
+    background-color: #E9F7FF;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 2rem;
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+#AboutPageContainer .TradingExperienceDiv {
+    width: 50%;
+}
+
+#AboutPageContainer .TradingExperienceDiv h3 {
+    color: #123449;
+}
+
+#AboutPageContainer .TradingExperienceDiv p {
+    color: rgba(18, 52, 73, 0.4);
+    margin-top: 1rem;
+}
+
+#AboutPageContainer .TradingExperienceimg {
+    width: 30%;
+}
+
+#AboutPageContainer .TradingExperienceimg img {
+    width: 100%;
+    height: auto;
+}
+
+#AboutPageContainer .PremiumFeature {
+    /* padding: 2rem; */
+}
+
+#AboutPageContainer .PremiumFeature-head {
+    padding: 4rem;
+    background-image: url('../images/Our\ Premium\ Features.png');
+    background-position: center;
+    background-size: 30rem;
+    font-size: 2rem;
+    color: #123449;
+    text-align: center;
+    background-repeat: no-repeat;
+    padding-bottom: 1rem;
+}
+
+
+#AboutPageContainer .PremiumFeatureContainer {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    padding: 40px;
+}
+
+#AboutPageContainer .feature-card {
+    width: 100%;
+    max-width: 250px;
+    background: #E9F7FF;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    height: 300px;
+    /* Ensures all cards have the same height */
+}
+
+#AboutPageContainer .icon-container {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #E9F7FF;
+    border-radius: 50%;
+    border: 6px solid #fff;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
+}
+
+
+#AboutPageContainer .icon img {
+    width: 20px;
+    height: 20px;
+}
+
+#AboutPageContainer .feature-card h3 {
+    font-size: 1.2rem;
+    color: #123449;
+    margin-top: 40px;
+}
+
+#AboutPageContainer .feature-card p {
+    font-size: 0.9rem;
+    color: rgba(18, 52, 73, 0.4);
+    line-height: 1.5;
+    margin-top: 10px;
+}
+
+#AboutPageContainer .whoWeAreContainer {
+    width: 90%;
+    display: flex;
+    margin: auto;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0rem 3rem;
+}
+
+#AboutPageContainer .whoWeAreImg {
+    width: 60%;
+
+}
+
+#AboutPageContainer .whoWeAreDiv {
+    width: 50%;
+    height: auto;
+    text-align: end;
+}
+
+#AboutPageContainer .whoWeAreImg img {
+    width: 100%;
+}
+
+#AboutPageContainer .whoWeAreDiv h3 {
+    background-image: url('../images/Who\ are\ we.png');
+    background-position: right;
+    background-size: 20rem;
+    font-size: 2rem;
+    padding: 4rem 0;
+    color: #123449;
+    background-repeat: no-repeat;
+    padding-bottom: 1rem;
+}
+
+#AboutPageContainer .whoWeAreDiv p {
+    color: rgba(18, 52, 73, 0.4);
+}
+
+@media (max-width: 875px) {
+    #AboutPageContainer .aboutHero-section {
+        min-height: 60vh;
+    }
+}
+
+@media (max-width: 768px) {
+    #AboutPageContainer .aboutOurStory {
+        flex-direction: column;
+        padding: 0;
+    }
+
+    #AboutPageContainer .ourstory-content {
+        padding: 0;
+    }
+
+    #AboutPageContainer .OurstoryBox {
+        width: 90%;
+        padding: 2rem;
+        text-align: center;
+    }
+
+    #AboutPageContainer .ourstory-head {
+        background-position: center;
+    }
+
+    #AboutPageContainer .OurstoryBox img {
+        width: 85%;
+        margin: auto;
+    }
+
+    #AboutPageContainer .outstory-singlediamond {
+        right: 3rem;
+        top: -1rem;
+    }
+
+    #AboutPageContainer .TradingExperience {
+        flex-direction: column;
+        gap: 2.4rem;
+    }
+
+    #AboutPageContainer .TradingExperienceDiv {
+        width: 100%;
+        text-align: center;
+    }
+
+    #AboutPageContainer .TradingExperienceimg {
+        width: 60%;
+    }
+
+    #AboutPageContainer .TradingExperienceDiv h3 {
+        font-size: 1.5rem;
+    }
+
+    #AboutPageContainer .TradingExperienceDiv p {
+        font-size: 1rem;
+    }
+
+    #AboutPageContainer .PremiumFeatureContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #AboutPageContainer .feature-card {
+        width: 100%;
+        max-width: 100%;
+        height: 15rem;
+        margin-bottom: 2rem;
+    }
+
+    #AboutPageContainer .whoWeAreContainer {
+        width: 100%;
+        flex-direction: column-reverse;
+    }
+
+    #AboutPageContainer .whoWeAreImg {
+        width: 100%;
+    }
+
+    #AboutPageContainer .whoWeAreDiv {
+        width: 90%;
+    }
+}
+
+@media (max-width: 586px) {
+    #AboutPageContainer .aboutHero-section {
+        min-height: 45vh;
+        padding: 2rem;
+        text-align: center;
+    }
+
+    #AboutPageContainer .aboutHero-section p {
+        font-size: 2rem;
+    }
+
+    #AboutPageContainer .aboutHero-section span {
+        font-size: 1rem;
+    }
+
+    #AboutPageContainer .whoWeAreContainer {
+        padding: 0;
+    }
+
+    #AboutPageContainer .whoWeAreImg {
+        width: 80%;
+    }
+}
+
+@media (max-width: 540px) {
+    #AboutPageContainer .PremiumFeature-head {
+        background-size: 25rem;
+        background-position: 2rem 3rem;
+        font-size: 1.5rem;
+
+    }
+
+    #AboutPageContainer .ourstory-head {
+        background-position: center 5px;
+        background-size: 15rem;
+    }
+}
+
+@media (max-width: 460px) {
+
+    #AboutPageContainer .PremiumFeature-head {
+        background-size: 20rem;
+        background-position: 3rem 3rem;
+    }
+}

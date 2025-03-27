@@ -1,0 +1,487 @@
+/* Main Container */
+#OurServicePageContainer {
+    position: relative;
+    margin: 1.1rem;
+    background-color: white;
+    border-radius: 1.1vw 1.1vw 1.1vw 0;
+    overflow: hidden;
+    padding-bottom: 3rem;
+}
+
+/* Hero Section */
+#OurServicePageContainer .OurServiceHeroSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../images/homeBG.png"), linear-gradient(to bottom, #e7f6ff, #e5f2fa);
+    background-size: cover;
+    background-blend-mode: multiply;
+    background-position: center;
+    border-radius: 1.1vw;
+    min-height: 75vh;
+    /* Increased height for better visual balance */
+    position: relative;
+    z-index: 1;
+    /* Keeps it below the header */
+    padding-bottom: 0;
+    text-align: center;
+}
+
+#OurServicePageContainer .OurServiceHeroSection p {
+    font-size: 2.5rem;
+    display: block;
+    color: #123449;
+}
+
+#OurServicePageContainer .OurServiceHeroSection span {
+    width: 45vw;
+    display: inline-block;
+    font-size: 1.2rem;
+    color: rgba(18, 52, 73, 0.4);
+}
+
+#OurServicePageContainer .oursreviceheroimg {
+    object-fit: contain;
+    width: 22vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#OurServicePageContainer .frostedRing {
+    position: absolute;
+    bottom: -8rem;
+    right: 0;
+    width: 18vw;
+}
+
+#OurServicePageContainer .frostedContainer {
+    padding: 4rem 5%;
+    padding-top: 6.5rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    overflow-x: hidden;
+}
+
+/* First Row (Form Section) */
+#OurServicePageContainer .frostedFirstDiv {
+    background-image: url("../images/service/Rectangle\ 135.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 8px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 400px;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+#OurServicePageContainer .frostedCard {
+    width: 40%;
+    max-width: 450px;
+    background-color: rgba(18, 52, 73, 0.7);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: left;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#OurServicePageContainer .frostedForm {
+    border: 1px solid #fff;
+    border-radius: 8px;
+    padding: 2rem;
+    height: 100%;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+#OurServicePageContainer .frostedForm h3 {
+    color: #D2ECFB;
+    font-weight: 500;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+#OurServicePageContainer .frostedForm p {
+    color: #D2ECFB;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+#OurServicePageContainer .frostedLine {
+    height: 1px;
+    background-color: #D2ECFB;
+    width: 80%;
+    margin: auto;
+    margin-bottom: 1.3rem;
+}
+
+#OurServicePageContainer .explorebutton {
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    color: #D2ECFB;
+    padding: 0.8rem 1.5rem;
+    background-color: transparent;
+    border: 1px solid #D2ECFB;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+#OurServicePageContainer .explorebutton:hover {
+    background-color: #D2ECFB;
+    color: #123449;
+}
+
+/* Second Row (Two Boxes) */
+#OurServicePageContainer .frostedSecondDiv {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+}
+
+#OurServicePageContainer .frostedSecondbox,
+#OurServicePageContainer .frostedSecondbox2 {
+    padding: 2rem;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    min-height: 200px;
+
+}
+
+#OurServicePageContainer .frostedSecondbox {
+    background-image: url("../images/service/Group\ 18659.png");
+}
+
+#OurServicePageContainer .frostedSecondbox2 {
+    background-image: url("../images/service/Group\ 18662.png");
+}
+
+#OurServicePageContainer .frostedSecondInnerbox {
+    border-radius: 4px;
+    padding: 2rem;
+    border: 1px solid #D2ECFB;
+    color: #D2ECFB;
+    font-size: 1.5rem;
+}
+
+#OurServicePageContainer .frostedSecondInnerbox span {
+    display: block;
+    margin-top: 0.2rem;
+}
+
+
+/* ---------------------- */
+#OurServicePageContainer .our-service-container {
+    padding: 30px 20px;
+}
+
+#OurServicePageContainer .service-title {
+    padding: 2rem;
+    text-align: center;
+    background-image: url('../images/service/Our\ Services.png');
+    background-position: center 0px;
+    background-size: 25rem;
+    font-size: 2rem;
+    color: #123449;
+    background-repeat: no-repeat;
+    padding-bottom: 1rem;
+
+}
+
+#OurServicePageContainer .service-boxes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    position: relative;
+    padding: 1rem;
+}
+
+#OurServicePageContainer .serviceBoxesdiamonds {
+    position: absolute;
+    width: 15vw;
+    top: -4rem;
+    right: 5rem;
+}
+
+#OurServicePageContainer .service-box {
+    background-color: #0a2c47;
+    color: white;
+    width: 250px;
+    padding: 2rem;
+    border-radius: 8px;
+    display: flex;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    flex-direction: column;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+#OurServicePageContainer .service-box:hover {
+    transform: translateY(-5px);
+}
+
+#OurServicePageContainer .icon {
+    width: 35px;
+    /* Adjust size as needed */
+    height: 35px;
+    margin-bottom: 10px;
+    background-color: #D2ECFB;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+#OurServicePageContainer .icon img {
+    /* width: 100%;
+    height: auto; */
+}
+
+/* ------------------------- */
+#OurServicePageContainer .info-box {
+
+    position: relative;
+    background: #D8F1FF;
+    width: 350px;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#OurServicePageContainer .side-banner {
+    position: absolute;
+    left: -15px;
+    top: 10px;
+    width: 50px;
+    height: 80px;
+    background: #123146;
+}
+
+#OurServicePageContainer .side-banner::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 0;
+    height: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-top: 10px solid #123146;
+}
+
+#OurServicePageContainer .icon-box {
+    width: 60px;
+    height: 60px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    margin-right: 15px;
+}
+
+#OurServicePageContainer .icon-box img {
+    width: 40px;
+}
+
+#OurServicePageContainer .text-container h2 {
+    font-size: 18px;
+    color: #123146;
+    margin: 0;
+}
+
+#OurServicePageContainer .text-container p {
+    font-size: 14px;
+    color: #555;
+    margin-top: 5px;
+}
+
+/* ------------- */
+#OurServicePageContainer .help-container {
+    padding: 3rem 5%;
+}
+
+#OurServicePageContainer .help-container h3 {
+    padding: 2rem;
+    text-align: center;
+    background-image: url('../images/service/How\ Can\ We\ Help\ You_.png');
+    background-position: center 0px;
+    background-size: 30rem;
+    font-size: 2rem;
+    color: #123449;
+    background-repeat: no-repeat;
+    padding-bottom: 1rem;
+}
+
+#OurServicePageContainer .help-container p {
+    font-size: 1rem;
+    color: rgba(18, 52, 73, 0.56);
+    max-width: 60ch;
+    margin: 0 auto 2rem;
+}
+
+#OurServicePageContainer .help-container-boxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+}
+
+#OurServicePageContainer .help-box {
+    background: #D2ECFB;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#OurServicePageContainer .help-content {
+    padding: 2rem;
+}
+
+#OurServicePageContainer .help-box:hover {
+    transform: translateY(-5px);
+}
+
+#OurServicePageContainer .help-icon {
+    width: 6rem;
+    height: 14rem;
+    background-color: #123449;
+}
+
+#OurServicePageContainer .help-icon img {
+    width: 6rem;
+    height: 5rem;
+    margin-bottom: 1rem;
+    background-color: #D2ECFB;
+    margin-top: 1rem;
+    padding: 1rem;
+}
+
+#OurServicePageContainer .help-box h2 {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+    color: #123449;
+}
+
+#OurServicePageContainer .help-box p {
+    font-size: 1rem;
+    margin-top: 1rem;
+    color: rgba(18, 52, 73, 0.56);
+}
+
+
+
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+
+    #OurServicePageContainer .frostedCard {
+        width: 50%;
+        max-width: 400px;
+    }
+
+}
+
+@media (max-width: 940px) {
+    #OurServicePageContainer .OurServiceHeroSection {
+        min-height: 60vh;
+    }
+
+    #OurServicePageContainer .OurServiceHeroSection p {
+        font-size: 2rem;
+    }
+
+    #OurServicePageContainer .OurServiceHeroSection span {
+        width: 70vw;
+        font-size: 0.912rem;
+    }
+}
+
+@media (max-width: 768px) {
+    #OurServicePageContainer .frostedFirstDiv {
+        padding: 1rem;
+        height: auto;
+    }
+
+
+    #OurServicePageContainer .frostedCard {
+        width: 90%;
+        max-width: none;
+    }
+
+    #OurServicePageContainer .frostedSecondDiv {
+        grid-template-columns: 1fr;
+    }
+
+    #OurServicePageContainer .serviceBoxesdiamonds {
+        width: 18vw;
+        top: -2rem;
+        right: 7rem;
+    }
+
+
+}
+
+@media (max-width: 590px) {
+
+    #OurServicePageContainer .service-title {
+
+        background-size: 20rem;
+    }
+
+    #OurServicePageContainer .help-container h3 {
+
+        background-size: 25rem;
+    }
+
+    #OurServicePageContainer .serviceBoxesdiamonds {
+        width: 20vw;
+        top: -1rem;
+    }
+
+    #OurServicePageContainer .help-box h2 {
+        font-size: 1.4rem;
+    }
+
+    #OurServicePageContainer .help-box p {
+        font-size: 0.9rem;
+    }
+
+    #OurServicePageContainer .help-content {
+        padding: 1rem 2rem;
+    }
+}
+
+@media (max-width: 490px) {
+    #OurServicePageContainer .help-container h3 {
+        background-size: 20rem;
+    }
+
+    #OurServicePageContainer .help-icon {
+        width: 5rem;
+        height: 12rem;
+    }
+
+    #OurServicePageContainer .help-icon img {
+        width: 5rem;
+    }
+}
