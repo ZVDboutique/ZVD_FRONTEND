@@ -19,13 +19,19 @@ jobs:
           node-version: 18
 
       - name: Install Dependencies
-        run: npm install
+        run: |
+          cd /home/ec2-user/src  # Go to the project directory
+          npm install
 
       - name: Build React App
-        run: npm run build
+        run: |
+          cd /home/ec2-user/src  # Go to the project directory
+          npm run build
 
       - name: Archive Build Folder
-        run: tar -czf frontend-build.tar.gz -C build .
+        run: |
+          cd /home/ec2-user/src  # Go to the project directory
+          tar -czf frontend-build.tar.gz -C build .  # Create the tarball from the build folder
 
       - name: Setup SSH
         run: |
@@ -52,6 +58,6 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
           script: |
-            sudo rm -rf /usr/share/nginx/html/*
-            sudo chown -R ec2-user:ec2-user /usr/share/nginx/html
-            tar -zxf /home/ec2-user/frontend-build.tar.gz --strip-components=1 -C /usr/share/nginx/html
+            sudo rm -rf /usr/share/nginx/html/*  # Clear the existing files in Nginx
+            sudo chown -R ec2-user:ec2-user /usr/share/nginx/html  # Change ownership if needed
+            tar -zxf /home/ec2-user/frontend-build.tar.gz --strip-components=1 -C /usr/share/nginx/html  # Deploy the build to Nginx
