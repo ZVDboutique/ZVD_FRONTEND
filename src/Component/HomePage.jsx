@@ -45,7 +45,7 @@ const HomePage = () => {
   const scrollToTop = () => {
     window.scrollTo({
         top: 0,
-        behavior: "smooth" 
+        behavior: "smooth"
     });
 };
   useEffect(() => {
@@ -54,8 +54,8 @@ const HomePage = () => {
     }
     scrollToTop();
   }, []);
-  
-  const navigate = useNavigate();
+
+  // const navigate = useNavigate();
 
   // const handleLogin = (e) => {
   //   e.preventDefault();
@@ -64,7 +64,7 @@ const HomePage = () => {
   return (
     <div id="HomePageContainer" className="homepage">
       <div className="top-container">
-       
+
 
         {/* Slider Section */}
         <div className="hero-section">
