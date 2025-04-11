@@ -34,7 +34,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.AWS_EC2_IP }} >> ~/.ssh/known_hosts
 
-      - name: Copy .tar.gz to EC2
+      - name: Copy Build to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.AWS_EC2_IP }}
@@ -52,6 +52,6 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
           script: |
-            sudo rm -rf /usr/share/nginx/html/*
-            sudo chown -R ec2-user:ec2-user /usr/share/nginx/html
-            tar -zxf /home/ec2-user/frontend-build.tar.gz --strip-components=1 -C /usr/share/nginx/html
+            mkdir -p /home/ec2-user/ZVD_FRONTEND
+            rm -rf /home/ec2-user/ZVD_FRONTEND/*
+            tar -zxf /home/ec2-user/frontend-build.tar.gz -C /home/ec2-user/ZVD_FRONTEND
