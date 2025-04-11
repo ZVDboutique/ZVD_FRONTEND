@@ -27,7 +27,7 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.AWS_EC2_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.AWS_EC2_IP }} >> ~/.ssh/known_hosts
 
@@ -36,7 +36,7 @@ jobs:
         with:
           host: ${{ secrets.AWS_EC2_IP }}
           username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          key: ${{ secrets.AWS_EC2_KEY }}
           source: "build/*"
           target: "/usr/share/nginx/html"
           strip_components: 1
