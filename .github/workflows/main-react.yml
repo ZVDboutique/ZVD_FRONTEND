@@ -24,23 +24,34 @@ jobs:
       - name: Build React App
         run: npm run build
 
+      - name: Archive Build Folder
+        run: tar -czf frontend-build.tar.gz -C build .
+
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.AWS_EC2_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          echo "EC2 Host: ${{ secrets.AWS_EC2_IP }}"  # Debugging line to show IP
-          cat ~/.ssh/id_rsa  # Debugging line to check if the key is correct (be careful)
           ssh-keyscan -H ${{ secrets.AWS_EC2_IP }} >> ~/.ssh/known_hosts
-          cat ~/.ssh/known_hosts  # Debugging line to check known hosts
 
-      - name: Copy Build to EC2
+      - name: Copy .tar.gz to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.AWS_EC2_IP }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
-          source: "build/*"
-          target: "/usr/share/nginx/html"
-          strip_components: 1
-          debug: true  # Enable debug mode to troubleshoot
+          source: "frontend-build.tar.gz"
+          target: "/home/ec2-user"
+          strip_components: 0
+          debug: true
+
+      - name: Extract and Deploy on EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.AWS_EC2_IP }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.AWS_EC2_KEY }}
+          script: |
+            sudo rm -rf /usr/share/nginx/html/*
+            sudo chown -R ec2-user:ec2-user /usr/share/nginx/html
+            tar -zxf /home/ec2-user/frontend-build.tar.gz --strip-components=1 -C /usr/share/nginx/html
