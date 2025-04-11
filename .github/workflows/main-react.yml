@@ -3,7 +3,7 @@ name: Deploy React App to EC2
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
@@ -36,7 +36,7 @@ jobs:
         with:
           host: ${{ secrets.AWS_EC2_IP }}
           username: ec2-user
-          key: ${{ secrets.EC2_KEY }}
+          key: ${{ secrets.AWS_EC2_KEY }}
           source: "build/*"
           target: "/usr/share/nginx/html"
           strip_components: 1
