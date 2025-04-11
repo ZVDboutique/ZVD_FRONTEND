@@ -16,11 +16,11 @@ const LoginForm = () => {
   const togglePasswordVisibility = () => {
     setPasswordVisible((prev) => !prev);
   };
-  
+   
   // Handle login with API
   const handleLogin = async () => { 
     try {
-      const response = await axios.post("http://52.91.88.95:5062/api/auth/login", {
+      const response = await axios.post("http://52.91.88.95:5000/api/auth/login", {
         email, // Using email as per API
         password,
       });
