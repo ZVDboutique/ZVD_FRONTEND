@@ -52,6 +52,15 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
           script: |
-            sudo rm -rf /usr/share/nginx/html/*
-            sudo chown -R ec2-user:ec2-user /usr/share/nginx/html
-            tar -zxf /home/ec2-user/frontend-build.tar.gz --strip-components=1 -C /usr/share/nginx/html
+            # Remove any existing build files in the target directory
+            sudo rm -rf /home/ec2-user/ZVD_FRONTEND/*
+            sudo chown -R ec2-user:ec2-user /home/ec2-user/ZVD_FRONTEND
+
+            # Extract and move the build files to the target directory
+            tar -zxf /home/ec2-user/frontend-build.tar.gz --strip-components=1 -C /home/ec2-user/ZVD_FRONTEND
+
+            # Ensure proper ownership for the new files
+            sudo chown -R ec2-user:ec2-user /home/ec2-user/ZVD_FRONTEND
+
+            # Restart the server or Nginx if required
+            # sudo systemctl restart nginx
