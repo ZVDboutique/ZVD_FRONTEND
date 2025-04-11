@@ -86,7 +86,9 @@ const SignupForm = () => {
     else if (step === "company") setStep("kyc");
   };
   // Submit form data to backend
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSubmit = async () => {
+    setIsSubmitting(true);
     try {
       const response = await axios.post("http://52.91.88.95:5062/api/SignupRequest/signup",
         formData
@@ -95,6 +97,9 @@ const SignupForm = () => {
       navigate("/home"); // Redirect on success
     } catch (error) {
       console.error("Error during signup:", error.response?.data || error.message);
+    }
+    finally {
+      setIsSubmitting(false);
     }
   };
   return (
@@ -193,7 +198,14 @@ const SignupForm = () => {
           </div>
           <div className="signInrow">
             <div className="signIninput-singlegroup">
-              <input type={confirmPasswordVisible ? "text" : "password"} placeholder="Confirm Password" />
+            <input
+                  type={confirmPasswordVisible ? "text" : "password"}
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="Confirm Password"
+            />
+
               <span className="signIntoggle-password"><i class={confirmPasswordVisible ? "fas fa-eye-slash toggle-password-slash" : "fas fa-eye toggle-password"} onClick={toggleConfPasswordVisibility} ></i>
               </span>
             </div>
@@ -294,10 +306,18 @@ const SignupForm = () => {
         <div>
           <h3 className="CompanyHeader">Company Information</h3>
           <div className="signInrow">
-            <div className="signIninput-singlegroup">
-              <input type="text" placeholder="Part of Company " />
-              <span className="signIntoggle-password"><i className="fa-regular fa-square-check"></i></span>
-            </div>
+          <div className="signIninput-singlegroup">
+  <label>
+    <input
+      type="checkbox"
+      name="isPartOfCompany"
+      checked={formData.isPartOfCompany}
+      onChange={handleChange}
+    />
+    Part of Company
+  </label>
+</div>
+
           </div>
           <div className="signInrow">
             <div className="signIninput-singlegroup">

@@ -76,10 +76,6 @@
     color: rgba(18, 52, 73, 0.6);
 }
 
-
-
-
-
 /* ---------------------------------------------------------- */
 
 #ContactFormContainer {
@@ -281,98 +277,100 @@
     border: none;
 }
 
+/* Focus states for form inputs */
+#ContactPageContainer .contact-form input:focus,
+#ContactPageContainer .contact-form textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 5px rgba(18, 52, 73, 0.5);
+}
 
 /* Responsive Adjustments */
 @media (max-width: 875px) {
     #ContactPageContainer .contactHero-section {
-    min-height: 60vh;
+        min-height: 60vh;
     }
 }
+
 @media (max-width: 802px) {
     #ContactPageContainer .contact-list {
         grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
     }
-
 }
+
 @media (max-width: 769px) {
-    #ContactPageContainer  .contactHero-section {
+    #ContactPageContainer .contactHero-section {
         min-height: 56vh;
-        }
-        #ContactPageContainer  .contact-content p{
+    }
+    #ContactPageContainer .contact-content p {
         font-size: 2.2rem;
     }
-    #ContactPageContainer  .contact-content span {
-    font-size: 0.9rem;
+    #ContactPageContainer .contact-content span {
+        font-size: 0.9rem;
     }
-    #ContactPageContainer  .contact-info {
+    #ContactPageContainer .contact-info {
         flex-direction: column;
         align-items: center;
     }
-    #ContactPageContainer  .location-section{
+    #ContactPageContainer .location-section {
         flex-direction: column;
     }
-    #ContactPageContainer  .map-container {
+    #ContactPageContainer .map-container {
         width: 50vw; /* Bigger square on tablets */
     }
 }
 
 @media (max-width: 582px) {
-    
-    #ContactPageContainer  .contact-details{
+    #ContactPageContainer .contact-details {
         padding-bottom: 1rem;
     }
-    #ContactPageContainer  .contact-form {
-    min-width: 100%;
+    #ContactPageContainer .contact-form {
+        min-width: 100%;
     }
-    
-    #ContactPageContainer  .contact-item i {
+    #ContactPageContainer .contact-item i {
         width: 38px;
         height: 38px;
         font-size: 1rem;
     }
-    
-    #ContactPageContainer  .location-section {
+    #ContactPageContainer .location-section {
         flex-direction: column;
         align-items: center;
     }
 }
+
 @media (max-width: 530px) {
-    #ContactPageContainer  .contactHero-section {
+    #ContactPageContainer .contactHero-section {
         min-height: 45vh;
     }
     #ContactPageContainer .contact-content p {
         font-size: 1.5rem;
     }
-    #ContactFormContainer{
+    #ContactFormContainer {
         padding: 0;
     }
 }
+
 @media (max-width: 420px) {
-    #ContactPageContainer  .contact-details {
+    #ContactPageContainer .contact-details {
         padding: 1rem;
     }
-
     #ContactPageContainer .contact-item {
         flex-direction: column;
         align-items: center;
         text-align: center;
     }
-    
     #ContactPageContainer .contact-item i {
         width: 30px;
         height: 30px;
         font-size: 0.9rem;
     }
-
     #ContactPageContainer .contact-form {
         padding: 1rem;
     }
-
     #ContactPageContainer .location-section {
         padding: 1rem;
     }
-
-    #ContactPageContainer  .map-container {
+    #ContactPageContainer .map-container {
         width: 70vw; /* Even bigger on mobile */
     }
 }
