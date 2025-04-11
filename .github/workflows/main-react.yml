@@ -29,7 +29,10 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.AWS_EC2_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          echo "EC2 Host: ${{ secrets.AWS_EC2_IP }}"  # Debugging line to show IP
+          cat ~/.ssh/id_rsa  # Debugging line to check if the key is correct (be careful)
           ssh-keyscan -H ${{ secrets.AWS_EC2_IP }} >> ~/.ssh/known_hosts
+          cat ~/.ssh/known_hosts  # Debugging line to check known hosts
 
       - name: Copy Build to EC2
         uses: appleboy/scp-action@v0.1.4
