@@ -169,7 +169,7 @@ export const ContactUsPage = () => {
   data-aos-duration="1500"
   data-aos-anchor-placement="top-bottom">
                 <iframe 
-                title=""
+                title="ContactUs"
                     src={locations.find(loc => loc.name === selectedLocation)?.mapSrc || locations[0].mapSrc}
                     allowFullScreen={true}
                     loading="lazy">
