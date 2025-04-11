@@ -11,11 +11,11 @@ export const Login = () => {
       <div className="sidebar">
         <ul>
         <li  className={activeForm === "login" ? "active" : ""} onClick={() => setActiveForm("login")}>
-  <a href="#">LOG IN</a>
+  <a href="javascript:void(0);">LOG IN</a>
   <div className="fff"></div>
 </li>
 <li  className={activeForm === "signup" ? "active" : ""} onClick={() => setActiveForm("signup")}>
-  <a href="/#">SIGN UP</a>
+  <a href="javascript:void(0);">SIGN UP</a>
   <div className="fff"></div>
 </li>
 
