@@ -34,7 +34,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.AWS_EC2_IP }} >> ~/.ssh/known_hosts
 
-      - name: Copy Build to EC2
+      - name: Copy Build Archive to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.AWS_EC2_IP }}
@@ -45,13 +45,25 @@ jobs:
           strip_components: 0
           debug: true
 
-      - name: Extract and Deploy on EC2
+      - name: Deploy on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.AWS_EC2_IP }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
           script: |
+            # Create frontend directory if not exists
             mkdir -p /home/ec2-user/ZVD_FRONTEND
+
+            # Clean old frontend code
             rm -rf /home/ec2-user/ZVD_FRONTEND/*
+
+            # Extract new build
             tar -zxf /home/ec2-user/frontend-build.tar.gz -C /home/ec2-user/ZVD_FRONTEND
+
+            # Deploy to Nginx path
+            sudo rm -rf /usr/share/nginx/html/*
+            sudo cp -r /home/ec2-user/ZVD_FRONTEND/* /usr/share/nginx/html/
+
+            # Optional: Restart Nginx (if needed)
+            sudo systemctl restart nginx
