@@ -1,0 +1,35 @@
+name: Deploy React App to EC2
+
+on:
+  push:
+    branches:
+      - main  # or 'master' depending on your branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔄 Checkout Code
+        uses: actions/checkout@v3
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 📦 Install Dependencies
+        run: npm install
+
+      - name: 🛠️ Build React App
+        run: npm run build
+
+      - name: 📁 Copy Build to EC2
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.AWS_EC2_IP }}
+          username: ec2-user
+          key: ${{ secrets.AWS_EC2_KEY }}
+          source: "build/*"
+          target: "/usr/share/nginx/html"
+          strip_components: 1
