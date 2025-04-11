@@ -106,7 +106,7 @@ export const AboutUsPage = () => {
     <div className="TradingExperienceimg">
         <img src={tradingExperience} data-aos="fade-up"
   data-aos-duration="1500"
-  data-aos-anchor-placement="top-bottom" />
+  data-aos-anchor-placement="top-bottom" alt='' />
     </div>
 </div>
 <div className="PremiumFeature">
@@ -142,7 +142,7 @@ export const AboutUsPage = () => {
   <div className="whoWeAreImg">
     <img src={weAre} data-aos="fade-up"
   data-aos-duration="1500"
-  data-aos-anchor-placement="top-bottom" />
+  data-aos-anchor-placement="top-bottom" alt='' />
   </div>
   <div className="whoWeAreDiv">
     <h3 data-aos="fade-up"

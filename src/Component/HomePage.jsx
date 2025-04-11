@@ -1,9 +1,9 @@
 import React from "react";
 import "./HomePage.css";
-import logo from '../images/logo.png';
+// import logo from '../images/logo.png';
 import home1 from '../images/home1.png';
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+// import { Link, useNavigate } from "react-router-dom";
 
 
 import img1 from '../images/Collection1.png';
@@ -57,10 +57,10 @@ const HomePage = () => {
   
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    navigate("/");
-  };
+  // const handleLogin = (e) => {
+  //   e.preventDefault();
+  //   navigate("/");
+  // };
   return (
     <div id="HomePageContainer" className="homepage">
       <div className="top-container">

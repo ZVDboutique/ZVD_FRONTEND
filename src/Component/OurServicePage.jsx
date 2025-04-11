@@ -77,7 +77,7 @@ and trust—delivering excellence from mine to market</span>
   data-aos-anchor-placement="top-bottom" src={home} alt="Diamond" className='oursreviceheroimg' />
 <img  data-aos="fade-up"
   data-aos-duration="1500"
-  data-aos-anchor-placement="top-bottom" src={ring} className='frostedRing'  />
+  data-aos-anchor-placement="top-bottom" src={ring} className='frostedRing' alt='' />
 
 </div>
 <div className="frostedContainer">
@@ -168,7 +168,7 @@ Lab grown
 
         <img src={diamonds} className='serviceBoxesdiamonds'  data-aos="fade-up"
   data-aos-duration="1500"
-  data-aos-anchor-placement="top-bottom" />
+  data-aos-anchor-placement="top-bottom" alt=''/>
       </div>
     </div>
 

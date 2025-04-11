@@ -86,9 +86,7 @@ const SignupForm = () => {
     else if (step === "company") setStep("kyc");
   };
   // Submit form data to backend
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSubmit = async () => {
-    setIsSubmitting(true);
     try {
       const response = await axios.post("http://52.91.88.95:5062/api/SignupRequest/signup",
         formData
@@ -98,9 +96,7 @@ const SignupForm = () => {
     } catch (error) {
       console.error("Error during signup:", error.response?.data || error.message);
     }
-    finally {
-      setIsSubmitting(false);
-    }
+   
   };
   return (
     <div className="signInform-container">
@@ -252,7 +248,7 @@ const SignupForm = () => {
                 />
               </div>
               <div className="kyc-success">
-                <img src={check} />
+                <img src={check} alt=""/>
                 KYC is done Successfully
               </div>
 
@@ -260,7 +256,7 @@ const SignupForm = () => {
             </div>
           </div>
           <div class="kyc-success">
-            <img src={check} />
+            <img src={check} alt="" />
             KYC is done Successfully
           </div>
 
