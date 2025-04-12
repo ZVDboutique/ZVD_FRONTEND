@@ -10,23 +10,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout the latest code from the repository
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      # Setup Node.js (ensure correct version is installed)
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
+      # Install dependencies
       - name: Install Dependencies
         run: npm install
 
+      # Build the React app (production build)
       - name: Build React App
         run: npm run build
 
+      # Archive the build folder for easier transfer to EC2
       - name: Archive Build Folder
         run: tar -czf frontend-build.tar.gz -C build .
 
+      # Setup SSH keys for connection to EC2
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -34,6 +40,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.AWS_EC2_IP }} >> ~/.ssh/known_hosts
 
+      # Upload the build folder to EC2
       - name: Upload Build to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -44,6 +51,7 @@ jobs:
           target: "/home/ec2-user/ZVD_FRONTEND"
           strip_components: 0
 
+      # Deploy the build on EC2 and restart the app
       - name: Deploy on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -51,8 +59,24 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
           script: |
+            # Navigate to the frontend directory on EC2
             cd /home/ec2-user/ZVD_FRONTEND
+
+            # Stop any running process (if using npm start or similar)
+            # You can skip this step if you're running the app in the background (e.g., using pm2 or nohup)
+            pkill -f "react-scripts start" || true
+
+            # Remove old build and extract new build
             rm -rf build
             mkdir -p build
             tar -zxf frontend-build.tar.gz -C build
             rm -f frontend-build.tar.gz
+
+            # Optionally, install any missing dependencies (if you need to update them on the server)
+            cd build
+            npm install
+
+            # Restart the app (if you use npm start, you can use nohup to keep it running after SSH)
+            nohup npm start --port 5062 &> /dev/null &
+
+            echo "Deployment successful!"
