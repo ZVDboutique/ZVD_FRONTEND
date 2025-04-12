@@ -53,7 +53,7 @@ const LoginForm = () => {
     } catch (error) {
       alert("Error while sending reset link. Please try again.");
     }
-  };
+  }; 
 
   return (
     <>
