@@ -3,31 +3,24 @@ name: Deploy React App to EC2
 on:
   push:
     branches:
-      - main  # Trigger when pushing to main
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Setup Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      # Step 3: Install & Build the app (optional if not deploying build)
-      - name: Install & Build (optional)
+      - name: Setup SSH Key
         run: |
-          npm install
-          npm run build
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AWS_EC2_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.AWS_EC2_IP }} >> ~/.ssh/known_hosts
 
-      # Step 4: SSH into EC2 and pull latest code + restart app
-      - name: SSH & Deploy on EC2
+      - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.AWS_EC2_IP }}
@@ -35,14 +28,11 @@ jobs:
           key: ${{ secrets.AWS_EC2_KEY }}
           script: |
             cd /home/ec2-user/ZVD_FRONTEND
-
-            echo "Pulling latest code from GitHub..."
+            echo "Pulling latest code..."
             git reset --hard
             git pull origin main
-
             echo "Installing dependencies..."
             npm install
-
-            echo "Restarting the React app..."
+            echo "Restarting app..."
             pkill -f "react-scripts" || true
             nohup npm start &> nohup.out &
