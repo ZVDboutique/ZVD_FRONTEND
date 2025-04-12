@@ -60,17 +60,3 @@ jobs:
 
             # Verify that the screen session is running
             screen -ls
-            # Optionally build the React app (if required)
-            echo "Building app..."
-            npm run build
-
-            # Install 'serve' globally to serve the app (if not already installed)
-            echo "Installing serve..."
-            npm install -g serve
-
-            # Start the React app in a detached screen session on port 5062
-            echo "Starting React app in a screen session on port 5062..."
-            screen -dmS react_app npm start
-
-            # Verify that the screen session is running
-            screen -ls
