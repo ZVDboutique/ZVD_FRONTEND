@@ -3,34 +3,60 @@ name: Deploy React App to EC2
 on:
   push:
     branches:
-      - main
+      - main  # Trigger when pushing to the main branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout code from GitHub repository
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Set up Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - name: SSH into EC2 and Deploy React App
+      # Step 3: Install dependencies and build the React app (optional, if deploying build)
+      - name: Install & Build (optional)
+        run: |
+          npm install
+          npm run build
+
+      # Step 4: SSH into EC2 instance and deploy the React app
+      - name: SSH & Deploy on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.AWS_EC2_IP }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
           script: |
+            # Navigate to the project directory
             cd /home/ec2-user/ZVD_FRONTEND
+
+            # Pull the latest code from GitHub
+            echo "Pulling latest code..."
             git reset --hard
             git pull origin main
+
+            # Install any new dependencies
+            echo "Installing dependencies..."
             npm install
+
+            # Optionally build the React app (if required)
+            echo "Building app..."
             npm run build
-            sudo npm install -g serve
-            screen -S react_app -X quit || true
-            screen -dmS react_app serve -s build -l 5062
+
+            # Install 'serve' globally to serve the app (if not already installed)
+            echo "Installing serve..."
+            npm install -g serve
+
+            # Start the React app in a detached screen session on port 5062
+            echo "Starting React app in a screen session on port 5062..."
+            screen -dmS react_app npm start
+
+            # Verify that the screen session is running
             screen -ls
