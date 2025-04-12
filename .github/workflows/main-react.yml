@@ -3,93 +3,46 @@ name: Deploy React App to EC2
 on:
   push:
     branches:
-      - main
+      - main  # Trigger when pushing to main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout Code
-      - name: Checkout Code
+      # Step 1: Checkout code
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js
+      # Step 2: Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      # Step 3: Install Dependencies
-      - name: Install Dependencies
+      # Step 3: Install & Build the app (optional if not deploying build)
+      - name: Install & Build (optional)
         run: |
           npm install
-
-      # Step 4: Build React App
-      - name: Build React App
-        run: |
           npm run build
 
-      # Step 5: Archive Build Folder
-      - name: Archive Build Folder
-        run: |
-          tar -czf frontend-build.tar.gz -C build .
-
-      # Step 6: Setup SSH for EC2 Connection
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.AWS_EC2_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.AWS_EC2_IP }} >> ~/.ssh/known_hosts
-
-      # Step 7: Upload Build to EC2
-      - name: Upload Build to EC2
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.AWS_EC2_IP }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.AWS_EC2_KEY }}
-          source: "frontend-build.tar.gz"
-          target: "/home/ec2-user/ZVD_FRONTEND"
-
-      # Step 8: Deploy on EC2 (extract, replace, restart)
-      - name: Deploy on EC2
+      # Step 4: SSH into EC2 and pull latest code + restart app
+      - name: SSH & Deploy on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.AWS_EC2_IP }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
           script: |
-            # Go to the app directory
             cd /home/ec2-user/ZVD_FRONTEND
 
-            # Clean previous build
-            rm -rf build
-            mkdir -p build
+            echo "Pulling latest code from GitHub..."
+            git reset --hard
+            git pull origin main
 
-            # Extract the new build files
-            tar -zxf frontend-build.tar.gz -C build
+            echo "Installing dependencies..."
+            npm install
 
-            # Clean up the tar file
-            rm -f frontend-build.tar.gz
-
-            # Optional: Restart app if needed
-            # Check if app is running and restart it gracefully
-            pkill -f "react-scripts" || true  # Ignore if not running
+            echo "Restarting the React app..."
+            pkill -f "react-scripts" || true
             nohup npm start &> nohup.out &
-
-            # Ensure app is running (waiting for logs to appear)
-            for i in {1..30}; do
-              if grep -q "Compiled successfully" nohup.out; then
-                echo "App is running!"
-                break
-              fi
-              sleep 2
-            done
-
-            # If not successful after 30 seconds, fail the deploy
-            if ! grep -q "Compiled successfully" nohup.out; then
-              echo "App failed to start."
-              exit 1
-            fi
