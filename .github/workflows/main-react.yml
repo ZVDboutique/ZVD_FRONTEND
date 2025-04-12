@@ -75,9 +75,21 @@ jobs:
             rm -f frontend-build.tar.gz
 
             # Optional: Restart app if needed
-            # If you use pm2 or nohup, restart the React app
-            pkill -f "react-scripts"
+            # Check if app is running and restart it gracefully
+            pkill -f "react-scripts" || true  # Ignore if not running
             nohup npm start &> nohup.out &
 
-            # Ensure the app is running
-            tail -f nohup.out
+            # Ensure app is running (waiting for logs to appear)
+            for i in {1..30}; do
+              if grep -q "Compiled successfully" nohup.out; then
+                echo "App is running!"
+                break
+              fi
+              sleep 2
+            done
+
+            # If not successful after 30 seconds, fail the deploy
+            if ! grep -q "Compiled successfully" nohup.out; then
+              echo "App failed to start."
+              exit 1
+            fi
