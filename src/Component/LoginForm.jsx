@@ -97,9 +97,9 @@ const LoginForm = () => {
               {/* <a href="/forgot-password" onClick={handleForgotPassword}>
                 Forgot Password?
               </a> */}
-              <a href="#" onClick={(e) => { e.preventDefault(); handleForgotPassword(); }}>
+              <button type="button" onClick={handleForgotPassword} className="link-style">
                 Forgot Password?
-              </a>
+              </button>
             </div>
 
             <button className="login-btn" onClick={handleLogin}>
@@ -108,9 +108,9 @@ const LoginForm = () => {
 
             <p className="signup-text">
               Don't have an account?{" "}
-              <a href="#" onClick={(e) =>{ e.preventDefault(); setActiveForm("signup"); } }>
-                Sign Up
-              </a>
+              <button type="button" onClick={() => setActiveForm("signup")} className="link-style">
+               Sign Up
+              </button>
             </p>
           </div>
         </div>
