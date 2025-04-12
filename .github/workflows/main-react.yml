@@ -10,23 +10,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout Code
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      # Step 2: Set up Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
+      # Step 3: Install Dependencies
       - name: Install Dependencies
-        run: npm install
+        run: |
+          npm install
 
+      # Step 4: Build React App
       - name: Build React App
-        run: npm run build
+        run: |
+          npm run build
 
+      # Step 5: Archive Build Folder
       - name: Archive Build Folder
-        run: tar -czf frontend-build.tar.gz -C build .
+        run: |
+          tar -czf frontend-build.tar.gz -C build .
 
+      # Step 6: Setup SSH for EC2 Connection
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -34,16 +43,17 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.AWS_EC2_IP }} >> ~/.ssh/known_hosts
 
+      # Step 7: Upload Build to EC2
       - name: Upload Build to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.AWS_EC2_IP }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
-          source: "ZVD_FRONTEND/frontend-build.tar.gz"
+          source: "frontend-build.tar.gz"
           target: "/home/ec2-user/ZVD_FRONTEND"
-          strip_components: 0
 
+      # Step 8: Deploy on EC2 (extract, replace, restart)
       - name: Deploy on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -51,8 +61,23 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
           script: |
+            # Go to the app directory
             cd /home/ec2-user/ZVD_FRONTEND
+
+            # Clean previous build
             rm -rf build
             mkdir -p build
+
+            # Extract the new build files
             tar -zxf frontend-build.tar.gz -C build
+
+            # Clean up the tar file
             rm -f frontend-build.tar.gz
+
+            # Optional: Restart app if needed
+            # If you use pm2 or nohup, restart the React app
+            pkill -f "react-scripts"
+            nohup npm start &> nohup.out &
+
+            # Ensure the app is running
+            tail -f nohup.out
