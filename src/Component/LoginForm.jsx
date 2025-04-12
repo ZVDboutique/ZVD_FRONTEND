@@ -45,7 +45,7 @@ const LoginForm = () => {
       setIsForgotPasswordOpen(true);
       const response = await axios.post("http://54.147.241.162:5000/api/SignupRequest/forgot-password", {
         email,
-      });
+      }); 
 
       if (response.status === 200) {
         alert("Password reset link sent to your email.");

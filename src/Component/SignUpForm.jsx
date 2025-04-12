@@ -85,7 +85,7 @@ const SignupForm = () => {
     if (step === "kyc") setStep("signup");
     else if (step === "company") setStep("kyc");
   };
-  // Submit form data to backend
+  // Submit form data to backend 
   const handleSubmit = async () => {
     try {
       const response = await axios.post("http://54.147.241.162:5000/api/SignupRequest/signup",
