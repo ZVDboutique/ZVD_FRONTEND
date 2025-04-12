@@ -88,7 +88,7 @@ const SignupForm = () => {
   // Submit form data to backend
   const handleSubmit = async () => {
     try {
-      const response = await axios.post("http://52.91.88.95:5000/api/SignupRequest/signup",
+      const response = await axios.post("http://54.147.241.162:5000/api/SignupRequest/signup",
         formData
       );
       console.log("Signup successful:", response.data);

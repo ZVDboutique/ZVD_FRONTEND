@@ -20,7 +20,7 @@ const LoginForm = () => {
   // Handle login with API
   const handleLogin = async () => { 
     try {
-      const response = await axios.post("http://52.91.88.95:5062/api/auth/login", {
+      const response = await axios.post("http://54.147.241.162:5062/api/auth/login", {
         email, // Using email as per API
         password,
       });
@@ -43,7 +43,7 @@ const LoginForm = () => {
 
     try {
       setIsForgotPasswordOpen(true);
-      const response = await axios.post("http://52.91.88.95:5062/api/SignupRequest/forgot-password", {
+      const response = await axios.post("http://54.147.241.162:5062/api/SignupRequest/forgot-password", {
         email,
       });
 
