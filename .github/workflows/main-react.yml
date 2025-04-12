@@ -40,7 +40,7 @@ jobs:
           host: ${{ secrets.AWS_EC2_IP }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
-          source: "frontend-build.tar.gz"
+          source: "ZVD_FRONTEND/frontend-build.tar.gz"
           target: "/home/ec2-user/ZVD_FRONTEND"
           strip_components: 0
 
