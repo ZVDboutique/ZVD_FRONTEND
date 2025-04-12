@@ -3,30 +3,30 @@ name: Deploy React App to EC2
 on:
   push:
     branches:
-      - main  # Trigger when pushing to main
+      - main  # Trigger when pushing to the main branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
+      # Step 1: Checkout code from GitHub repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Setup Node.js
+      # Step 2: Set up Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      # Step 3: Install & Build the app (optional if not deploying build)
+      # Step 3: Install dependencies and build the React app (optional, if deploying build)
       - name: Install & Build (optional)
         run: |
           npm install
           npm run build
 
-      # Step 4: SSH into EC2 and pull latest code + restart app
+      # Step 4: SSH into EC2 instance and deploy the React app
       - name: SSH & Deploy on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -34,15 +34,29 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
           script: |
+            # Navigate to the project directory
             cd /home/ec2-user/ZVD_FRONTEND
 
-            echo "Pulling latest code from GitHub..."
+            # Pull the latest code from GitHub
+            echo "Pulling latest code..."
             git reset --hard
             git pull origin main
 
+            # Install any new dependencies
             echo "Installing dependencies..."
             npm install
 
-            echo "Restarting the React app..."
-            pkill -f "react-scripts" || true
-            nohup npm start &> nohup.out &
+            # Optionally build the React app (if required)
+            echo "Building app..."
+            npm run build
+
+            # Install 'serve' globally to serve the app (if not already installed)
+            echo "Installing serve..."
+            npm install -g serve
+
+            # Start the React app in a detached screen session on port 5062
+            echo "Starting React app in a screen session on port 5062..."
+            screen -dmS react_app npm start
+
+            # Verify that the screen session is running
+            screen -ls
