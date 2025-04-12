@@ -94,7 +94,10 @@ const LoginForm = () => {
               <label>
                 <input type="checkbox" /> Remember me
               </label>
-              <a href="/forgot-password" onClick={handleForgotPassword}>
+              {/* <a href="/forgot-password" onClick={handleForgotPassword}>
+                Forgot Password?
+              </a> */}
+              <a href="#" onClick={(e) => { e.preventDefault(); handleForgotPassword(); }}>
                 Forgot Password?
               </a>
             </div>
@@ -105,7 +108,7 @@ const LoginForm = () => {
 
             <p className="signup-text">
               Don't have an account?{" "}
-              <a href="/signup" onClick={() => setActiveForm("signup")}>
+              <a href="#" onClick={(e) =>{ e.preventDefault(); setActiveForm("signup"); } }>
                 Sign Up
               </a>
             </p>

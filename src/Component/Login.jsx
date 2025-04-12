@@ -9,17 +9,35 @@ export const Login = () => {
     <div id="LoginSignInContainer" className="container">
       {/* Sidebar */}
       <div className="sidebar">
-        <ul>
+        {/* <ul>
         <li  className={activeForm === "login" ? "active" : ""} onClick={() => setActiveForm("login")}>
-  <a href="/login">LOG IN</a>
+  <a href="#">LOG IN</a>
   <div className="fff"></div>
 </li>
 <li  className={activeForm === "signup" ? "active" : ""} onClick={() => setActiveForm("signup")}>
-  <a href="/signup">SIGN UP</a>
+  <a href="#">SIGN UP</a>
   <div className="fff"></div>
 </li>
 
-        </ul>
+        </ul> */}
+      <ul>
+  <li
+    className={activeForm === "login" ? "active" : ""}
+    onClick={() => setActiveForm("login")}
+  >
+    <span>LOG IN</span>
+    <div className="fff"></div>
+  </li>
+
+  <li
+    className={activeForm === "signup" ? "active" : ""}
+    onClick={() => setActiveForm("signup")}
+  >
+    <span>SIGN UP</span>
+    <div className="fff"></div>
+  </li>
+</ul>
+
       </div>
 
       {/* Main Content */}
