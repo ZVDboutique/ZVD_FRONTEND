@@ -43,7 +43,7 @@ const LoginForm = () => {
 
     try {
       setIsForgotPasswordOpen(true);
-      const response = await axios.post("http://54.147.241.162:5000/api/SignupRequest/forgot-password", {
+      const response = await axios.post("http://54.147.241.162:5062/api/SignupRequest/forgot-password", {
         email,
       }); 
 
