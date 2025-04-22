@@ -1,3 +1,4 @@
+import { LoadingButton } from "@mui/lab";
 import {
   Box,
   Button,
@@ -8,16 +9,15 @@ import {
   Typography,
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { BiSolidLock } from "react-icons/bi";
-import { TiUser } from "react-icons/ti";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import loginImg from "../../assets/login.png";
 import zvdLogo from "../../assets/zvLogo.svg";
 import AuthLayout from "../../Layouts/AuthLayout";
 import { LoginRequest } from "../../Types/auth.types";
+import axiosInstance from "../../Utils/axios";
 import ForgotpasswordModal from "./ForgotpasswordModal";
 
 const Login = () => {
@@ -33,13 +33,17 @@ const Login = () => {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: LoginRequest) => axios.post(`api/login`, data),
+    mutationFn: (data: LoginRequest) =>
+      axiosInstance.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/auth/login`,
+        data,
+      ),
     onSuccess: (data) => {
       localStorage.setItem("token", data.data.token);
-      navigate("/");
+      navigate("/dashboard");
     },
     onError: (error) => {
-      console.log("🚀 ~ Login ~ error:", error);
+      toast.error(error.message || "Something went wrong.Please try again.");
     },
   });
 
@@ -69,40 +73,29 @@ const Login = () => {
               }}
             />
           </Grid>
-          <Grid size={12} container height={"fit-content"} spacing={4}>
+          <Grid size={12} container height={"fit-content"} spacing={2}>
             <Grid size={12}>
               <Controller
                 name="email"
                 control={control}
+                rules={{
+                  required: {
+                    value: true,
+                    message: "Please enter a email",
+                  },
+                }}
                 render={({ field, fieldState: { error } }) => {
                   return (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "end",
-                        gap: 1,
-                        borderBottom: "solid 1px",
-                      }}
-                    >
-                      <TiUser size={35} />
-                      <TextField
-                        {...field}
-                        fullWidth
-                        variant="standard"
-                        placeholder="Enter your email"
-                        label="Email"
-                        type="email"
-                        error={!!error}
-                        helperText={error?.message}
-                        sx={{
-                          "& .MuiInput-root:before": { borderBottom: "none" },
-                          "& .MuiInput-root:after": { borderBottom: "none" },
-                          "& .MuiInput-root:hover:not(.Mui-disabled):before": {
-                            borderBottom: "none",
-                          },
-                        }}
-                      />
-                    </Box>
+                    <TextField
+                      {...field}
+                      fullWidth
+                      variant="standard"
+                      placeholder="Enter your email"
+                      label="Email"
+                      type="email"
+                      error={!!error}
+                      helperText={error?.message}
+                    />
                   );
                 }}
               />
@@ -111,35 +104,24 @@ const Login = () => {
               <Controller
                 name="password"
                 control={control}
+                rules={{
+                  required: {
+                    value: true,
+                    message: "Please enter a password",
+                  },
+                }}
                 render={({ field, fieldState: { error } }) => {
                   return (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        gap: 1,
-                        alignItems: "end",
-                        borderBottom: "solid 1px",
-                      }}
-                    >
-                      <BiSolidLock size={35} />
-                      <TextField
-                        {...field}
-                        fullWidth
-                        variant="standard"
-                        placeholder="Enter your password"
-                        label="Password"
-                        type="password"
-                        error={!!error}
-                        helperText={error?.message}
-                        sx={{
-                          "& .MuiInput-root:before": { borderBottom: "none" },
-                          "& .MuiInput-root:after": { borderBottom: "none" },
-                          "& .MuiInput-root:hover:not(.Mui-disabled):before": {
-                            borderBottom: "none",
-                          },
-                        }}
-                      />
-                    </Box>
+                    <TextField
+                      {...field}
+                      fullWidth
+                      variant="standard"
+                      placeholder="Enter your password"
+                      label="Password"
+                      type="password"
+                      error={!!error}
+                      helperText={error?.message}
+                    />
                   );
                 }}
               />
@@ -160,16 +142,16 @@ const Login = () => {
               </Box>
             </Grid>
             <Grid size={12}>
-              <Button
+              <LoadingButton
                 type="submit"
                 fullWidth
                 variant="contained"
-                disabled={isPending}
+                loading={isPending}
                 size="large"
                 sx={{ mt: 3 }}
               >
                 Sign In
-              </Button>
+              </LoadingButton>
             </Grid>
           </Grid>
           <Grid

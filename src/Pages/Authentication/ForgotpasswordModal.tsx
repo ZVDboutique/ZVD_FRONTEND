@@ -1,16 +1,19 @@
+import { LoadingButton } from "@mui/lab";
 import {
   Box,
-  Button,
   Grid,
   IconButton,
   Modal,
   TextField,
   Typography,
 } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { MdClose } from "react-icons/md";
 import { TiUser } from "react-icons/ti";
 import { LoginRequest } from "../../Types/auth.types";
+import axiosInstance from "../../Utils/axios";
 
 const ForgotpasswordModal = ({
   open,
@@ -25,11 +28,26 @@ const ForgotpasswordModal = ({
     },
   });
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: LoginRequest) =>
+      axiosInstance.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/SignupRequest/forgot-password`,
+        data,
+      ),
+    onSuccess: () => {
+      setOpen(false);
+      toast.success("Password reset link sent to your email.");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Something went wrong.Please try again.");
+    },
+  });
+
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
       <form
         onSubmit={handleSubmit((values) => {
-          console.log("🚀 ~ <formonSubmit={handleSubmit ~ values:", values);
+          mutate(values);
         })}
       >
         <Box
@@ -39,6 +57,7 @@ const ForgotpasswordModal = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            background: "#12344944",
           }}
         >
           <Grid
@@ -65,6 +84,12 @@ const ForgotpasswordModal = ({
               <Controller
                 name="email"
                 control={control}
+                rules={{
+                  required: {
+                    value: true,
+                    message: "Please enter a email",
+                  },
+                }}
                 render={({ field, fieldState: { error } }) => {
                   return (
                     <Box
@@ -99,9 +124,15 @@ const ForgotpasswordModal = ({
               />
             </Grid>
             <Grid size={12}>
-              <Button fullWidth type="submit" variant="contained" size="large">
+              <LoadingButton
+                fullWidth
+                loading={isPending}
+                type="submit"
+                variant="contained"
+                size="large"
+              >
                 Submit
-              </Button>
+              </LoadingButton>
             </Grid>
           </Grid>
         </Box>
