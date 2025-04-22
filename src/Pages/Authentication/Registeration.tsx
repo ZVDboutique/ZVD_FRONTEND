@@ -1,6 +1,4 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { Controller, useForm } from "react-hook-form";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
@@ -26,19 +24,10 @@ const Registration = () => {
     },
   });
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data: RegisterRequest) => axios.post(`api/login`, data),
-    onSuccess: (data) => {
-      localStorage.setItem("token", data.data.token);
-      navigate("/kyc-verification");
-    },
-    onError: (error) => {
-      console.log("🚀 ~ Login ~ error:", error);
-    },
-  });
-
   const onSubmit = (data: RegisterRequest) => {
-    mutate(data);
+    navigate(`/kyc-verification`, {
+      state: { registrationData: data },
+    });
   };
 
   return (
@@ -63,10 +52,10 @@ const Registration = () => {
               }}
             />
           </Grid>
-          <Grid size={12} textAlign={"center"}>
-            <Typography fontWeight={600}>User Details</Typography>
-          </Grid>
           <Grid size={12} container height={"fit-content"} spacing={2}>
+            <Grid size={12} textAlign={"center"}>
+              <Typography fontWeight={600}>User Details</Typography>
+            </Grid>
             <Grid size={6}>
               <Controller
                 name="firstName"
@@ -240,7 +229,6 @@ const Registration = () => {
                 }}
               />
             </Grid>
-
             <Grid
               size={12}
               display={"flex"}
@@ -248,9 +236,7 @@ const Registration = () => {
               justifyContent={"space-between"}
             >
               <Button
-                // type="submit"
                 variant="outlined"
-                disabled={isPending}
                 size="large"
                 color="dark"
                 sx={{ mt: 3 }}
@@ -262,15 +248,11 @@ const Registration = () => {
                 Back
               </Button>
               <Button
-                // type="submit"
+                type="submit"
                 variant="contained"
-                disabled={isPending}
                 size="large"
                 sx={{ mt: 3 }}
                 endIcon={<GoArrowRight />}
-                onClick={() => {
-                  navigate(`/kyc-verification`);
-                }}
               >
                 Next
               </Button>
