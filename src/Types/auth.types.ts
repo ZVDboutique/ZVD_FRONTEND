@@ -27,6 +27,15 @@ export interface RegisterRequest {
   whatsAppNumber: string;
   password: string;
   confirmPassword: string;
+  companyName: string;
+  companyAddress: string;
+  companyEmail: string;
+  companyContact: string;
+  contactPersonName: string;
+  contactPersonEmail: string;
+  contactPersonPhone: string;
+  kycType: string;
+  kycTypeNumber: string;
 }
 
 export interface CompanyInformationInterface {

@@ -28,11 +28,11 @@ export const router = createBrowserRouter([
     element: <Registration />,
   },
   {
-    path: "/kyc-verification",
+    path: "/sign-up?kyc-verification",
     element: <KycVerfication />,
   },
   {
-    path: "/company-information",
+    path: "/sign-up?company-information",
     element: <CompanyInformation />,
   },
   {

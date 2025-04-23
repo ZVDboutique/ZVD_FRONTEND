@@ -9,20 +9,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import signUPImg from "../../assets/signUp.png";
 import zvdLogo from "../../assets/zvLogo.svg";
-import AuthLayout from "../../Layouts/AuthLayout";
-import { KYCInterface } from "../../Types/auth.types";
+import { RegisterRequest } from "../../Types/auth.types";
 import KYCOtpConfirmation from "./KYCOtpConfirmation";
 
 const KycVerfication = () => {
+  const form = useFormContext<RegisterRequest>();
+
   const navigate = useNavigate();
 
   const [showOtpConfirmationModal, setShowOtpConfirmationModal] =
@@ -41,136 +39,105 @@ const KycVerfication = () => {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popper" : undefined;
 
-  const { handleSubmit, control, setValue, getValues } = useForm<KYCInterface>({
-    defaultValues: {
-      kycType: "",
-      kycTypeNumber: "",
-    },
-  });
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data: KYCInterface) => axios.post(`api/login`, data),
-    onSuccess: (data) => {
-      localStorage.setItem("token", data.data.token);
-      navigate("/kyc-verification");
-    },
-    onError: (error) => {
-      console.log("🚀 ~ Login ~ error:", error);
-    },
-  });
-
-  const onSubmit = (data: KYCInterface) => {
-    mutate(data);
-  };
-
   return (
-    <AuthLayout image={signUPImg}>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        style={{ width: "80%", height: "100%" }}
-      >
-        <Grid container justifyContent={"space-between"} height={"100%"}>
+    <>
+      <Grid container justifyContent={"space-between"} height={"100%"}>
+        <Grid size={12} textAlign={"center"}>
+          <img
+            src={zvdLogo}
+            style={{
+              width: "30%",
+              height: "-webkit-fill-available",
+              backgroundRepeat: "no-repeat",
+            }}
+          />
+        </Grid>
+        <Grid size={12} container height={"fit-content"} spacing={1}>
           <Grid size={12} textAlign={"center"}>
-            <img
-              src={zvdLogo}
-              style={{
-                width: "30%",
-                height: "-webkit-fill-available",
-                backgroundRepeat: "no-repeat",
+            <Typography fontWeight={600}>KYC & Verification Details</Typography>
+          </Grid>
+          <Grid size={12}>
+            <Controller
+              name="kycType"
+              control={form.control}
+              render={({ field, fieldState: { error } }) => {
+                return (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    variant="standard"
+                    placeholder="Select Document"
+                    label="Select Document"
+                    error={!!error}
+                    helperText={error?.message}
+                    slotProps={{
+                      input: {
+                        readOnly: true,
+                        endAdornment: (
+                          <IconButton onClick={handleClick}>
+                            <MdOutlineKeyboardArrowDown />{" "}
+                          </IconButton>
+                        ),
+                      },
+                    }}
+                  />
+                );
               }}
             />
           </Grid>
-          <Grid size={12} container height={"fit-content"} spacing={1}>
-            <Grid size={12} textAlign={"center"}>
-              <Typography fontWeight={600}>
-                KYC & Verification Details
-              </Typography>
-            </Grid>
-            <Grid size={12}>
-              <Controller
-                name="kycType"
-                control={control}
-                render={({ field, fieldState: { error } }) => {
-                  return (
-                    <TextField
-                      {...field}
-                      fullWidth
-                      variant="standard"
-                      placeholder="Select Document"
-                      label="Select Document"
-                      error={!!error}
-                      helperText={error?.message}
-                      slotProps={{
-                        input: {
-                          readOnly: true,
-                          endAdornment: (
-                            <IconButton onClick={handleClick}>
-                              <MdOutlineKeyboardArrowDown />{" "}
-                            </IconButton>
-                          ),
-                        },
-                      }}
-                    />
-                  );
-                }}
-              />
-            </Grid>
-            <Grid size={12}>
-              <Controller
-                name="kycTypeNumber"
-                control={control}
-                render={({ field, fieldState: { error } }) => {
-                  return (
-                    <TextField
-                      {...field}
-                      fullWidth
-                      variant="standard"
-                      placeholder="Enter your Last name"
-                      label={`${getValues("kycType")} Number`}
-                      error={!!error}
-                      helperText={error?.message}
-                    />
-                  );
-                }}
-              />
-            </Grid>
-          </Grid>
-          <Grid
-            size={12}
-            display={"flex"}
-            justifyContent={"space-between"}
-            alignItems={"center"}
-          >
-            <Button
-              // type="submit"
-              variant="outlined"
-              disabled={isPending}
-              size="large"
-              color="dark"
-              sx={{ mt: 3 }}
-              startIcon={<GoArrowLeft />}
-              onClick={() => {
-                navigate(`/sign-up`);
+          <Grid size={12}>
+            <Controller
+              name="kycTypeNumber"
+              control={form.control}
+              render={({ field, fieldState: { error } }) => {
+                return (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    variant="standard"
+                    placeholder="Enter your Last name"
+                    label={`${form.getValues("kycType")} Number`}
+                    error={!!error}
+                    helperText={error?.message}
+                  />
+                );
               }}
-            >
-              Back
-            </Button>
-            <Button
-              // type="submit"
-              variant="contained"
-              disabled={isPending}
-              size="large"
-              sx={{ mt: 3 }}
-              endIcon={<GoArrowRight />}
-              onClick={() => {
-                setShowOtpConfirmationModal(true);
-              }}
-            >
-              Next
-            </Button>
+            />
           </Grid>
         </Grid>
-      </form>
+        <Grid
+          size={12}
+          display={"flex"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+        >
+          <Button
+            // type="submit"
+            variant="outlined"
+            size="large"
+            color="dark"
+            sx={{ mt: 3 }}
+            startIcon={<GoArrowLeft />}
+            onClick={() => {
+              navigate(`/sign-up`);
+            }}
+          >
+            Back
+          </Button>
+          <Button
+            // type="submit"
+            variant="contained"
+            size="large"
+            sx={{ mt: 3 }}
+            endIcon={<GoArrowRight />}
+            onClick={() => {
+              setShowOtpConfirmationModal(true);
+            }}
+          >
+            Next
+          </Button>
+        </Grid>
+      </Grid>
       <Popper id={id} open={open} anchorEl={anchorEl} placement="bottom-end">
         <ClickAwayListener onClickAway={handleClickAway}>
           <Box sx={{ borderRadius: 2, bgcolor: "#B0DBF9" }}>
@@ -179,14 +146,18 @@ const KycVerfication = () => {
                 <Button
                   sx={{
                     background:
-                      dataItem === getValues("kycType") ? "#123449" : "#B0DBF9",
+                      dataItem === form.getValues("kycType")
+                        ? "#123449"
+                        : "#B0DBF9",
                     color:
-                      dataItem === getValues("kycType") ? "#B0DBF9" : "#123449",
+                      dataItem === form.getValues("kycType")
+                        ? "#B0DBF9"
+                        : "#123449",
                   }}
                   fullWidth
                   onClick={() => {
                     setAnchorEl(null);
-                    setValue("kycType", dataItem);
+                    form.setValue("kycType", dataItem);
                   }}
                 >
                   {dataItem}
@@ -203,7 +174,7 @@ const KycVerfication = () => {
           setOpen={setShowOtpConfirmationModal}
         />
       )}
-    </AuthLayout>
+    </>
   );
 };
 
