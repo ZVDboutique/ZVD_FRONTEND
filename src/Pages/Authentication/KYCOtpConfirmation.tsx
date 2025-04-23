@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Alert,
   Box,
@@ -13,13 +14,13 @@ import { Link } from "react-router-dom";
 
 const KYCOtpConfirmation = ({
   open,
-  setOpen,
+  onClose,
 }: {
   open: boolean;
-  setOpen: (d: boolean) => void;
+  onClose: any;
 }) => {
   return (
-    <Modal open={open} onClose={() => setOpen(false)}>
+    <Modal open={open} onClose={onClose}>
       <Box
         sx={{
           height: "100vh ",
@@ -41,11 +42,7 @@ const KYCOtpConfirmation = ({
             <Typography fontWeight={600} fontSize={20}>
               Verify Aadhar OTP
             </Typography>
-            <IconButton
-              onClick={() => {
-                setOpen(false);
-              }}
-            >
+            <IconButton onClick={onClose}>
               <MdClose />
             </IconButton>
           </Grid>

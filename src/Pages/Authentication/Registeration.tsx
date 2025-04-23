@@ -1,11 +1,14 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import { Controller, FormProvider, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import { useLocation, useNavigate } from "react-router-dom";
 import signUPImg from "../../assets/signUp.png";
 import zvdLogo from "../../assets/zvLogo.svg";
 import AuthLayout from "../../Layouts/AuthLayout";
 import { RegisterRequest } from "../../Types/auth.types";
+import axiosInstance from "../../Utils/axios";
 import CompanyInformation from "./CompanyInformation";
 import KycVerfication from "./KycVerfication";
 
@@ -14,23 +17,70 @@ const Registration = () => {
 
   const { search } = useLocation();
   console.log("🚀 ~ Registration ~ location:", search);
+
   const form = useForm<RegisterRequest>({
     defaultValues: {
-      primaryEmail: "",
-      password: "",
-      confirmPassword: "",
       firstName: "",
       lastName: "",
+      customer_type_id: "",
+      primaryEmail: "",
+      secondaryEmail: "",
       primaryContact: "",
       secondaryContact: "",
-      secondaryEmail: "",
-      whatsAppNumber: "",
+      whatsappNumber: "",
+      password: "",
+      confirmPassword: "",
+      isKycDone: false,
+      isPartOfCompany: false,
+      isNotify: true,
+      panCardNumber: "",
+      doc_type_name: "",
+      otp: "",
+      companyName: "",
+      diamondHub: "",
+      companyAddress: "",
+      companyEmail: "",
+      companyContact: "",
+      contactPersonEmail: "",
+      contactPersonPhone: "",
+    },
+  });
+
+  const { mutate } = useMutation({
+    mutationFn: (data: RegisterRequest) =>
+      axiosInstance.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/SignupRequest/signup`,
+        data,
+      ),
+    onSuccess: (data) => {
+      localStorage.setItem("token", data.data.token);
+      navigate("/dashboard");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Something went wrong.Please try again.");
     },
   });
 
   const onSubmit = (data: RegisterRequest) => {
-    console.log("🚀 ~ onSubmit ~ data:", data);
-    navigate(`/sign-up?kyc-verification`);
+    console.log("🚀 ~ onSubmit ~ search:", search);
+    if (search === "") {
+      navigate(`/sign-up?kyc-verification`);
+    }
+    if (
+      search === "?kyc-verification" &&
+      form.getValues("doc_type_name") === "Adhaar Card"
+    ) {
+      form.setValue("showAdharConfiramtionModal", true);
+    }
+    if (
+      search === "?kyc-verification" &&
+      form.getValues("doc_type_name") !== "Adhaar Card"
+    ) {
+      navigate(`/sign-up?company-information`);
+    }
+    if (search === "?company-information") {
+      mutate(data);
+    }
   };
 
   return (
@@ -65,6 +115,12 @@ const Registration = () => {
                   <Controller
                     name="firstName"
                     control={form.control}
+                    rules={{
+                      required: {
+                        value: search === "",
+                        message: "",
+                      },
+                    }}
                     render={({ field, fieldState: { error } }) => {
                       return (
                         <TextField
@@ -84,6 +140,12 @@ const Registration = () => {
                   <Controller
                     name="lastName"
                     control={form.control}
+                    rules={{
+                      required: {
+                        value: search === "",
+                        message: "",
+                      },
+                    }}
                     render={({ field, fieldState: { error } }) => {
                       return (
                         <TextField
@@ -103,6 +165,12 @@ const Registration = () => {
                   <Controller
                     name="primaryEmail"
                     control={form.control}
+                    rules={{
+                      required: {
+                        value: search === "",
+                        message: "",
+                      },
+                    }}
                     render={({ field, fieldState: { error } }) => {
                       return (
                         <TextField
@@ -141,6 +209,12 @@ const Registration = () => {
                   <Controller
                     name="primaryContact"
                     control={form.control}
+                    rules={{
+                      required: {
+                        value: search === "",
+                        message: "",
+                      },
+                    }}
                     render={({ field, fieldState: { error } }) => {
                       return (
                         <TextField
@@ -177,8 +251,14 @@ const Registration = () => {
                 </Grid>
                 <Grid size={12}>
                   <Controller
-                    name="whatsAppNumber"
+                    name="whatsappNumber"
                     control={form.control}
+                    rules={{
+                      required: {
+                        value: search === "",
+                        message: "",
+                      },
+                    }}
                     render={({ field, fieldState: { error } }) => {
                       return (
                         <TextField
@@ -198,6 +278,12 @@ const Registration = () => {
                   <Controller
                     name="password"
                     control={form.control}
+                    rules={{
+                      required: {
+                        value: search === "",
+                        message: "",
+                      },
+                    }}
                     render={({ field, fieldState: { error } }) => {
                       return (
                         <TextField
@@ -218,6 +304,12 @@ const Registration = () => {
                   <Controller
                     name="confirmPassword"
                     control={form.control}
+                    rules={{
+                      required: {
+                        value: search === "",
+                        message: "",
+                      },
+                    }}
                     render={({ field, fieldState: { error } }) => {
                       return (
                         <TextField

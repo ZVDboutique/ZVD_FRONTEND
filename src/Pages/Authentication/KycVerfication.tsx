@@ -1,18 +1,12 @@
 import {
-  Box,
+  Autocomplete,
   Button,
-  ButtonGroup,
-  ClickAwayListener,
   Grid,
-  IconButton,
-  Popper,
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import zvdLogo from "../../assets/zvLogo.svg";
 import { RegisterRequest } from "../../Types/auth.types";
@@ -23,21 +17,15 @@ const KycVerfication = () => {
 
   const navigate = useNavigate();
 
-  const [showOtpConfirmationModal, setShowOtpConfirmationModal] =
-    useState(false);
+  const kycOptions = [
+    "Adhaar Card",
+    "Passport",
+    "PAN Card",
+    "Driving License",
+    "Voter ID",
+  ];
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
-  };
-
-  const handleClickAway = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popper" : undefined;
+  const showOtpConfirmationModal = form.watch("showAdharConfiramtionModal");
 
   return (
     <>
@@ -58,45 +46,57 @@ const KycVerfication = () => {
           </Grid>
           <Grid size={12}>
             <Controller
-              name="kycType"
+              name="doc_type_name"
               control={form.control}
-              render={({ field, fieldState: { error } }) => {
-                return (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    variant="standard"
-                    placeholder="Select Document"
-                    label="Select Document"
-                    error={!!error}
-                    helperText={error?.message}
-                    slotProps={{
-                      input: {
-                        readOnly: true,
-                        endAdornment: (
-                          <IconButton onClick={handleClick}>
-                            <MdOutlineKeyboardArrowDown />{" "}
-                          </IconButton>
-                        ),
-                      },
-                    }}
-                  />
-                );
+              rules={{
+                required: {
+                  value: true,
+                  message: "",
+                },
               }}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <Autocomplete
+                  value={value}
+                  onChange={(_, newValue) => {
+                    onChange(newValue);
+                  }}
+                  options={kycOptions}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      fullWidth
+                      variant="standard"
+                      placeholder="Select Document"
+                      label="Select Document"
+                      error={!!error}
+                      helperText={error?.message}
+                    />
+                  )}
+                />
+              )}
             />
           </Grid>
           <Grid size={12}>
             <Controller
-              name="kycTypeNumber"
+              name="panCardNumber"
               control={form.control}
+              rules={{
+                required: {
+                  value: true,
+                  message: "",
+                },
+              }}
               render={({ field, fieldState: { error } }) => {
                 return (
                   <TextField
                     {...field}
                     fullWidth
                     variant="standard"
-                    placeholder="Enter your Last name"
-                    label={`${form.getValues("kycType")} Number`}
+                    placeholder="Enter Document Number"
+                    label={`Document Number`}
                     error={!!error}
                     helperText={error?.message}
                   />
@@ -112,7 +112,6 @@ const KycVerfication = () => {
           alignItems={"center"}
         >
           <Button
-            // type="submit"
             variant="outlined"
             size="large"
             color="dark"
@@ -125,53 +124,21 @@ const KycVerfication = () => {
             Back
           </Button>
           <Button
-            // type="submit"
+            type="submit"
             variant="contained"
             size="large"
             sx={{ mt: 3 }}
             endIcon={<GoArrowRight />}
-            onClick={() => {
-              setShowOtpConfirmationModal(true);
-            }}
           >
             Next
           </Button>
         </Grid>
       </Grid>
-      <Popper id={id} open={open} anchorEl={anchorEl} placement="bottom-end">
-        <ClickAwayListener onClickAway={handleClickAway}>
-          <Box sx={{ borderRadius: 2, bgcolor: "#B0DBF9" }}>
-            <ButtonGroup orientation="vertical">
-              {["Adhaar Card", "PAN Card"].map((dataItem) => (
-                <Button
-                  sx={{
-                    background:
-                      dataItem === form.getValues("kycType")
-                        ? "#123449"
-                        : "#B0DBF9",
-                    color:
-                      dataItem === form.getValues("kycType")
-                        ? "#B0DBF9"
-                        : "#123449",
-                  }}
-                  fullWidth
-                  onClick={() => {
-                    setAnchorEl(null);
-                    form.setValue("kycType", dataItem);
-                  }}
-                >
-                  {dataItem}
-                </Button>
-              ))}
-            </ButtonGroup>
-          </Box>
-        </ClickAwayListener>
-      </Popper>
 
       {showOtpConfirmationModal && (
         <KYCOtpConfirmation
           open={showOtpConfirmationModal}
-          setOpen={setShowOtpConfirmationModal}
+          onClose={() => form.setValue("showAdharConfiramtionModal", false)}
         />
       )}
     </>

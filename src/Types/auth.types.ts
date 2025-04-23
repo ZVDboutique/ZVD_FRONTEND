@@ -20,22 +20,29 @@ export interface AuthError {
 export interface RegisterRequest {
   firstName: string;
   lastName: string;
+  customer_type_id: string;
   primaryEmail: string;
   secondaryEmail: string;
   primaryContact: string;
+  contactPersonName: string;
   secondaryContact: string;
-  whatsAppNumber: string;
+  whatsappNumber: string;
   password: string;
   confirmPassword: string;
+  isKycDone: boolean;
+  showAdharConfiramtionModal: boolean;
+  isPartOfCompany: boolean;
+  isNotify: boolean;
+  panCardNumber: string;
+  doc_type_name: string;
+  otp: string;
   companyName: string;
+  diamondHub: string;
   companyAddress: string;
   companyEmail: string;
   companyContact: string;
-  contactPersonName: string;
   contactPersonEmail: string;
   contactPersonPhone: string;
-  kycType: string;
-  kycTypeNumber: string;
 }
 
 export interface CompanyInformationInterface {
