@@ -1,8 +1,10 @@
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { Button, Grid, IconButton, TextField, Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
+import { HiEye, HiEyeOff } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
 import signUPImg from "../../assets/signUp.png";
 import zvdLogo from "../../assets/zvLogo.svg";
@@ -16,7 +18,8 @@ const Registration = () => {
   const navigate = useNavigate();
 
   const { search } = useLocation();
-  console.log("🚀 ~ Registration ~ location:", search);
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<RegisterRequest>({
     defaultValues: {
@@ -295,6 +298,21 @@ const Registration = () => {
                           type="password"
                           error={!!error}
                           helperText={error?.message}
+                          slotProps={{
+                            input: {
+                              endAdornment: (
+                                <IconButton
+                                  onClick={() => setShowPassword(!showPassword)}
+                                >
+                                  {showPassword ? (
+                                    <HiEyeOff size={20} />
+                                  ) : (
+                                    <HiEye size={20} />
+                                  )}
+                                </IconButton>
+                              ),
+                            },
+                          }}
                         />
                       );
                     }}
@@ -321,6 +339,21 @@ const Registration = () => {
                           type="password"
                           error={!!error}
                           helperText={error?.message}
+                          slotProps={{
+                            input: {
+                              endAdornment: (
+                                <IconButton
+                                  onClick={() => setShowPassword(!showPassword)}
+                                >
+                                  {showPassword ? (
+                                    <HiEyeOff size={20} />
+                                  ) : (
+                                    <HiEye size={20} />
+                                  )}
+                                </IconButton>
+                              ),
+                            },
+                          }}
                         />
                       );
                     }}

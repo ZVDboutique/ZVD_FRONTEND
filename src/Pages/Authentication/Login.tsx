@@ -4,6 +4,7 @@ import {
   Button,
   FormControlLabel,
   Grid,
+  IconButton,
   Switch,
   TextField,
   Typography,
@@ -12,6 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { HiEye, HiEyeOff } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import loginImg from "../../assets/login.png";
 import zvdLogo from "../../assets/zvLogo.svg";
@@ -24,6 +26,8 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const { handleSubmit, control } = useForm<LoginRequest>({
     defaultValues: {
@@ -118,9 +122,24 @@ const Login = () => {
                       variant="standard"
                       placeholder="Enter your password"
                       label="Password"
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       error={!!error}
                       helperText={error?.message}
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <IconButton
+                              onClick={() => setShowPassword(!showPassword)}
+                            >
+                              {showPassword ? (
+                                <HiEyeOff size={20} />
+                              ) : (
+                                <HiEye size={20} />
+                              )}
+                            </IconButton>
+                          ),
+                        },
+                      }}
                     />
                   );
                 }}
