@@ -12,6 +12,14 @@ export interface Diamond {
   cut: string;
   polish: string;
   symmetry: string;
-  price: number;
-  totalWeight: number;
+  disc: number;
+  pricePerCarat: number;
+  amount: number;
+  measurement: string;
+  depth: number;
+  table: number;
+  lwRatio: number;
+  shade: string;
+  keyToSymbol: string;
+  companyCode: string;
 }

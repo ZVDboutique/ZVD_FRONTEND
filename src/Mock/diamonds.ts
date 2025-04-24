@@ -1,33 +1,47 @@
 import { Diamond } from '../Types/diamond.types';
 
-export const generateMockDiamonds = (): Diamond[] => {
-  const mockDiamonds: Diamond[] = Array.from({ length: 200 }, (_, index) => ({
-    id: `id-${index + 1}`,
-    dna: `DNA-${100000 + index}`,
-    type: ['Natural', 'Lab-Grown'][Math.floor(Math.random() * 2)],
-    lab: ['GIA', 'IGI', 'HRD'][Math.floor(Math.random() * 3)],
-    report: `${Math.floor(10000000 + Math.random() * 90000000)}`,
-    location: ['Mumbai', 'Surat', 'New York', 'Antwerp'][
-      Math.floor(Math.random() * 4)
-    ],
-    shape: ['Round', 'Princess', 'Oval', 'Cushion', 'Emerald'][
-      Math.floor(Math.random() * 5)
-    ],
-    weight: Number((0.3 + Math.random() * 2.7).toFixed(2)),
-    color: ['D', 'E', 'F', 'G', 'H', 'I', 'J'][Math.floor(Math.random() * 7)],
-    clarity: ['IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1', 'SI2'][
-      Math.floor(Math.random() * 7)
-    ],
-    cut: ['Excellent', 'Very Good', 'Good'][Math.floor(Math.random() * 3)],
-    polish: ['Excellent', 'Very Good', 'Good'][Math.floor(Math.random() * 3)],
-    symmetry: ['Excellent', 'Very Good', 'Good'][Math.floor(Math.random() * 3)],
-    price: Number((1000 + Math.random() * 19000).toFixed(2)),
-    totalWeight: 0,
-  }));
+export const generateMockDiamonds = (count: number = 100): Diamond[] => {
+  const shapes = ['Round', 'Princess', 'Oval', 'Cushion', 'Emerald'];
+  const colors = ['D', 'E', 'F', 'G', 'H', 'I', 'J'];
+  const clarities = ['IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1', 'SI2'];
+  const grades = ['Excellent', 'Very Good', 'Good'];
+  const locations = ['Mumbai', 'Surat', 'New York', 'Antwerp'];
+  const labs = ['GIA', 'IGI', 'HRD'];
+  const types = ['Natural', 'Lab-Grown'];
+  const shades = ['None', 'Faint', 'Medium', 'Strong'];
 
-  mockDiamonds.forEach((diamond) => {
-    diamond.totalWeight = diamond.weight;
+  return Array.from({ length: count }, (_, index) => {
+    const weight = Number((Math.random() * 5 + 0.3).toFixed(2));
+    const pricePerCarat = Number((Math.random() * 10000 + 1000).toFixed(2));
+    const disc = Number((Math.random() * 40 + 10).toFixed(2));
+
+    return {
+      id: `id-${index + 1}`,
+      dna: `DNA${Math.floor(Math.random() * 1000000)}`,
+      type: types[Math.floor(Math.random() * types.length)],
+      lab: labs[Math.floor(Math.random() * labs.length)],
+      report: `${Math.floor(Math.random() * 10000000)}`,
+      location: locations[Math.floor(Math.random() * locations.length)],
+      shape: shapes[Math.floor(Math.random() * shapes.length)],
+      weight,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      clarity: clarities[Math.floor(Math.random() * clarities.length)],
+      cut: grades[Math.floor(Math.random() * grades.length)],
+      polish: grades[Math.floor(Math.random() * grades.length)],
+      symmetry: grades[Math.floor(Math.random() * grades.length)],
+      disc,
+      pricePerCarat,
+      amount: Number((weight * pricePerCarat * (1 - disc / 100)).toFixed(2)),
+      measurement: `${(Math.random() * 5 + 3).toFixed(2)} x ${(
+        Math.random() * 5 +
+        3
+      ).toFixed(2)} x ${(Math.random() * 3 + 2).toFixed(2)}`,
+      depth: Number((Math.random() * 10 + 60).toFixed(1)),
+      table: Number((Math.random() * 10 + 55).toFixed(1)),
+      lwRatio: Number((Math.random() * 0.2 + 1).toFixed(2)),
+      shade: shades[Math.floor(Math.random() * shades.length)],
+      keyToSymbol: `KTS${Math.floor(Math.random() * 1000)}`,
+      companyCode: `CC${Math.floor(Math.random() * 10000)}`,
+    };
   });
-
-  return mockDiamonds;
 };
