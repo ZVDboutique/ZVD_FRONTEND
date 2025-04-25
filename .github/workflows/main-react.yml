@@ -50,21 +50,13 @@ jobs:
             echo "Building app..."
             npm run build
 
-            # Install 'pm2' globally if not already installed
-            echo "Installing pm2..."
-            sudo npm install -g pm2
+            # Install 'serve' globally to serve the app (if not already installed)
+            echo "Installing serve..."
+            npm install -g serve
 
-            # Kill any existing pm2 process if it exists
-            echo "Killing existing pm2 process..."
-            pm2 delete react_app || true
+            # Start the React app in a detached screen session on port 5062
+            echo "Starting React app in a screen session on port 5062..."
+            screen -dmS react_app npm start
 
-            # Serve the app using pm2 (serve the 'build' directory on port 5062)
-            echo "Starting React app in a pm2 process on port 5062..."
-            pm2 serve dist 5062 --name "react_app"
-
-            # Enable pm2 to auto-start on reboot
-            pm2 save
-            pm2 startup systemd -u ec2-user --hp /home/ec2-user
-
-            # Verify that the pm2 process is running
-            pm2 list
+            # Verify that the screen session is running
+            screen -ls
