@@ -50,13 +50,13 @@ jobs:
             echo "Building app..."
             npm run build
 
-            # Install 'serve' globally to serve the app (if not already installed)
-            echo "Installing serve..."
-            npm install -g serve
+            # Kill any previous screen session if exists
+            echo "Killing existing screen session..."
+            screen -S react_app -X quit || true
 
-            # Start the React app in a detached screen session on port 5062
+            # Start the React app using 'npx serve' in a detached screen session on port 5062
             echo "Starting React app in a screen session on port 5062..."
-            screen -dmS react_app npm start
+            screen -dmS react_app npx serve -s dist -l 5062
 
             # Verify that the screen session is running
             screen -ls
