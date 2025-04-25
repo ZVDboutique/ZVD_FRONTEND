@@ -13,8 +13,8 @@ import {
   MenuItem,
   Toolbar,
   Typography,
-} from "@mui/material";
-import React, { useState } from "react";
+} from '@mui/material';
+import React, { useState } from 'react';
 import {
   MdBusiness,
   MdInventory,
@@ -26,10 +26,10 @@ import {
   MdSubscriptions,
   MdVerifiedUser,
   MdWeb,
-} from "react-icons/md";
-import { Outlet, useNavigate } from "react-router-dom";
-import { theme } from "../Utils/theme";
-import zvdLogo from "../assets/zvLogo.svg";
+} from 'react-icons/md';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { theme } from '../Utils/theme';
+import zvdLogo from '../assets/zvLogo.svg';
 
 const drawerWidth = 240;
 
@@ -46,55 +46,65 @@ const DashboardLayout: React.FC = () => {
   };
 
   const menuItems = [
-    { text: "Dashboard", icon: MdOutlineDashboard, path: "/dashboard" },
-    { text: "Stocks", icon: MdInventory, path: "/stock" },
-    { text: "Admin Users", icon: MdPeople, path: "/adminUser" },
-    { text: "Company Master", icon: MdBusiness, path: "/company" },
-    { text: "Client Master", icon: MdPeople, path: "/clients" },
-    { text: "Web Tracking", icon: MdWeb, path: "/web-tracking" },
-    { text: "Subscription", icon: MdSubscriptions, path: "/subscription" },
-    { text: "Settings", icon: MdOutlineSettingsCell, path: "/settings" },
+    { text: 'Dashboard', icon: MdOutlineDashboard, path: '/dashboard' },
+    { text: 'Stocks', icon: MdInventory, path: '/stock' },
+    { text: 'Admin Users', icon: MdPeople, path: '/adminUser' },
+    { text: 'Company Master', icon: MdBusiness, path: '/company' },
+    { text: 'Client Master', icon: MdPeople, path: '/clients' },
+    { text: 'Web Tracking', icon: MdWeb, path: '/web-tracking' },
+    { text: 'Subscription', icon: MdSubscriptions, path: '/subscription' },
+    { text: 'Settings', icon: MdOutlineSettingsCell, path: '/settings' },
+    // {
+    //   text: 'Diamond Listing',
+    //   icon: MdOutlineDashboard,
+    //   path: '/diamond-listing',
+    // },
+    // {
+    //   text: 'Orders & Transactions',
+    //   icon: MdOutlineDashboard,
+    //   path: '/orders-transactions',
+    // },
   ];
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: 'flex' }}>
       <AppBar
-        position="fixed"
+        position='fixed'
         sx={{
           zIndex: (theme) => theme.zIndex.drawer + 1,
-          boxShadow: "none",
+          boxShadow: 'none',
           borderRadius: 0,
         }}
       >
         <Toolbar>
-          <img src={zvdLogo} width={"10%"} />
-          <IconButton onClick={handleMenuOpen} size="small" sx={{ ml: "auto" }}>
+          <img src={zvdLogo} width={'10%'} />
+          <IconButton onClick={handleMenuOpen} size='small' sx={{ ml: 'auto' }}>
             <Avatar sx={{ width: 50, height: 50 }}>JD</Avatar>
           </IconButton>
           <Menu
             anchorEl={anchorEl}
-            id="account-menu"
+            id='account-menu'
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
             onClick={handleMenuClose}
-            transformOrigin={{ horizontal: "right", vertical: "top" }}
-            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
             <MenuItem onClick={handleMenuClose}>
               <ListItemIcon>
-                <MdVerifiedUser fontSize="small" />
+                <MdVerifiedUser fontSize='small' />
               </ListItemIcon>
               Profile
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
               <ListItemIcon>
-                <MdSettings fontSize="small" />
+                <MdSettings fontSize='small' />
               </ListItemIcon>
               Settings
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleMenuClose}>
               <ListItemIcon>
-                <MdLogout fontSize="small" />
+                <MdLogout fontSize='small' />
               </ListItemIcon>
               Logout
             </MenuItem>
@@ -102,20 +112,20 @@ const DashboardLayout: React.FC = () => {
         </Toolbar>
       </AppBar>
       <Drawer
-        variant="permanent"
+        variant='permanent'
         sx={{
           width: drawerWidth,
           flexShrink: 0,
-          "& .MuiDrawer-paper": {
+          '& .MuiDrawer-paper': {
             width: drawerWidth,
-            boxSizing: "border-box",
-            background: "#123449",
-            borderRadius: "0",
+            boxSizing: 'border-box',
+            background: '#123449',
+            borderRadius: '0',
           },
         }}
       >
         <Toolbar />
-        <Box sx={{ overflow: "auto" }}>
+        <Box sx={{ overflow: 'auto' }}>
           <List>
             {menuItems.map((item) => (
               <ListItem key={item.text} disablePadding>
@@ -123,7 +133,7 @@ const DashboardLayout: React.FC = () => {
                   onClick={() => navigate(item.path)}
                   sx={{
                     color: theme.palette.primary.main,
-                    display: "flex",
+                    display: 'flex',
                     gap: 2,
                   }}
                 >
@@ -136,14 +146,14 @@ const DashboardLayout: React.FC = () => {
         </Box>
       </Drawer>
       <Box
-        component="main"
+        component='main'
         sx={{
           flexGrow: 1,
           p: 2,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           background: theme.palette.primary.main,
-          minHeight: "calc(100vh)",
-          overflow: "auto",
+          minHeight: 'calc(100vh)',
+          overflow: 'auto',
         }}
       >
         <Toolbar />
