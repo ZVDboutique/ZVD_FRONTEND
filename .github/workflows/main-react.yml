@@ -23,7 +23,8 @@ jobs:
       # Step 3: Install dependencies and build the React app (optional, if deploying build)
       - name: Install & Build (optional)
         run: |
-          npm install
+          export NODE_OPTIONS="--max_old_space_size=4196"
+          npm install --legacy-peer-deps
           npm run build
 
       # Step 4: SSH into EC2 instance and deploy the React app
@@ -60,3 +61,5 @@ jobs:
 
             # Verify that the screen session is running
             screen -ls
+env:
+      VITE_BASE_URL: ${{ vars.VITE_BASE_URL_PROD }}
