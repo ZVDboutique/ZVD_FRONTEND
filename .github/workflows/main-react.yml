@@ -61,5 +61,3 @@ jobs:
 
             # Verify that the screen session is running
             screen -ls
-env:
-      VITE_BASE_URL: ${{ vars.VITE_BASE_URL_PROD }}
