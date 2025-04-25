@@ -9,6 +9,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    env:
+      VITE_BASE_URL: ${{ vars.VITE_BASE_URL }}
+
     steps:
       # Step 1: Checkout code from GitHub repository
       - name: Checkout code
@@ -45,7 +48,7 @@ jobs:
 
             # Install any new dependencies
             echo "Installing dependencies..."
-            npm install
+            npm install --legacy-peer-deps
 
             # Optionally build the React app (if required)
             echo "Building app..."
@@ -53,7 +56,7 @@ jobs:
 
             # Install 'serve' globally to serve the app (if not already installed)
             echo "Installing serve..."
-            npm install -g serve
+            npm install --legacy-peer-deps -g serve
 
             # Start the React app in a detached screen session on port 5062
             echo "Starting React app in a screen session on port 5062..."
