@@ -38,10 +38,7 @@ const Login = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: LoginRequest) =>
-      axiosInstance.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/auth/login`,
-        data,
-      ),
+      axiosInstance.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, data),
     onSuccess: (data) => {
       localStorage.setItem("token", data.data.token);
       navigate("/dashboard");

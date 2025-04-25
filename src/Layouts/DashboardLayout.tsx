@@ -139,7 +139,7 @@ const DashboardLayout: React.FC = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 1,
+          p: 2,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           background: theme.palette.primary.main,
           minHeight: "calc(100vh)",

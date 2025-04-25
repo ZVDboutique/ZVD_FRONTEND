@@ -52,7 +52,7 @@ const Registration = () => {
   const { mutate } = useMutation({
     mutationFn: (data: RegisterRequest) =>
       axiosInstance.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/SignupRequest/signup`,
+        `${import.meta.env.VITE_BASE_URL}/SignupRequest/signup`,
         data,
       ),
     onSuccess: (data) => {
