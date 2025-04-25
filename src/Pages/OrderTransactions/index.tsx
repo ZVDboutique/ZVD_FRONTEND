@@ -23,28 +23,10 @@ import axiosInstance from '../../Utils/axios';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
-
-interface OrderTransactionData {
-  id?: number;
-  order_id: string;
-  buyer_name: string;
-  diamond: string;
-  qty: string;
-  date: string;
-  price: string;
-  status: string;
-}
-
-interface OrderTransactionRowData {
-  id: number;
-  order_id: string;
-  buyer_name: string;
-  diamond: string;
-  qty: string;
-  date: string;
-  price: string;
-  status: string;
-}
+import {
+  OrderTransactionData,
+  OrderTransactionRowData,
+} from '../../Types/Order';
 
 const OrderTransactions = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -108,12 +90,6 @@ const OrderTransactions = () => {
     }
 
     console.log('Edit clicked for id:', id);
-
-    const mockItem = mockData.find((item) => item.id === id);
-    if (mockItem) {
-      openEditModal(mockItem);
-      return;
-    }
 
     const apiItem = orders?.data?.find((order: any) => order.id === id);
     if (apiItem) {
@@ -256,30 +232,7 @@ const OrderTransactions = () => {
     },
   ];
 
-  const mockData: OrderTransactionRowData[] = [
-    {
-      id: 1,
-      order_id: 'ORD-123456',
-      buyer_name: 'John Smith',
-      diamond: 'Round Brilliant 1.5ct',
-      qty: '1',
-      date: '2023-06-15',
-      price: '$15,000',
-      status: 'Completed',
-    },
-    {
-      id: 2,
-      order_id: 'ORD-789012',
-      buyer_name: 'Jane Doe',
-      diamond: 'Princess Cut 2.0ct',
-      qty: '1',
-      date: '2023-06-20',
-      price: '$20,000',
-      status: 'Pending',
-    },
-  ];
-
-  const tableData = orders?.data || mockData;
+  const tableData = orders?.data || [];
 
   return (
     <>

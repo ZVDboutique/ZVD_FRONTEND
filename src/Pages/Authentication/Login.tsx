@@ -1,4 +1,4 @@
-import { LoadingButton } from "@mui/lab";
+import { LoadingButton } from '@mui/lab';
 import {
   Box,
   Button,
@@ -8,31 +8,35 @@ import {
   Switch,
   TextField,
   Typography,
-} from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { HiEye, HiEyeOff } from "react-icons/hi";
-import { Link, useNavigate } from "react-router-dom";
-import loginImg from "../../assets/login.png";
-import zvdLogo from "../../assets/zvLogo.svg";
-import AuthLayout from "../../Layouts/AuthLayout";
-import { LoginRequest } from "../../Types/auth.types";
-import axiosInstance from "../../Utils/axios";
-import ForgotpasswordModal from "./ForgotpasswordModal";
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
+} from '@mui/material';
+import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { HiEye, HiEyeOff } from 'react-icons/hi';
+import { Link, useNavigate } from 'react-router-dom';
+import loginImg from '../../assets/login.png';
+import zvdLogo from '../../assets/zvLogo.svg';
+import AuthLayout from '../../Layouts/AuthLayout';
+import { LoginRequest } from '../../Types/auth.types';
+import axiosInstance from '../../Utils/axios';
+import ForgotpasswordModal from './ForgotpasswordModal';
 
 const Login = () => {
   const navigate = useNavigate();
 
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false);
+  const [userType, setUserType] = useState('Admin');
 
   const { handleSubmit, control } = useForm<LoginRequest>({
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
@@ -40,11 +44,12 @@ const Login = () => {
     mutationFn: (data: LoginRequest) =>
       axiosInstance.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, data),
     onSuccess: (data) => {
-      localStorage.setItem("token", data.data.token);
-      navigate("/dashboard");
+      localStorage.setItem('token', data.data.token);
+      localStorage.setItem('userType', userType);
+      navigate('/dashboard');
     },
     onError: (error) => {
-      toast.error(error.message || "Something went wrong.Please try again.");
+      toast.error(error.message || 'Something went wrong.Please try again.');
     },
   });
 
@@ -52,37 +57,41 @@ const Login = () => {
     mutate(data);
   };
 
+  const handleUserTypeChange = (event: any) => {
+    setUserType(event.target.value);
+  };
+
   return (
     <AuthLayout image={loginImg}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        style={{ width: "60%", height: "100%" }}
+        style={{ width: '60%', height: '100%' }}
       >
         <Grid
           container
           spacing={2}
-          justifyContent={"space-between"}
-          height={"100%"}
+          justifyContent={'space-between'}
+          height={'100%'}
         >
-          <Grid size={12} textAlign={"center"}>
+          <Grid size={12} textAlign={'center'}>
             <img
               src={zvdLogo}
               style={{
-                width: "30%",
-                height: "-webkit-fill-available",
-                backgroundRepeat: "no-repeat",
+                width: '30%',
+                height: '-webkit-fill-available',
+                backgroundRepeat: 'no-repeat',
               }}
             />
           </Grid>
-          <Grid size={12} container height={"fit-content"} spacing={2}>
+          <Grid size={12} container height={'fit-content'} spacing={2}>
             <Grid size={12}>
               <Controller
-                name="email"
+                name='email'
                 control={control}
                 rules={{
                   required: {
                     value: true,
-                    message: "Please enter a email",
+                    message: 'Please enter a email',
                   },
                 }}
                 render={({ field, fieldState: { error } }) => {
@@ -90,10 +99,10 @@ const Login = () => {
                     <TextField
                       {...field}
                       fullWidth
-                      variant="standard"
-                      placeholder="Enter your email"
-                      label="Email"
-                      type="email"
+                      variant='standard'
+                      placeholder='Enter your email'
+                      label='Email'
+                      type='email'
                       error={!!error}
                       helperText={error?.message}
                     />
@@ -103,12 +112,12 @@ const Login = () => {
             </Grid>
             <Grid size={12}>
               <Controller
-                name="password"
+                name='password'
                 control={control}
                 rules={{
                   required: {
                     value: true,
-                    message: "Please enter a password",
+                    message: 'Please enter a password',
                   },
                 }}
                 render={({ field, fieldState: { error } }) => {
@@ -116,10 +125,10 @@ const Login = () => {
                     <TextField
                       {...field}
                       fullWidth
-                      variant="standard"
-                      placeholder="Enter your password"
-                      label="Password"
-                      type={showPassword ? "text" : "password"}
+                      variant='standard'
+                      placeholder='Enter your password'
+                      label='Password'
+                      type={showPassword ? 'text' : 'password'}
                       error={!!error}
                       helperText={error?.message}
                       slotProps={{
@@ -142,13 +151,13 @@ const Login = () => {
                 }}
               />
               <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                alignItems={"center"}
+                display={'flex'}
+                justifyContent={'space-between'}
+                alignItems={'center'}
               >
-                <FormControlLabel control={<Switch />} label="Remember me" />
+                <FormControlLabel control={<Switch />} label='Remember me' />
                 <Button
-                  color="dark"
+                  color='dark'
                   onClick={() => {
                     setShowForgotPasswordModal(true);
                   }}
@@ -158,12 +167,26 @@ const Login = () => {
               </Box>
             </Grid>
             <Grid size={12}>
+              <FormControl fullWidth variant='standard'>
+                <InputLabel id='user-type-label'>User Type</InputLabel>
+                <Select
+                  labelId='user-type-label'
+                  label='User Type'
+                  value={userType}
+                  onChange={handleUserTypeChange}
+                >
+                  <MenuItem value='Admin'>Admin</MenuItem>
+                  <MenuItem value='Seller'>Seller</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={12}>
               <LoadingButton
-                type="submit"
+                type='submit'
                 fullWidth
-                variant="contained"
+                variant='contained'
                 loading={isPending}
-                size="large"
+                size='large'
                 sx={{ mt: 3 }}
               >
                 Sign In
@@ -172,17 +195,17 @@ const Login = () => {
           </Grid>
           <Grid
             size={12}
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
+            display={'flex'}
+            justifyContent={'center'}
+            alignItems={'center'}
           >
             <Typography>
-              Don’t have an account?{" "}
+              Don't have an account?{' '}
               <Link
-                to={"/sign-up"}
+                to={'/sign-up'}
                 style={{
-                  color: "#000",
-                  textDecoration: "none",
+                  color: '#000',
+                  textDecoration: 'none',
                   fontWeight: 600,
                 }}
               >

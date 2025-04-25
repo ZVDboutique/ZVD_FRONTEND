@@ -24,30 +24,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useState } from 'react';
-
-interface DiamondData {
-  id?: number;
-  diamond_name: string;
-  carat: string;
-  cut: string;
-  color: string;
-  clarity: string;
-  price: string;
-  image: File | null;
-  status?: string;
-}
-
-interface DiamondRowData {
-  id: number;
-  image: string;
-  diamond_name: string;
-  carat: string;
-  cut: string;
-  color: string;
-  clarity: string;
-  price: string;
-  status: string;
-}
+import { DiamondData, DiamondRowData } from '../../Types/Diamond';
 
 const DiamondListing = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -78,7 +55,6 @@ const DiamondListing = () => {
     queryFn: () => axiosInstance.get('/diamonds/'),
   });
 
-  // Create diamond mutation
   const createDiamondMutation = useMutation({
     mutationFn: (newDiamond: DiamondData) => {
       const formData = new FormData();
@@ -147,12 +123,6 @@ const DiamondListing = () => {
     }
 
     console.log('Edit clicked for id:', id);
-
-    const mockItem = mockData.find((item) => item.id === id);
-    if (mockItem) {
-      openEditModal(mockItem);
-      return;
-    }
 
     const apiItem = diamonds?.data?.find((diamond: any) => diamond.id === id);
     if (apiItem) {
@@ -342,32 +312,7 @@ const DiamondListing = () => {
     },
   ];
 
-  const mockData: DiamondRowData[] = [
-    {
-      id: 1,
-      image: '',
-      diamond_name: 'Round Brilliant',
-      carat: '1.5',
-      cut: 'Excellent',
-      color: 'D',
-      clarity: 'VS1',
-      price: '$15,000',
-      status: 'Available',
-    },
-    {
-      id: 2,
-      image: '',
-      diamond_name: 'Princess Cut',
-      carat: '2.0',
-      cut: 'Very Good',
-      color: 'E',
-      clarity: 'VS2',
-      price: '$20,000',
-      status: 'Available',
-    },
-  ];
-
-  const tableData = diamonds?.data || mockData;
+  const tableData = diamonds?.data || [];
 
   return (
     <>
