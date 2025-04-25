@@ -54,9 +54,9 @@ jobs:
             echo "Building app..."
             npm run build
 
-            # Install 'serve' globally to serve the app (if not already installed)
-            echo "Installing serve..."
-            npm install --legacy-peer-deps -g serve
+            # Serve the React App
+            echo "Serving..."
+            npm preview
 
             # Install screen if not installed
             if ! command -v screen &> /dev/null; then
