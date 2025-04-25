@@ -3,7 +3,7 @@ name: Deploy React App to EC2
 on:
   push:
     branches:
-      - main  # Trigger when pushing to the main branch
+      - main # Trigger when pushing to the main branch
 
 jobs:
   deploy:
@@ -57,6 +57,12 @@ jobs:
             # Install 'serve' globally to serve the app (if not already installed)
             echo "Installing serve..."
             npm install --legacy-peer-deps -g serve
+
+            # Install screen if not installed
+            if ! command -v screen &> /dev/null; then
+                echo "screen could not be found, installing..."
+                sudo yum install -y screen
+            fi
 
             # Start the React app in a detached screen session on port 5062
             echo "Starting React app in a screen session on port 5062..."
