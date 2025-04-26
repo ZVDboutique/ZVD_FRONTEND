@@ -176,7 +176,7 @@ const Login = () => {
                   onChange={handleUserTypeChange}
                 >
                   <MenuItem value='Admin'>Admin</MenuItem>
-                  <MenuItem value='Seller'>Seller</MenuItem>
+                  <MenuItem value='Supplier'>Supplier</MenuItem>
                 </Select>
               </FormControl>
             </Grid>

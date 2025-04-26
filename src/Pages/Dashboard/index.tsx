@@ -3,6 +3,7 @@ import { FaUserCheck, FaUserPlus, FaUsers, FaUserTimes } from 'react-icons/fa';
 import {
   MdBusiness,
   MdDiamond,
+  MdPending,
   MdPerson,
   MdSearch,
   MdShoppingCart,
@@ -21,6 +22,9 @@ interface DashboardData {
   userRegisteredToday: number;
   userNotAttachedWithSeller: number;
   totalCompanies: number;
+  pendingOrders: number;
+  totalDiamondsListed: number;
+  totalDiamondsSold: number;
 }
 
 const Dashboard = () => {
@@ -39,67 +43,102 @@ const Dashboard = () => {
     userRegisteredToday: 0,
     userNotAttachedWithSeller: 0,
     totalCompanies: 0,
+    pendingOrders: 0,
+    totalDiamondsListed: 0,
+    totalDiamondsSold: 0,
   };
 
   const cards = [
     {
       title: 'Search Diamonds',
       icon: <MdSearch size={24} />,
+      userType: ['Admin', 'Supplier'],
     },
     {
       title: 'Stock',
       icon: <MdDiamond size={24} />,
+      userType: ['Admin', 'Supplier'],
     },
     {
       title: 'Web Tracking',
       icon: <MdWeb size={24} />,
+      userType: ['Admin'],
     },
     {
       title: 'Total Diamonds',
       value: userData.totalDiamonds,
       icon: <MdDiamond size={24} />,
+      userType: ['Admin'],
     },
     {
       title: 'Total Sellers',
       value: userData.totalSellers,
       icon: <MdPerson size={24} />,
+      userType: ['Admin'],
     },
     {
       title: 'Total search Today',
       value: userData.totalSearchToday,
       icon: <MdSearch size={24} />,
+      userType: ['Admin'],
     },
     {
       title: 'Added To Cart Today',
       value: userData.addedToCartToday,
       icon: <MdShoppingCart size={24} />,
+      userType: ['Admin'],
     },
     {
       title: 'Total Users',
       value: userData.totalUsers,
       icon: <FaUsers size={20} />,
+      userType: ['Admin'],
     },
     {
       title: 'Total Active Users',
       value: userData.activeUsers,
       icon: <FaUserCheck size={20} />,
+      userType: ['Admin'],
     },
     {
       title: 'User Registered Today',
       value: userData.userRegisteredToday,
       icon: <FaUserPlus size={20} />,
+      userType: ['Admin'],
     },
     {
       title: 'User Not Attached With Seller',
       value: userData.userNotAttachedWithSeller,
       icon: <FaUserTimes size={20} />,
+      userType: ['Admin'],
     },
     {
       title: 'Total Companies',
       value: userData.totalCompanies,
       icon: <MdBusiness size={24} />,
+      userType: ['Admin'],
+    },
+    {
+      title: 'Pending Orders',
+      value: userData.pendingOrders,
+      icon: <MdPending size={24} />,
+      userType: ['Supplier'],
+    },
+    {
+      title: 'Total Diamonds Listed',
+      value: userData.totalDiamondsListed,
+      icon: <MdDiamond size={24} />,
+      userType: ['Supplier'],
+    },
+    {
+      title: 'Total Diamonds Sold',
+      value: userData.totalDiamondsSold,
+      icon: <MdDiamond size={24} />,
+      userType: ['Supplier'],
     },
   ];
+
+  const userType = localStorage.getItem('userType');
 
   const cardBgColor = '#D9F1FF';
   const textColor = '#0D47A1';
@@ -119,109 +158,111 @@ const Dashboard = () => {
           gap: 2.5,
         }}
       >
-        {cards.map((card, index) => (
-          <Card
-            key={index}
-            sx={{
-              borderRadius: 3,
-              boxShadow: 'none',
-              bgcolor: cardBgColor,
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              border: '0.5px solid #12344966',
-              cursor: 'pointer',
-              transition: 'transform 0.2s ease-in-out',
-              '&:hover': {
-                transform: 'scale(1.02)',
-                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.05)',
-              },
-            }}
-          >
-            <CardContent
+        {cards
+          .filter((card) => card.userType.includes(userType || ''))
+          .map((card, index) => (
+            <Card
+              key={index}
               sx={{
-                flex: 1,
+                borderRadius: 3,
+                boxShadow: 'none',
+                bgcolor: cardBgColor,
+                height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-                py: 3,
-                px: 2,
-                height: '100%',
+                border: '0.5px solid #12344966',
+                cursor: 'pointer',
+                transition: 'transform 0.2s ease-in-out',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.05)',
+                },
               }}
             >
-              <Box
-                sx={{
-                  bgcolor: 'white',
-                  borderRadius: '50%',
-                  width: 60,
-                  height: 60,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  mb: 1.5,
-                  color: textColor,
-                }}
-              >
-                {card.icon}
-              </Box>
-
-              <Box
+              <CardContent
                 sx={{
                   flex: 1,
                   display: 'flex',
                   flexDirection: 'column',
-                  justifyContent: 'flex-end',
                   alignItems: 'center',
-                  mt: 1,
+                  justifyContent: 'flex-start',
+                  py: 3,
+                  px: 2,
+                  height: '100%',
                 }}
               >
-                {card.value !== undefined && (
-                  <Paper
-                    elevation={card.value === 0 ? 0 : 1}
-                    sx={{
-                      bgcolor: card.value === 0 ? cardBgColor : 'white',
-                      borderRadius: '5px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      mb: 1,
-                      px: 1.5,
-                    }}
-                  >
-                    <Typography
-                      variant='h5'
-                      component='div'
-                      align='center'
-                      color={textColor}
-                      fontWeight='bold'
-                      fontSize={14}
-                    >
-                      {card.value}
-                    </Typography>
-                  </Paper>
-                )}
-
-                <Typography
-                  variant='body2'
-                  align='center'
-                  color={textColor}
-                  fontWeight='medium'
-                  fontSize={13}
+                <Box
                   sx={{
-                    wordBreak: 'break-word',
-                    width: '100%',
-                    overflowWrap: 'break-word',
-                    hyphens: 'auto',
-                    lineHeight: 1.3,
+                    bgcolor: 'white',
+                    borderRadius: '50%',
+                    width: 60,
+                    height: 60,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mb: 1.5,
+                    color: textColor,
                   }}
                 >
-                  {card.title}
-                </Typography>
-              </Box>
-            </CardContent>
-          </Card>
-        ))}
+                  {card.icon}
+                </Box>
+
+                <Box
+                  sx={{
+                    flex: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    mt: 1,
+                  }}
+                >
+                  {card.value !== undefined && (
+                    <Paper
+                      elevation={card.value === 0 ? 0 : 1}
+                      sx={{
+                        bgcolor: card.value === 0 ? cardBgColor : 'white',
+                        borderRadius: '5px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        mb: 1,
+                        px: 1.5,
+                      }}
+                    >
+                      <Typography
+                        variant='h5'
+                        component='div'
+                        align='center'
+                        color={textColor}
+                        fontWeight='bold'
+                        fontSize={14}
+                      >
+                        {card.value}
+                      </Typography>
+                    </Paper>
+                  )}
+
+                  <Typography
+                    variant='body2'
+                    align='center'
+                    color={textColor}
+                    fontWeight='medium'
+                    fontSize={13}
+                    sx={{
+                      wordBreak: 'break-word',
+                      width: '100%',
+                      overflowWrap: 'break-word',
+                      hyphens: 'auto',
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {card.title}
+                  </Typography>
+                </Box>
+              </CardContent>
+            </Card>
+          ))}
       </Box>
     </Box>
   );

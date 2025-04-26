@@ -50,7 +50,7 @@ const DashboardLayout: React.FC = () => {
       text: 'Dashboard',
       icon: MdOutlineDashboard,
       path: '/dashboard',
-      userType: ['Admin', 'Seller'],
+      userType: ['Admin', 'Supplier'],
     },
     {
       text: 'Stocks',
@@ -98,13 +98,13 @@ const DashboardLayout: React.FC = () => {
       text: 'Diamond Listing',
       icon: MdOutlineDashboard,
       path: '/diamond-listing',
-      userType: ['Seller'],
+      userType: ['Supplier'],
     },
     {
       text: 'Orders & Transactions',
       icon: MdOutlineDashboard,
       path: '/orders-transactions',
-      userType: ['Seller'],
+      userType: ['Supplier'],
     },
   ];
   const userType = localStorage.getItem('userType') || '';
