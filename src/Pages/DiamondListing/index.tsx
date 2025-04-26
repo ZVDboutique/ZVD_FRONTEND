@@ -24,7 +24,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useState } from 'react';
-import { DiamondData, DiamondRowData } from '../../Types/Diamond';
+import {
+  DiamondData,
+  DiamondRowData,
+  DiamondStockData,
+} from '../../Types/Diamond';
 
 const DiamondListing = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -51,9 +55,25 @@ const DiamondListing = () => {
   const queryClient = useQueryClient();
 
   const { data: diamonds } = useQuery({
-    queryKey: ['GET_ALL_DIAMONDS'],
-    queryFn: () => axiosInstance.get('/diamonds/'),
+    queryKey: ['GET_DIAMOND_STOCK'],
+    queryFn: () => axiosInstance.get('/DiamondStockData/get-stock'),
   });
+
+  const mapStockDataToTableData = (
+    stockData: DiamondStockData[]
+  ): DiamondRowData[] => {
+    return stockData.map((diamond) => ({
+      id: diamond.diamondId,
+      image: diamond.imageUrl,
+      diamond_name: diamond.name,
+      carat: diamond.caratWeight.toString(),
+      cut: diamond.cutQuality,
+      color: diamond.colorGrade,
+      clarity: diamond.clarityGrade,
+      price: diamond.price.toString(),
+      status: diamond.isAvailable ? 'Available' : 'Not Available',
+    }));
+  };
 
   const createDiamondMutation = useMutation({
     mutationFn: (newDiamond: DiamondData) => {
@@ -70,7 +90,7 @@ const DiamondListing = () => {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['GET_ALL_DIAMONDS'] });
+      queryClient.invalidateQueries({ queryKey: ['GET_DIAMOND_STOCK'] });
       showAlert('Diamond created successfully!', 'success');
       handleCloseModal();
     },
@@ -94,7 +114,7 @@ const DiamondListing = () => {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['GET_ALL_DIAMONDS'] });
+      queryClient.invalidateQueries({ queryKey: ['GET_DIAMOND_STOCK'] });
       showAlert('Diamond updated successfully!', 'success');
       handleCloseModal();
     },
@@ -108,7 +128,7 @@ const DiamondListing = () => {
       return axiosInstance.delete(`/diamonds/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['GET_ALL_DIAMONDS'] });
+      queryClient.invalidateQueries({ queryKey: ['GET_DIAMOND_STOCK'] });
       showAlert('Diamond deleted successfully!', 'success');
     },
     onError: () => {
@@ -124,12 +144,28 @@ const DiamondListing = () => {
 
     console.log('Edit clicked for id:', id);
 
-    const apiItem = diamonds?.data?.find((diamond: any) => diamond.id === id);
+    const apiItem = diamonds?.data?.find(
+      (diamond: DiamondStockData) => diamond.diamondId === id
+    );
     if (apiItem) {
-      openEditModal(apiItem);
+      openEditModal(mapStockItemToRowData(apiItem));
     } else {
       console.error('Could not find diamond with id:', id);
     }
+  };
+
+  const mapStockItemToRowData = (item: DiamondStockData): DiamondRowData => {
+    return {
+      id: item.diamondId,
+      image: item.imageUrl,
+      diamond_name: item.name,
+      carat: item.caratWeight.toString(),
+      cut: item.cutQuality,
+      color: item.colorGrade,
+      clarity: item.clarityGrade,
+      price: item.price.toString(),
+      status: item.isAvailable ? 'Available' : 'Not Available',
+    };
   };
 
   const openEditModal = (item: DiamondRowData) => {
@@ -312,7 +348,9 @@ const DiamondListing = () => {
     },
   ];
 
-  const tableData = diamonds?.data || [];
+  const tableData = diamonds?.data
+    ? mapStockDataToTableData(diamonds.data)
+    : [];
 
   return (
     <>
