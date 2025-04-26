@@ -25,6 +25,7 @@ interface DashboardData {
   pendingOrders: number;
   totalDiamondsListed: number;
   totalDiamondsSold: number;
+  totalStock: number;
 }
 
 const Dashboard = () => {
@@ -46,6 +47,7 @@ const Dashboard = () => {
     pendingOrders: 0,
     totalDiamondsListed: 0,
     totalDiamondsSold: 0,
+    totalStock: 0,
   };
 
   const cards = [
@@ -57,6 +59,7 @@ const Dashboard = () => {
     {
       title: 'Stock',
       icon: <MdDiamond size={24} />,
+      value: userData.totalStock,
       userType: ['Admin', 'Supplier'],
     },
     {
