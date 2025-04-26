@@ -40,6 +40,10 @@ const Login = () => {
     mutationFn: (data: LoginRequest) =>
       axiosInstance.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, data),
     onSuccess: (data) => {
+      axiosInstance.interceptors.request.use((config) => {
+        config.headers.Authorization = `Bearer ${data.data.token}`;
+        return config;
+      });
       localStorage.setItem("token", data.data.token);
       navigate("/dashboard");
     },

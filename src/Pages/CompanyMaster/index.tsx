@@ -34,7 +34,7 @@ const CompanyMaster = () => {
 
   const { data: complayList } = useQuery({
     queryKey: ["GET_ALL_COMPANY_USERS"],
-    queryFn: () => axiosInstance.get(`/company-list/`),
+    queryFn: () => axiosInstance.get(`/Stock`),
   });
 
   console.log("", complayList?.data);
