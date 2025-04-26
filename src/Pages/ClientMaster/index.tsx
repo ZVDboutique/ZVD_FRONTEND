@@ -1,51 +1,79 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-import { useQuery } from "@tanstack/react-query";
 import SimpleTable from "../../Components/SimpleTable";
-import axiosInstance from "../../Utils/axios";
+import { ClientListInterface } from "../../Interface/clientInterface";
+import { useFetchQuery } from "../../Utils/useQueries";
 
 const ClientMaster = () => {
   const columns: GridColDef[] = [
     {
-      field: "Seller",
-      flex: 1,
+      field: "company_id",
+      headerName: "Company Id",
+      minWidth: 150,
+      valueGetter: (value) => value || "-",
     },
     {
-      field: "First Name",
-      flex: 1,
+      field: "username",
+      headerName: "username",
+      minWidth: 150,
+      valueGetter: (value) => value || "-",
     },
     {
-      field: "Last Name",
-      flex: 1,
+      field: "first_name",
+      headerName: "First Name",
+      minWidth: 150,
+      valueGetter: (value) => value || "-",
     },
     {
-      field: "Country",
-      flex: 1,
+      field: "last_name",
+      headerName: "Last Name",
+      minWidth: 150,
+      valueGetter: (value) => value || "-",
     },
     {
-      field: "Company Name",
-      flex: 1,
+      field: "pan_card_number",
+      headerName: "PAN",
+      minWidth: 150,
+      valueGetter: (value) => value || "-",
     },
     {
-      field: "Sellers",
-      flex: 1,
+      field: "primary_contact",
+      headerName: "Primary Contact",
+      minWidth: 150,
+      valueGetter: (value) => value || "-",
     },
     {
-      field: "Address",
-      flex: 1,
+      field: "primary_email",
+      headerName: "Primary Email",
+      minWidth: 150,
+      valueGetter: (value) => value || "-",
     },
     {
-      field: "Contact No",
-      flex: 1,
+      field: "secondary_contact",
+      headerName: "Secondary Contact",
+      minWidth: 150,
+      valueGetter: (value) => value || "-",
+    },
+    {
+      field: " secondary_email",
+      headerName: "Secondary Email",
+      minWidth: 150,
+      valueGetter: (value) => value || "-",
+    },
+    {
+      field: "whatsapp_number",
+      headerName: "Whatsapp Number",
+      minWidth: 150,
+      valueGetter: (value) => value || "-",
     },
   ];
 
-  const { data: clientList } = useQuery({
-    queryKey: ["GET_ALL_CLIENT_USERS"],
-    queryFn: () => axiosInstance.get(`/client-list/`),
+  const { data: clientList, isFetching } = useFetchQuery<{
+    data: ClientListInterface[];
+  }>({
+    key: ["GET_ALL_CLIENT_USERS"],
+    route: `/Customer`,
   });
-
-  console.log("", clientList?.data);
 
   return (
     <Box
@@ -63,7 +91,11 @@ const ClientMaster = () => {
           </Typography>
         </Grid>
         <Grid size={12}>
-          <SimpleTable columns={columns} rows={clientList?.data || []} />
+          <SimpleTable
+            columns={columns}
+            rows={clientList?.data || []}
+            loading={isFetching}
+          />
         </Grid>
       </Grid>
     </Box>

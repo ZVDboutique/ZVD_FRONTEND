@@ -94,6 +94,14 @@ export const theme = createTheme({
     },
   },
   components: {
+    MuiTableContainer: {
+      styleOverrides: {
+        root: {
+          fontFamily: "Inter !important",
+          width: `-webkit-fill-available !important`,
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {

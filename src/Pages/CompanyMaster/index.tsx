@@ -1,43 +1,62 @@
 import { Box, Grid, Typography } from "@mui/material";
-import { GridColDef } from "@mui/x-data-grid";
-import { useQuery } from "@tanstack/react-query";
+import { GridColDef, useGridApiRef } from "@mui/x-data-grid";
 import SimpleTable from "../../Components/SimpleTable";
-import axiosInstance from "../../Utils/axios";
+import { SingleCompanyInterface } from "../../Interface/companyInterface";
+import {
+  handleConvertToCapitalized,
+  handleRemoveUnderscore,
+} from "../../Utils/helper";
+import { useFetchQuery } from "../../Utils/useQueries";
 
 const CompanyMaster = () => {
+  const apiRef = useGridApiRef();
+
   const columns: GridColDef[] = [
     {
-      field: "Company Name",
-      flex: 1,
+      field: "company_name",
+
+      minWidth: 150,
     },
     {
-      field: "Company Code ",
-      flex: 1,
+      field: "contact_person_email",
+      minWidth: 150,
     },
     {
-      field: "Contact No",
-      flex: 1,
+      field: "company_contact",
+      minWidth: 150,
     },
     {
-      field: "Email",
-      flex: 1,
+      field: "company_email",
+      minWidth: 150,
     },
     {
-      field: "Address",
-      flex: 1,
+      field: "company_address",
+      minWidth: 150,
     },
     {
-      field: "Action",
-      flex: 1,
+      field: "contact_person_name",
+      minWidth: 150,
+    },
+    {
+      field: "contact_person_email",
+      minWidth: 150,
+    },
+    {
+      field: "contact_person_phone",
+      minWidth: 150,
+    },
+    {
+      field: "action",
+      minWidth: 150,
     },
   ];
 
-  const { data: complayList } = useQuery({
-    queryKey: ["GET_ALL_COMPANY_USERS"],
-    queryFn: () => axiosInstance.get(`/Stock`),
+  const { data: complayList, isFetching } = useFetchQuery<{
+    data: SingleCompanyInterface[];
+  }>({
+    key: ["GET_ALL_COMPANY_USERS"],
+    route: `/Company`,
   });
-
-  console.log("", complayList?.data);
 
   return (
     <Box
@@ -46,6 +65,7 @@ const CompanyMaster = () => {
         borderRadius: 2,
         background: "#73C7F933",
         border: `1px #73C7F9 solid`,
+        width: "100%",
       }}
     >
       <Grid container spacing={1}>
@@ -55,7 +75,19 @@ const CompanyMaster = () => {
           </Typography>
         </Grid>
         <Grid size={12}>
-          <SimpleTable columns={columns} rows={complayList?.data || []} />
+          <SimpleTable
+            loading={isFetching}
+            apiRef={apiRef}
+            columns={columns?.map((d) => {
+              return {
+                ...d,
+                headerName: handleConvertToCapitalized(
+                  handleRemoveUnderscore(d.field),
+                ),
+              };
+            })}
+            rows={complayList?.data || []}
+          />
         </Grid>
       </Grid>
     </Box>
