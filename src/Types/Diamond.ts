@@ -6,44 +6,58 @@ export interface DiamondData {
   color: string;
   clarity: string;
   price: string;
-  image: File | null;
-  status?: string;
+  imageUrl: string;
+  status: string;
+  shape: string;
+  certificate_url: string;
+  fluorescence: string;
+  length: string;
+  width: string;
+  depth: string;
+  diameter: string;
+  stock_quantity: string;
+  is_certified: boolean;
 }
 
 export interface DiamondRowData {
   id: number;
-  image: string;
   diamond_name: string;
   carat: string;
   cut: string;
   color: string;
   clarity: string;
   price: string;
+  image: string;
   status: string;
+  shape?: string;
+  certificate_url?: string;
+  fluorescence?: string;
+  length?: string;
+  width?: string;
+  depth?: string;
+  diameter?: string;
+  stock_quantity?: string;
+  is_certified?: boolean;
 }
 
 export interface DiamondStockData {
   diamondId: number;
-  shapeName: string;
+  name: string;
   caratWeight: number;
   cutQuality: string;
   colorGrade: string;
   clarityGrade: string;
-  certificateUrl: string;
-  imageUrl: string;
-  fluorescenceIntensity: string;
-  length: number;
-  width: number;
-  depth: number;
-  diameter: number;
   price: number;
-  stockQuantity: number;
+  imageUrl: string;
   isAvailable: boolean;
-  shapeId: number;
-  updatedBy: number;
-  isVoid: boolean;
-  isVerified: boolean;
-  isCertified: boolean;
-  name: string;
-  id?: number;
+  shapeName?: string;
+  certificateUrl?: string;
+  fluorescenceIntensity?: string;
+  length?: number;
+  width?: number;
+  depth?: number;
+  diameter?: number;
+  stockQuantity?: number;
+  shapeId?: number;
+  isCertified?: boolean;
 }
