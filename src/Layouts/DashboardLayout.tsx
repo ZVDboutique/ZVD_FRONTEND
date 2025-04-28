@@ -17,12 +17,14 @@ import {
 import React, { useState } from 'react';
 import {
   MdBusiness,
+  MdDiamond,
   MdInventory,
   MdLogout,
   MdOutlineDashboard,
   MdOutlineSettingsCell,
   MdPeople,
   MdSettings,
+  MdShoppingCart,
   MdSubscriptions,
   MdVerifiedUser,
   MdWeb,
@@ -96,13 +98,13 @@ const DashboardLayout: React.FC = () => {
     },
     {
       text: 'Diamond Listing',
-      icon: MdOutlineDashboard,
+      icon: MdDiamond,
       path: '/diamond-listing',
       userType: ['Supplier'],
     },
     {
       text: 'Orders & Transactions',
-      icon: MdOutlineDashboard,
+      icon: MdShoppingCart,
       path: '/orders-transactions',
       userType: ['Supplier'],
     },
