@@ -17,6 +17,7 @@ import Subscription from './Pages/Subscription';
 import WebTracking from './Pages/WebTracking';
 import Website from './Website';
 import Contact from './Pages/Contact';
+import About from './Pages/About';
 export const router = createBrowserRouter([
   {
     path: '*',
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
   {
     path: '/contact',
     element: <Contact />,
+  },
+  {
+    path: '/about',
+    element: <About />,
   },
   {
     path: '/login',
