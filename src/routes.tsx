@@ -1,45 +1,49 @@
-import { createBrowserRouter } from "react-router-dom";
-import PrivateRoute from "./Components/PrivateRoute";
-import DashboardLayout from "./Layouts/DashboardLayout";
-import AdminUser from "./Pages/AdminUsers";
-import CompanyInformation from "./Pages/Authentication/CompanyInformation";
-import KycVerfication from "./Pages/Authentication/KycVerfication";
-import Login from "./Pages/Authentication/Login";
-import Registration from "./Pages/Authentication/Registeration";
-import ClientMaster from "./Pages/ClientMaster";
-import CompanyMaster from "./Pages/CompanyMaster";
-import Dashboard from "./Pages/Dashboard";
-import DiamondListing from "./Pages/DiamondListing";
-import NotFound from "./Pages/NotFound";
-import OrderTransactions from "./Pages/OrderTransactions";
-import Stock from "./Pages/Stocks";
-import Subscription from "./Pages/Subscription";
-import WebTracking from "./Pages/WebTracking";
-import Website from "./Website";
-
+import { createBrowserRouter } from 'react-router-dom';
+import PrivateRoute from './Components/PrivateRoute';
+import DashboardLayout from './Layouts/DashboardLayout';
+import AdminUser from './Pages/AdminUsers';
+import CompanyInformation from './Pages/Authentication/CompanyInformation';
+import KycVerfication from './Pages/Authentication/KycVerfication';
+import Login from './Pages/Authentication/Login';
+import Registration from './Pages/Authentication/Registeration';
+import ClientMaster from './Pages/ClientMaster';
+import CompanyMaster from './Pages/CompanyMaster';
+import Dashboard from './Pages/Dashboard';
+import DiamondListing from './Pages/DiamondListing';
+import NotFound from './Pages/NotFound';
+import OrderTransactions from './Pages/OrderTransactions';
+import Stock from './Pages/Stocks';
+import Subscription from './Pages/Subscription';
+import WebTracking from './Pages/WebTracking';
+import Website from './Website';
+import Contact from './Pages/Contact';
 export const router = createBrowserRouter([
   {
-    path: "*",
+    path: '*',
     element: <NotFound />,
   },
   {
-    path: "/",
+    path: '/',
     element: <Website />,
   },
   {
-    path: "/login",
+    path: '/contact',
+    element: <Contact />,
+  },
+  {
+    path: '/login',
     element: <Login />,
   },
   {
-    path: "/sign-up",
+    path: '/sign-up',
     element: <Registration />,
   },
   {
-    path: "/sign-up?kyc-verification",
+    path: '/sign-up?kyc-verification',
     element: <KycVerfication />,
   },
   {
-    path: "/sign-up?company-information",
+    path: '/sign-up?company-information',
     element: <CompanyInformation />,
   },
   {
@@ -49,40 +53,40 @@ export const router = createBrowserRouter([
         element: <DashboardLayout />,
         children: [
           {
-            path: "/dashboard",
+            path: '/dashboard',
             element: <Dashboard />,
           },
           {
-            path: "/stock",
+            path: '/stock',
             element: <Stock />,
           },
 
           {
-            path: "/adminUser",
+            path: '/adminUser',
             element: <AdminUser />,
           },
           {
-            path: "/company",
+            path: '/company',
             element: <CompanyMaster />,
           },
           {
-            path: "/clients",
+            path: '/clients',
             element: <ClientMaster />,
           },
           {
-            path: "/web-tracking",
+            path: '/web-tracking',
             element: <WebTracking />,
           },
           {
-            path: "/subscription",
+            path: '/subscription',
             element: <Subscription />,
           },
           {
-            path: "/diamond-listing",
+            path: '/diamond-listing',
             element: <DiamondListing />,
           },
           {
-            path: "/orders-transactions",
+            path: '/orders-transactions',
             element: <OrderTransactions />,
           },
         ],
@@ -90,7 +94,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "*",
+    path: '*',
     element: <NotFound />,
   },
 ]);
