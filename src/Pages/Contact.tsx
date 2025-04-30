@@ -9,7 +9,7 @@ import heroSectionBg from '../assets/heroSectionBg.svg';
 
 const Contact = () => {
   return (
-    <Container maxWidth='lg' sx={{ py: 4 }}>
+    <Container maxWidth='xl' sx={{ py: 4, px: { xs: 2, sm: 3, md: 4, lg: 5 } }}>
       <Box
         sx={{
           backgroundImage: `url(${heroSectionBg})`,
