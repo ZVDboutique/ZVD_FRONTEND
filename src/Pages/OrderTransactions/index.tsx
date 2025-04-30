@@ -21,12 +21,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import SimpleTable from '../../Components/SimpleTable';
 import axiosInstance from '../../Utils/axios';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+// import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
-import {
-  OrderTransactionData,
-  OrderTransactionRowData,
-} from '../../Types/Order';
+import { OrderTransactionData } from '../../Types/Order';
 
 const OrderTransactions = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -53,7 +50,7 @@ const OrderTransactions = () => {
 
   const { data: orders } = useQuery({
     queryKey: ['GET_ALL_ORDERS'],
-    queryFn: () => axiosInstance.get('/orders/'),
+    queryFn: () => axiosInstance.get('/Order/Order_dashboard'),
   });
 
   const updateOrderMutation = useMutation({
@@ -83,7 +80,7 @@ const OrderTransactions = () => {
     },
   });
 
-  const handleEdit = (id: number, event?: React.MouseEvent) => {
+  const handleEdit = (id: string, event?: React.MouseEvent) => {
     if (event) {
       event.stopPropagation();
       event.preventDefault();
@@ -91,7 +88,7 @@ const OrderTransactions = () => {
 
     console.log('Edit clicked for id:', id);
 
-    const apiItem = orders?.data?.find((order: any) => order.id === id);
+    const apiItem = orders?.data?.find((order: any) => order.order_id === id);
     if (apiItem) {
       openEditModal(apiItem);
     } else {
@@ -99,34 +96,46 @@ const OrderTransactions = () => {
     }
   };
 
-  const openEditModal = (item: OrderTransactionRowData) => {
+  const openEditModal = (item: any) => {
     setOrderData({
-      id: item.id,
+      id: item.order_id,
       order_id: item.order_id,
-      buyer_name: item.buyer_name,
-      diamond: item.diamond,
-      qty: item.qty,
-      date: item.date,
-      price: item.price,
-      status: item.status,
+      buyer_name: `${item.first_name} ${item.last_name}`,
+      diamond: item.diamond_id.toString(),
+      qty: item.quantity.toString(),
+      date: new Date(item.order_date).toISOString().split('T')[0],
+      price: item.item_total.toString(),
+      status: getStatusFromId(item.statusid),
     });
-    setSelectedId(item.id);
+    setSelectedId(item.order_id);
     setIsEditing(true);
     setOpenModal(true);
   };
 
-  const handleDelete = (id: number, event?: React.MouseEvent) => {
-    if (event) {
-      event.stopPropagation();
-    }
-
-    setOrderToDelete(id);
-    setDeleteDialogOpen(true);
+  const getStatusFromId = (statusId: number): string => {
+    const statusMap: { [key: number]: string } = {
+      1: 'Pending',
+      2: 'Processing',
+      3: 'Shipped',
+      4: 'Delivered',
+      5: 'Completed',
+      6: 'Cancelled',
+    };
+    return statusMap[statusId] || 'Pending';
   };
+
+  // const handleDelete = (id: string, event?: React.MouseEvent) => {
+  //   if (event) {
+  //     event.stopPropagation();
+  //   }
+
+  //   setOrderToDelete(id as any);
+  //   setDeleteDialogOpen(true);
+  // };
 
   const confirmDelete = () => {
     if (orderToDelete !== null) {
-      deleteOrderMutation.mutate(orderToDelete);
+      deleteOrderMutation.mutate(orderToDelete as any);
       setDeleteDialogOpen(false);
       setOrderToDelete(null);
     }
@@ -177,31 +186,39 @@ const OrderTransactions = () => {
       field: 'buyer_name',
       headerName: 'Buyer Name',
       flex: 1,
+      valueGetter: (params: any) =>
+        `${params.row.first_name} ${params.row.last_name}`,
     },
     {
       field: 'diamond',
       headerName: 'Diamond',
       flex: 1,
+      valueGetter: (params: any) => params.row.diamond_name,
     },
     {
       field: 'qty',
       headerName: 'Quantity',
       flex: 1,
+      valueGetter: (params: any) => params.row.quantity,
     },
     {
       field: 'date',
       headerName: 'Date',
       flex: 1,
+      valueGetter: (params: any) =>
+        new Date(params.row.order_date).toLocaleDateString(),
     },
     {
       field: 'price',
       headerName: 'Price',
       flex: 1,
+      valueGetter: (params: any) => params.row.item_total,
     },
     {
       field: 'status',
       headerName: 'Status',
       flex: 1,
+      valueGetter: (params: any) => getStatusFromId(params.row.statusid),
     },
     {
       field: 'actions',
@@ -212,20 +229,20 @@ const OrderTransactions = () => {
           <Stack direction='row' spacing={1}>
             <IconButton
               size='small'
-              onClick={(event) => handleEdit(params.row.id, event)}
+              onClick={(event) => handleEdit(params.row.order_id, event)}
               sx={{ color: 'primary.main' }}
               aria-label='Edit order'
             >
               <EditIcon fontSize='small' />
             </IconButton>
-            <IconButton
+            {/* <IconButton
               size='small'
-              onClick={(event) => handleDelete(params.row.id, event)}
+              onClick={(event) => handleDelete(params.row.order_id, event)}
               sx={{ color: 'error.main' }}
               aria-label='Delete order'
             >
               <DeleteIcon fontSize='small' />
-            </IconButton>
+            </IconButton> */}
           </Stack>
         );
       },

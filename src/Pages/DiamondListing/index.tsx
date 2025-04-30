@@ -97,7 +97,6 @@ const DiamondListing = () => {
 
   const createDiamondMutation = useMutation({
     mutationFn: (newDiamond: DiamondData) => {
-      // Create the payload according to the API requirements
       const payload = {
         diamondId: 0,
         shapeName: newDiamond.shape || 'Round',
@@ -134,7 +133,6 @@ const DiamondListing = () => {
 
   const updateDiamondMutation = useMutation({
     mutationFn: (diamond: DiamondData) => {
-      // Create the payload according to the API requirements
       const payload = {
         diamondId: diamond.id || 0,
         shapeName: diamond.shape || 'Round',
