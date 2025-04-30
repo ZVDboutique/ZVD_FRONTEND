@@ -6,7 +6,7 @@ import WhyDiamond from "./WhyDiamond";
 
 const Website = () => {
   return (
-    <Box p={6}>
+    <Box p={6} overflow={"hidden auto"}>
       <HeroSection />
       <AboutLbd />
       <WhyDiamond />

@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
+import { default as gemsImages } from "../assets/allGems.svg";
 import heroSectionBg from "../assets/heroSectionBg.svg";
 import heroSectionDiamond from "../assets/heroSectionDiamond.svg";
-import zvdLogo from "../assets/zvLogo.svg";
 
 const HeroSection = () => {
   return (
@@ -14,16 +14,25 @@ const HeroSection = () => {
           xs: 5,
           md: 7,
         },
-        pt: {
+        pb: {
           xs: 5,
-          md: 7,
+          md: 18,
         },
         borderRadius: 6,
       }}
+      position={"relative"}
     >
-      <Grid size={12}>
-        <img src={zvdLogo} width={200} />
-      </Grid>
+      <img
+        src={gemsImages}
+        style={{
+          position: "absolute",
+          left: 0,
+          bottom: -200,
+          zIndex: 999,
+        }}
+        width={"100%"}
+      />
+
       <Grid size={12} textAlign={"right"}>
         <img
           src={heroSectionDiamond}

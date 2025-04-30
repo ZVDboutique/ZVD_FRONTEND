@@ -86,7 +86,7 @@ const WhyDiamond = () => {
       {data?.map((d) => {
         return (
           <Grid size={{ xs: 12, md: 6 }}>
-            <Card sx={{ minHeight: 280, borderRadius: 3, boxShadow: "none" }}>
+            <Card sx={{ minHeight: 310, borderRadius: 3, boxShadow: "none" }}>
               <CardContent>
                 <Grid container spacing={3}>
                   <Grid size={"auto"}>

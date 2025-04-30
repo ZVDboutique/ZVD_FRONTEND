@@ -3,7 +3,7 @@ import zvdLogo from "../assets/diamondSection2.svg";
 
 const AboutLbd = () => {
   return (
-    <Grid container>
+    <Grid container pt={20}>
       <Grid size={6} textAlign={"center"}>
         <img src={zvdLogo} />
       </Grid>
