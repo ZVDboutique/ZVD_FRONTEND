@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { default as gemsImages } from "../assets/allGems.svg";
 import heroSectionBg from "../assets/heroSectionBg.svg";
 import heroSectionDiamond from "../assets/heroSectionDiamond.svg";
@@ -17,6 +17,8 @@ const HeroSection = () => {
         pb: {
           xs: 5,
           md: 18,
+          lg: 30,
+          xl: 60,
         },
         borderRadius: 6,
       }}
@@ -33,7 +35,24 @@ const HeroSection = () => {
         width={"100%"}
       />
 
-      <Grid size={12} textAlign={"right"}>
+      <Grid
+        size={6}
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"flex-start"}
+        flexDirection={"column"}
+      >
+        <Typography color="#123449" fontWeight={600} fontSize={65}>
+          Discover the Future of
+        </Typography>
+        <Typography color="#123449" fontWeight={800} fontSize={80}>
+          Diamonds
+        </Typography>
+        <Typography color="#123449" fontWeight={600}>
+          Sustainable, Ethical, and Stunning Lab-Grown Diamonds
+        </Typography>
+      </Grid>
+      <Grid size={6}>
         <img
           src={heroSectionDiamond}
           style={{
