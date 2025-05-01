@@ -33,6 +33,7 @@ interface OrderTransactionData {
   date: string;
   price: string;
   status: string;
+  statusid?: number;
 }
 
 interface OrderTransactionRowData {
@@ -44,6 +45,7 @@ interface OrderTransactionRowData {
   date: string;
   price: string;
   status: string;
+  statusid?: number;
 }
 
 const OrderTransactions = () => {
@@ -109,12 +111,6 @@ const OrderTransactions = () => {
 
     console.log('Edit clicked for id:', id);
 
-    const mockItem = mockData.find((item) => item.id === id);
-    if (mockItem) {
-      openEditModal(mockItem);
-      return;
-    }
-
     const apiItem = orders?.data?.find((order: any) => order.id === id);
     if (apiItem) {
       openEditModal(apiItem);
@@ -132,11 +128,36 @@ const OrderTransactions = () => {
       qty: item.qty,
       date: item.date,
       price: item.price,
-      status: item.status,
+      status: item.statusid ? getStatusFromId(item.statusid) : item.status,
     });
     setSelectedId(item.id);
     setIsEditing(true);
     setOpenModal(true);
+  };
+
+  const getStatusFromId = (statusId: number): string => {
+    const statusMap: { [key: number]: string } = {
+      1: 'Pending',
+      2: 'Processing',
+      3: 'Shipped',
+      4: 'Delivered',
+      5: 'Cancelled',
+      6: 'Returned',
+    };
+    return statusMap[statusId] || 'Pending';
+  };
+
+  // Convert status name to statusid
+  const getIdFromStatus = (status: string): number => {
+    const idMap: { [key: string]: number } = {
+      Pending: 1,
+      Processing: 2,
+      Shipped: 3,
+      Delivered: 4,
+      Cancelled: 5,
+      Returned: 6,
+    };
+    return idMap[status] || 1;
   };
 
   const handleDelete = (id: number, event?: React.MouseEvent) => {
@@ -169,7 +190,12 @@ const OrderTransactions = () => {
 
   const handleSave = () => {
     if (isEditing && selectedId) {
-      updateOrderMutation.mutate({ ...orderData, id: selectedId });
+      const orderWithStatusId = {
+        ...orderData,
+        id: selectedId,
+        statusid: getIdFromStatus(orderData.status),
+      };
+      updateOrderMutation.mutate(orderWithStatusId);
     }
   };
 
@@ -226,6 +252,11 @@ const OrderTransactions = () => {
       field: 'status',
       headerName: 'Status',
       flex: 1,
+      valueGetter: (params) => {
+        return params.row.statusid
+          ? getStatusFromId(params.row.statusid)
+          : params.row.status;
+      },
     },
     {
       field: 'actions',
@@ -256,30 +287,7 @@ const OrderTransactions = () => {
     },
   ];
 
-  const mockData: OrderTransactionRowData[] = [
-    {
-      id: 1,
-      order_id: 'ORD-123456',
-      buyer_name: 'John Smith',
-      diamond: 'Round Brilliant 1.5ct',
-      qty: '1',
-      date: '2023-06-15',
-      price: '$15,000',
-      status: 'Completed',
-    },
-    {
-      id: 2,
-      order_id: 'ORD-789012',
-      buyer_name: 'Jane Doe',
-      diamond: 'Princess Cut 2.0ct',
-      qty: '1',
-      date: '2023-06-20',
-      price: '$20,000',
-      status: 'Pending',
-    },
-  ];
-
-  const tableData = orders?.data || mockData;
+  const tableData = orders?.data || [];
 
   return (
     <>
@@ -428,8 +436,8 @@ const OrderTransactions = () => {
                 <option value='Processing'>Processing</option>
                 <option value='Shipped'>Shipped</option>
                 <option value='Delivered'>Delivered</option>
-                <option value='Completed'>Completed</option>
                 <option value='Cancelled'>Cancelled</option>
+                <option value='Returned'>Returned</option>
               </TextField>
             </Grid>
           </Grid>
