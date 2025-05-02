@@ -40,7 +40,7 @@ const Contact = () => {
               md: 6,
             },
             position: 'relative',
-            mb: 4,
+            mb: 7,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -141,14 +141,15 @@ const Contact = () => {
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', md: 'row' },
-            flexWrap: { md: 'wrap' },
-            gap: { xs: 3, md: 4 },
+            gap: { xs: 4, md: 8, lg: 12 },
             mb: { xs: 4, md: 8 },
+            justifyContent: 'center',
+            mx: 'auto',
           }}
         >
           <Box
             sx={{
-              flex: '1 1 300px',
+              width: { xs: '100%', md: '40%', lg: '35%' },
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
@@ -339,76 +340,79 @@ const Contact = () => {
 
           <Box
             sx={{
-              flex: '1 1 500px',
-              backgroundColor: '#f0f7fc',
-              padding: { xs: 2.5, md: 3.5 },
-              borderRadius: 2,
+              backgroundColor: '#e8f4fa',
+              padding: { xs: 3, md: 4 },
+              borderRadius: 3,
               order: { xs: 1, md: 2 },
             }}
           >
-            <Box sx={{ mb: 1.5 }}>
-              <Typography
-                variant='subtitle1'
-                sx={{ mb: 0.75, fontWeight: 'medium' }}
-              >
-                Name
-              </Typography>
-              <TextField
-                fullWidth
-                variant='outlined'
-                placeholder='Jonathan John'
-                size='small'
-                sx={{
-                  backgroundColor: '#fff',
-                  '& .MuiOutlinedInput-root': {
-                    '& fieldset': {
-                      borderColor: 'transparent',
+            <Box sx={{ display: 'flex', gap: 2, mb: 1 }}>
+              <Box sx={{ flex: 1 }}>
+                <Typography
+                  variant='subtitle1'
+                  sx={{ mb: 0.75, fontWeight: 'medium', color: '#0c3c60' }}
+                >
+                  Name
+                </Typography>
+                <TextField
+                  fullWidth
+                  variant='outlined'
+                  placeholder='Jonathan John'
+                  size='small'
+                  sx={{
+                    borderRadius: '5px',
+                    backgroundColor: '#fff',
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: 'transparent',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'transparent',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: 'primary.main',
+                        borderWidth: 1,
+                      },
                     },
-                    '&:hover fieldset': {
-                      borderColor: 'transparent',
+                  }}
+                />
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <Typography
+                  variant='subtitle1'
+                  sx={{ mb: 0.75, fontWeight: 'medium', color: '#0c3c60' }}
+                >
+                  Email
+                </Typography>
+                <TextField
+                  fullWidth
+                  variant='outlined'
+                  placeholder='abc@gmail.com'
+                  type='email'
+                  size='small'
+                  sx={{
+                    borderRadius: '5px',
+                    backgroundColor: '#fff',
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: 'transparent',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'transparent',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: 'primary.main',
+                        borderWidth: 1,
+                      },
                     },
-                    '&.Mui-focused fieldset': {
-                      borderColor: 'primary.main',
-                      borderWidth: 1,
-                    },
-                  },
-                }}
-              />
+                  }}
+                />
+              </Box>
             </Box>
-            <Box sx={{ mb: 1.5 }}>
+            <Box sx={{ mb: 1 }}>
               <Typography
                 variant='subtitle1'
-                sx={{ mb: 0.75, fontWeight: 'medium' }}
-              >
-                Email
-              </Typography>
-              <TextField
-                fullWidth
-                variant='outlined'
-                placeholder='abc@gmail.com'
-                type='email'
-                size='small'
-                sx={{
-                  backgroundColor: '#fff',
-                  '& .MuiOutlinedInput-root': {
-                    '& fieldset': {
-                      borderColor: 'transparent',
-                    },
-                    '&:hover fieldset': {
-                      borderColor: 'transparent',
-                    },
-                    '&.Mui-focused fieldset': {
-                      borderColor: 'primary.main',
-                      borderWidth: 1,
-                    },
-                  },
-                }}
-              />
-            </Box>
-            <Box sx={{ mb: 1.5 }}>
-              <Typography
-                variant='subtitle1'
-                sx={{ mb: 0.75, fontWeight: 'medium' }}
+                sx={{ mb: 0.75, fontWeight: 'medium', color: '#0c3c60' }}
               >
                 Phone
               </Typography>
@@ -418,6 +422,7 @@ const Contact = () => {
                 placeholder='+91 12345 67890'
                 size='small'
                 sx={{
+                  borderRadius: '5px',
                   backgroundColor: '#fff',
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
@@ -434,10 +439,10 @@ const Contact = () => {
                 }}
               />
             </Box>
-            <Box sx={{ mb: 2 }}>
+            <Box sx={{ mb: 2.5 }}>
               <Typography
                 variant='subtitle1'
-                sx={{ mb: 0.75, fontWeight: 'medium' }}
+                sx={{ mb: 0.75, fontWeight: 'medium', color: '#0c3c60' }}
               >
                 Message
               </Typography>
@@ -445,9 +450,10 @@ const Contact = () => {
                 fullWidth
                 variant='outlined'
                 multiline
-                rows={3}
+                rows={4}
                 placeholder='I am Happy to Contact with you'
                 sx={{
+                  borderRadius: '5px',
                   backgroundColor: '#fff',
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
@@ -471,9 +477,8 @@ const Contact = () => {
                 backgroundColor: '#0c3c60',
                 color: '#fff',
                 borderRadius: 1,
-                py: 1.5,
                 fontWeight: 'bold',
-                width: '100%',
+                width: '160px',
                 '&:hover': {
                   backgroundColor: '#072a43',
                 },
