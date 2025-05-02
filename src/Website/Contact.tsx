@@ -12,11 +12,26 @@ import Footer from './Footer';
 const Contact = () => {
   return (
     <>
-      {/* <Header /> */}
       <Container
         maxWidth='xl'
-        sx={{ py: 4, px: { xs: 2, sm: 3, md: 4, lg: 5 } }}
+        sx={{
+          py: 4,
+          px: { xs: 2, sm: 3, md: 4, lg: 5 },
+          position: 'relative',
+          zIndex: 1000,
+        }}
       >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: -50,
+            left: 0,
+            right: -6,
+            zIndex: 1001,
+          }}
+        >
+          <Header />
+        </Box>
         <Box
           sx={{
             backgroundImage: `url(${heroSectionBg})`,
@@ -626,7 +641,7 @@ const Contact = () => {
           </Box>
         </Box>
       </Container>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };
