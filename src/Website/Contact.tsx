@@ -12,7 +12,7 @@ import Footer from './Footer';
 const Contact = () => {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <Container
         maxWidth='xl'
         sx={{ py: 4, px: { xs: 2, sm: 3, md: 4, lg: 5 } }}
@@ -609,7 +609,6 @@ const Contact = () => {
                 position: 'relative',
                 height: { xs: '300px', md: 'auto' },
                 '& iframe': {
-                  border: 'none',
                   width: '100%',
                   height: '100%',
                 },
@@ -627,7 +626,7 @@ const Contact = () => {
           </Box>
         </Box>
       </Container>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
