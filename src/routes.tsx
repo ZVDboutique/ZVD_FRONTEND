@@ -10,6 +10,7 @@ import ClientMaster from "./Pages/ClientMaster";
 import CompanyMaster from "./Pages/CompanyMaster";
 import Dashboard from "./Pages/Dashboard";
 import DiamondListing from "./Pages/DiamondListing";
+import ExplorerDiamonds from "./Pages/ExplorerDiamonds";
 import OrderTransactions from "./Pages/OrderTransactions";
 import Stock from "./Pages/Stocks";
 import Subscription from "./Pages/Subscription";
@@ -95,6 +96,10 @@ export const router = createBrowserRouter([
             element: <OrderTransactions />,
           },
         ],
+      },
+      {
+        path: "/explorer-diamonds",
+        element: <ExplorerDiamonds />,
       },
     ],
   },
