@@ -2,6 +2,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Button,
   Grid,
   Typography,
 } from "@mui/material";
@@ -11,8 +12,10 @@ import { useFetchQuery } from "../../Utils/useQueries";
 
 const DiamondFilterModal = ({
   setFilterParams,
+  filtersParams,
 }: {
-  setFilterParams: DiamondFilterInterface;
+  filtersParams: DiamondFilterInterface;
+  setFilterParams: (d: DiamondFilterInterface) => void;
 }) => {
   const { data: shapesList } = useFetchQuery({
     key: ["GET_ALL_SHAPES_LIST"],
@@ -66,7 +69,46 @@ const DiamondFilterModal = ({
           <AccordionSummary expandIcon={<MdExpandMore />}>
             <Typography fontWeight={600}>Shapes</Typography>
           </AccordionSummary>
-          <AccordionDetails>{shapesList}</AccordionDetails>
+          <AccordionDetails
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 2,
+            }}
+          >
+            {Array.from({ length: 20 })?.map((data, index) => {
+              return (
+                <Button
+                  onClick={() => {
+                    setFilterParams({
+                      ...filtersParams,
+                      shape: `${index}`,
+                    });
+                  }}
+                  sx={{
+                    minWidth: 80,
+                    minHeight: 80,
+                    borderRadius: 2,
+                    boxShadow: "0 0 6px -1px #000",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    color: +filtersParams?.shape === index ? "#fff" : "#123449",
+                    bgcolor:
+                      +filtersParams?.shape === index ? "#123449" : "#fff",
+                  }}
+                >
+                  <img
+                    src="labRing.svg"
+                    alt=""
+                    color={+filtersParams?.shape === index ? "#fff" : "#123449"}
+                  />
+                  <Typography>RIGNSDA</Typography>
+                </Button>
+              );
+            })}
+          </AccordionDetails>
         </Accordion>
       </Grid>
     </Grid>

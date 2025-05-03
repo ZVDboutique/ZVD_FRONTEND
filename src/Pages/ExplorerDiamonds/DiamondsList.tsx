@@ -86,7 +86,10 @@ const DiamondsList = ({
           modalTitle={"Select Filter"}
           width={"60%"}
         >
-          <DiamondFilterModal setFilterParams={setFilterParams} />
+          <DiamondFilterModal
+            setFilterParams={setFilterParams}
+            filtersParams={filtersParams}
+          />
         </SimpleSideModal>
       </Show.When>
     </>
