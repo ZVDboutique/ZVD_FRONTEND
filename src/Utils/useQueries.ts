@@ -43,10 +43,9 @@ export const useFetchQuery = <T = any>(props: PropsState) => {
   return useQuery<T>({
     queryKey: key,
     retry: retry || false,
-    queryFn: ({ signal }) =>
+    queryFn: () =>
       axiosInstance.get(route, {
         params: requestBody,
-        signal,
         headers: headers,
       }),
     enabled: enabled,
