@@ -1,18 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface DiamondFilterInterface {
-  shape: string;
-  caratMin: string;
-  caratMax: string;
-  color: string;
-  clarity: string;
-  cut: string;
-  priceMin: string;
-  priceMax: string;
-  fluorescenceIntensity: string;
-  lengthMin: string;
-  lengthMax: string;
-  widthMin: string;
-  widthMax: string;
-  type: string;
+  shape: any;
+  caratMin: any;
+  caratMax: any;
+  color: any;
+  clarity: any;
+  cut: any;
+  priceMin: any;
+  priceMax: any;
+  fluorescenceIntensity: any;
+  lengthMin: any;
+  lengthMax: any;
+  widthMin: any;
+  widthMax: any;
+  type: any;
 }
 
 export interface DiamondListInterface {
