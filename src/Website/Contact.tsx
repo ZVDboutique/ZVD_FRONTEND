@@ -30,7 +30,7 @@ const Contact = () => {
             zIndex: 1001,
           }}
         >
-          <Header />
+          <Header showLogo={false} />
         </Box>
         <Box
           sx={{
