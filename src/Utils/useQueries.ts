@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   UseMutationOptions,
   useMutation as useMutationQuery,

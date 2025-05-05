@@ -59,13 +59,12 @@ const Registration = () => {
       localStorage.setItem("token", data.data.token);
       navigate("/dashboard");
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error(error.message || "Something went wrong.Please try again.");
     },
   });
 
   const onSubmit = (data: RegisterRequest) => {
-    console.log("🚀 ~ onSubmit ~ search:", search);
     if (search === "") {
       navigate(`/sign-up?kyc-verification`);
     }

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Grid, TableContainer, TextField } from "@mui/material";
 import { DataGrid, DataGridProps } from "@mui/x-data-grid";
 import { matchSorter } from "match-sorter";

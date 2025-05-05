@@ -28,7 +28,7 @@ const ForgotpasswordModal = ({
     },
   });
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: (data: LoginRequest) =>
       axiosInstance.post(
         `${import.meta.env.VITE_APP_BASE_URL}/SignupRequest/forgot-password`,
@@ -38,7 +38,7 @@ const ForgotpasswordModal = ({
       setOpen(false);
       toast.success("Password reset link sent to your email.");
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error(error.message || "Something went wrong.Please try again.");
     },
   });
@@ -126,7 +126,7 @@ const ForgotpasswordModal = ({
             <Grid size={12}>
               <LoadingButton
                 fullWidth
-                loading={isPending}
+                loading={isLoading}
                 type="submit"
                 variant="contained"
                 size="large"
