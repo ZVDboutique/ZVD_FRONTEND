@@ -7,6 +7,7 @@ import labGrownDiamonds from '../assets/lab-diamonds.png';
 import diamondBg from '../assets/diamond-bg.png';
 import Header from './Header';
 import Footer from './Footer';
+import { ReactNode } from 'react';
 
 const DiamondCard = ({ image, title }: { image: string; title: string }) => {
   return (
@@ -73,6 +74,48 @@ const DiamondCard = ({ image, title }: { image: string; title: string }) => {
           </Typography>
         </Box>
       </Box>
+    </Box>
+  );
+};
+
+const ServiceCard = ({ icon, title }: { icon: ReactNode; title: string }) => {
+  return (
+    <Box
+      sx={{
+        bgcolor: '#0c2e47',
+        borderRadius: '8px',
+        p: 3,
+        color: 'white',
+        height: '100%',
+        minHeight: '120px',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <Box
+        sx={{
+          bgcolor: '#e6f2ff',
+          width: 48,
+          height: 48,
+          borderRadius: '8px',
+          mb: 2,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {icon}
+      </Box>
+      <Typography
+        variant='h6'
+        sx={{
+          fontSize: '1rem',
+          fontWeight: 600,
+          mt: 'auto',
+        }}
+      >
+        {title}
+      </Typography>
     </Box>
   );
 };
@@ -382,7 +425,6 @@ const Services = () => {
             Our Services
           </Typography>
 
-          {/* Top row with 4 cards */}
           <Box
             sx={{
               display: 'grid',
@@ -395,31 +437,8 @@ const Services = () => {
               mb: 3,
             }}
           >
-            {/* Quality Assurance */}
-            <Box
-              sx={{
-                bgcolor: '#0c2e47',
-                borderRadius: '8px',
-                p: 3,
-                color: 'white',
-                height: '100%',
-                minHeight: '120px',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <Box
-                sx={{
-                  bgcolor: '#e6f2ff',
-                  width: 48,
-                  height: 48,
-                  borderRadius: '8px',
-                  mb: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+            <ServiceCard
+              icon={
                 <svg
                   width='24'
                   height='24'
@@ -432,44 +451,11 @@ const Services = () => {
                     fill='#0c2e47'
                   />
                 </svg>
-              </Box>
-              <Typography
-                variant='h6'
-                sx={{
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  mt: 'auto',
-                }}
-              >
-                Uncompromising Quality Assurance
-              </Typography>
-            </Box>
-
-            {/* Commerce Hub */}
-            <Box
-              sx={{
-                bgcolor: '#0c2e47',
-                borderRadius: '8px',
-                p: 3,
-                color: 'white',
-                height: '100%',
-                minHeight: '120px',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <Box
-                sx={{
-                  bgcolor: '#e6f2ff',
-                  width: 48,
-                  height: 48,
-                  borderRadius: '8px',
-                  mb: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+              }
+              title='Quality Assurance'
+            />
+            <ServiceCard
+              icon={
                 <svg
                   width='24'
                   height='24'
@@ -482,44 +468,11 @@ const Services = () => {
                     fill='#0c2e47'
                   />
                 </svg>
-              </Box>
-              <Typography
-                variant='h6'
-                sx={{
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  mt: 'auto',
-                }}
-              >
-                Exclusive Commerce Hub App
-              </Typography>
-            </Box>
-
-            {/* Shipping */}
-            <Box
-              sx={{
-                bgcolor: '#0c2e47',
-                borderRadius: '8px',
-                p: 3,
-                color: 'white',
-                height: '100%',
-                minHeight: '120px',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <Box
-                sx={{
-                  bgcolor: '#e6f2ff',
-                  width: 48,
-                  height: 48,
-                  borderRadius: '8px',
-                  mb: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+              }
+              title='Exclusive Commerce Hub App'
+            />
+            <ServiceCard
+              icon={
                 <svg
                   width='24'
                   height='24'
@@ -532,44 +485,11 @@ const Services = () => {
                     fill='#0c2e47'
                   />
                 </svg>
-              </Box>
-              <Typography
-                variant='h6'
-                sx={{
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  mt: 'auto',
-                }}
-              >
-                Rapid & Reliable Shipping Solutions
-              </Typography>
-            </Box>
-
-            {/* Stone Matching */}
-            <Box
-              sx={{
-                bgcolor: '#0c2e47',
-                borderRadius: '8px',
-                p: 3,
-                color: 'white',
-                height: '100%',
-                minHeight: '120px',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <Box
-                sx={{
-                  bgcolor: '#e6f2ff',
-                  width: 48,
-                  height: 48,
-                  borderRadius: '8px',
-                  mb: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+              }
+              title='Rapid & Reliable Shipping Solutions'
+            />
+            <ServiceCard
+              icon={
                 <svg
                   width='24'
                   height='24'
@@ -582,18 +502,9 @@ const Services = () => {
                     fill='#0c2e47'
                   />
                 </svg>
-              </Box>
-              <Typography
-                variant='h6'
-                sx={{
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  mt: 'auto',
-                }}
-              >
-                Effortless Stone Matching
-              </Typography>
-            </Box>
+              }
+              title='Effortless Stone Matching'
+            />
           </Box>
 
           {/* Bottom row with 3 cards */}
@@ -610,31 +521,8 @@ const Services = () => {
               mx: 'auto',
             }}
           >
-            {/* Customer App */}
-            <Box
-              sx={{
-                bgcolor: '#0c2e47',
-                borderRadius: '8px',
-                p: 3,
-                color: 'white',
-                height: '100%',
-                minHeight: '120px',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <Box
-                sx={{
-                  bgcolor: '#e6f2ff',
-                  width: 48,
-                  height: 48,
-                  borderRadius: '8px',
-                  mb: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+            <ServiceCard
+              icon={
                 <svg
                   width='24'
                   height='24'
@@ -647,44 +535,11 @@ const Services = () => {
                     fill='#0c2e47'
                   />
                 </svg>
-              </Box>
-              <Typography
-                variant='h6'
-                sx={{
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  mt: 'auto',
-                }}
-              >
-                Branded Customer App Solution
-              </Typography>
-            </Box>
-
-            {/* AR Experience */}
-            <Box
-              sx={{
-                bgcolor: '#0c2e47',
-                borderRadius: '8px',
-                p: 3,
-                color: 'white',
-                height: '100%',
-                minHeight: '120px',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <Box
-                sx={{
-                  bgcolor: '#e6f2ff',
-                  width: 48,
-                  height: 48,
-                  borderRadius: '8px',
-                  mb: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+              }
+              title='Branded Customer App Solution'
+            />
+            <ServiceCard
+              icon={
                 <svg
                   width='24'
                   height='24'
@@ -697,44 +552,11 @@ const Services = () => {
                     fill='#0c2e47'
                   />
                 </svg>
-              </Box>
-              <Typography
-                variant='h6'
-                sx={{
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  mt: 'auto',
-                }}
-              >
-                Immersive AR Experience
-              </Typography>
-            </Box>
-
-            {/* API Connectivity */}
-            <Box
-              sx={{
-                bgcolor: '#0c2e47',
-                borderRadius: '8px',
-                p: 3,
-                color: 'white',
-                height: '100%',
-                minHeight: '120px',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <Box
-                sx={{
-                  bgcolor: '#e6f2ff',
-                  width: 48,
-                  height: 48,
-                  borderRadius: '8px',
-                  mb: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+              }
+              title='Immersive AR Experience'
+            />
+            <ServiceCard
+              icon={
                 <svg
                   width='24'
                   height='24'
@@ -747,18 +569,9 @@ const Services = () => {
                     fill='#0c2e47'
                   />
                 </svg>
-              </Box>
-              <Typography
-                variant='h6'
-                sx={{
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  mt: 'auto',
-                }}
-              >
-                Effortless API Connectivity
-              </Typography>
-            </Box>
+              }
+              title='Effortless API Connectivity'
+            />
           </Box>
         </Box>
 
