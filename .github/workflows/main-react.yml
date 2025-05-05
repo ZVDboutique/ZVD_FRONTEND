@@ -37,6 +37,7 @@ jobs:
           host: ${{ secrets.AWS_EC2_IP }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
+          timeout: 700s
           script: |
             # Navigate to the project directory
             cd /home/ec2-user/ZVD_FRONTEND
