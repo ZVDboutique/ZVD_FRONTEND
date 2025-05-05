@@ -1,16 +1,81 @@
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import PaymentIcon from '@mui/icons-material/Payment';
-import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import { Box, Container, Typography } from '@mui/material';
 import diamondPendant from '../assets/diamond-pendant.svg';
 import diamondRing from '../assets/diamond-ring.svg';
 import heroSectionBg from '../assets/heroSectionBg.svg';
-import ourStory from '../assets/our-story.png';
-import websiteDesktop from '../assets/website-desktop.png';
-import whoWeAre from '../assets/who-we-are.png';
+import naturalDiamonds from '../assets/natural-diamonds.png';
+import labGrownDiamonds from '../assets/lab-diamonds.png';
 import diamondBg from '../assets/diamond-bg.png';
 import Header from './Header';
 import Footer from './Footer';
+
+const DiamondCard = ({ image, title }: { image: string; title: string }) => {
+  return (
+    <Box
+      sx={{
+        height: { xs: '140px', sm: '150px' },
+        borderRadius: '8px',
+        overflow: 'hidden',
+        position: 'relative',
+        boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+      }}
+    >
+      <Box
+        sx={{
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url(${image})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          },
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            border: '1px solid white',
+            borderRadius: '4px',
+            px: 4,
+            py: 2,
+            cursor: 'pointer',
+            '&:hover': {
+              background: 'rgba(255,255,255,0.1)',
+            },
+          }}
+        >
+          <Typography
+            variant='subtitle1'
+            sx={{
+              color: 'white',
+              fontWeight: 500,
+              fontSize: '1.1rem',
+            }}
+          >
+            {title}
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
 
 const Services = () => {
   return (
@@ -265,7 +330,6 @@ const Services = () => {
               </Box>
             </Box>
 
-            {/* Two smaller service boxes */}
             <Box
               sx={{
                 display: 'grid',
@@ -273,121 +337,11 @@ const Services = () => {
                 gap: 3,
               }}
             >
-              {/* Natural Diamonds */}
-              <Box
-                sx={{
-                  height: { xs: '140px', sm: '150px' },
-                  borderRadius: '8px',
-                  overflow: 'hidden',
-                  position: 'relative',
-                  boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
-                }}
-              >
-                <Box
-                  sx={{
-                    width: '100%',
-                    height: '100%',
-                    backgroundImage:
-                      'url(https://images.pexels.com/photos/4040441/pexels-photo-4040441.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    '&::after': {
-                      content: '""',
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      backgroundColor: 'rgba(0,0,0,0.5)',
-                    },
-                  }}
-                />
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Box
-                    sx={{
-                      border: '1px solid white',
-                      borderRadius: '4px',
-                      px: 4,
-                      py: 2,
-                      cursor: 'pointer',
-                      '&:hover': {
-                        background: 'rgba(255,255,255,0.1)',
-                      },
-                    }}
-                  >
-                    <Typography
-                      variant='subtitle1'
-                      sx={{
-                        color: 'white',
-                        fontWeight: 500,
-                        fontSize: '1.1rem',
-                      }}
-                    >
-                      Natural Diamonds
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-
-              {/* Lab Grown Diamonds */}
-              <Box
-                sx={{
-                  height: { xs: '140px', sm: '150px' },
-                  borderRadius: '8px',
-                  overflow: 'hidden',
-                  position: 'relative',
-                  boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
-                  background: '#a6a6a6',
-                }}
-              >
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Box
-                    sx={{
-                      border: '1px solid white',
-                      borderRadius: '4px',
-                      px: 4,
-                      py: 2,
-                      cursor: 'pointer',
-                      '&:hover': {
-                        background: 'rgba(255,255,255,0.1)',
-                      },
-                    }}
-                  >
-                    <Typography
-                      variant='subtitle1'
-                      sx={{
-                        color: 'white',
-                        fontWeight: 500,
-                        fontSize: '1.1rem',
-                      }}
-                    >
-                      Lab grown Diamonds
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
+              <DiamondCard image={naturalDiamonds} title='Natural Diamonds' />
+              <DiamondCard
+                image={labGrownDiamonds}
+                title='Lab Grown Diamonds'
+              />
             </Box>
           </Box>
         </Box>
