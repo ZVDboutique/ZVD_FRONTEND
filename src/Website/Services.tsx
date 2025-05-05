@@ -48,14 +48,19 @@ const DiamondCard = ({ image, title }: { image: string; title: string }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          p: 2,
         }}
       >
         <Box
           sx={{
             border: '1px solid white',
             borderRadius: '4px',
-            px: 4,
-            py: 2,
+            height: '100%',
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            px: 3,
             cursor: 'pointer',
             '&:hover': {
               background: 'rgba(255,255,255,0.1)',
@@ -116,6 +121,72 @@ const ServiceCard = ({ icon, title }: { icon: ReactNode; title: string }) => {
       >
         {title}
       </Typography>
+    </Box>
+  );
+};
+
+const HelpCard = ({
+  icon,
+  title,
+  description,
+}: {
+  icon: ReactNode;
+  title: string;
+  description: string;
+}) => {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        bgcolor: '#e6f2ff',
+        borderRadius: '8px',
+        overflow: 'hidden',
+        height: '100%',
+      }}
+    >
+      <Box
+        sx={{
+          width: '80px',
+          bgcolor: '#0c2e47',
+          display: 'flex',
+          justifyContent: 'center',
+          pt: 3,
+        }}
+      >
+        <Box
+          sx={{
+            width: '48px',
+            height: '48px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {icon}
+        </Box>
+      </Box>
+      <Box sx={{ p: 3, flex: 1 }}>
+        <Typography
+          variant='h6'
+          sx={{
+            fontSize: '1.25rem',
+            fontWeight: 700,
+            color: '#0c2e47',
+            mb: 1,
+          }}
+        >
+          {title}
+        </Typography>
+        <Typography
+          variant='body2'
+          sx={{
+            color: '#667891',
+            fontSize: '0.9rem',
+          }}
+        >
+          {description}
+        </Typography>
+      </Box>
     </Box>
   );
 };
@@ -635,272 +706,83 @@ const Services = () => {
               gap: 3,
             }}
           >
-            {/* Diamond Valuation & Certification */}
-            <Box
-              sx={{
-                display: 'flex',
-                bgcolor: '#e6f2ff',
-                borderRadius: '8px',
-                overflow: 'hidden',
-                height: '100%',
-              }}
-            >
-              <Box
-                sx={{
-                  width: '80px',
-                  bgcolor: '#0c2e47',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  pt: 3,
-                }}
-              >
-                <Box
-                  sx={{
-                    width: '48px',
-                    height: '48px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
+            <HelpCard
+              icon={
+                <svg
+                  width='40'
+                  height='40'
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
                 >
-                  <svg
-                    width='40'
-                    height='40'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM10.67 18L5 12.33L6.41 10.91L10.67 15.17L17.59 8.25L19 9.66L10.67 18Z'
-                      fill='white'
-                    />
-                  </svg>
-                </Box>
-              </Box>
-              <Box sx={{ p: 3, flex: 1 }}>
-                <Typography
-                  variant='h6'
-                  sx={{
-                    fontSize: '1.25rem',
-                    fontWeight: 700,
-                    color: '#0c2e47',
-                    mb: 1,
-                  }}
-                >
-                  Diamond Valuation & Certification
-                </Typography>
-                <Typography
-                  variant='body2'
-                  sx={{
-                    color: '#667891',
-                    fontSize: '0.9rem',
-                  }}
-                >
-                  Accurate assessment and authentication of diamonds to ensure
-                  quality, authenticity, and fair market value.
-                </Typography>
-              </Box>
-            </Box>
+                  <path
+                    d='M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM10.67 18L5 12.33L6.41 10.91L10.67 15.17L17.59 8.25L19 9.66L10.67 18Z'
+                    fill='white'
+                  />
+                </svg>
+              }
+              title='Diamond Valuation & Certification'
+              description='Accurate assessment and authentication of diamonds to ensure quality, authenticity, and fair market value.'
+            />
 
-            {/* Secure Selling Support */}
-            <Box
-              sx={{
-                display: 'flex',
-                bgcolor: '#e6f2ff',
-                borderRadius: '8px',
-                overflow: 'hidden',
-                height: '100%',
-              }}
-            >
-              <Box
-                sx={{
-                  width: '80px',
-                  bgcolor: '#0c2e47',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  pt: 3,
-                }}
-              >
-                <Box
-                  sx={{
-                    width: '48px',
-                    height: '48px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
+            <HelpCard
+              icon={
+                <svg
+                  width='40'
+                  height='40'
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
                 >
-                  <svg
-                    width='40'
-                    height='40'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1ZM11 14.82C8.17 14.2 6 11.7 6 9C6 8.45 6.45 8 7 8H9.5V7C9.5 6.45 9.95 6 10.5 6H13.5C14.05 6 14.5 6.45 14.5 7V8H17C17.55 8 18 8.45 18 9C18 11.7 15.83 14.2 13 14.82V17H16V19H8V17H11V14.82Z'
-                      fill='white'
-                    />
-                  </svg>
-                </Box>
-              </Box>
-              <Box sx={{ p: 3, flex: 1 }}>
-                <Typography
-                  variant='h6'
-                  sx={{
-                    fontSize: '1.25rem',
-                    fontWeight: 700,
-                    color: '#0c2e47',
-                    mb: 1,
-                  }}
-                >
-                  Secure Selling Support
-                </Typography>
-                <Typography
-                  variant='body2'
-                  sx={{
-                    color: '#667891',
-                    fontSize: '0.9rem',
-                  }}
-                >
-                  Get the best value for your diamonds with our reliable selling
-                  process.
-                </Typography>
-              </Box>
-            </Box>
+                  <path
+                    d='M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1ZM11 14.82C8.17 14.2 6 11.7 6 9C6 8.45 6.45 8 7 8H9.5V7C9.5 6.45 9.95 6 10.5 6H13.5C14.05 6 14.5 6.45 14.5 7V8H17C17.55 8 18 8.45 18 9C18 11.7 15.83 14.2 13 14.82V17H16V19H8V17H11V14.82Z'
+                    fill='white'
+                  />
+                </svg>
+              }
+              title='Secure Selling Support'
+              description='Get the best value for your diamonds with our reliable selling process.'
+            />
 
             {/* Investment Guidance */}
-            <Box
-              sx={{
-                display: 'flex',
-                bgcolor: '#e6f2ff',
-                borderRadius: '8px',
-                overflow: 'hidden',
-                height: '100%',
-              }}
-            >
-              <Box
-                sx={{
-                  width: '80px',
-                  bgcolor: '#0c2e47',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  pt: 3,
-                }}
-              >
-                <Box
-                  sx={{
-                    width: '48px',
-                    height: '48px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <svg
-                    width='40'
-                    height='40'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z'
-                      fill='white'
-                    />
-                  </svg>
-                </Box>
-              </Box>
-              <Box sx={{ p: 3, flex: 1 }}>
-                <Typography
-                  variant='h6'
-                  sx={{
-                    fontSize: '1.25rem',
-                    fontWeight: 700,
-                    color: '#0c2e47',
-                    mb: 1,
-                  }}
-                >
-                  Investment Guidance
-                </Typography>
-                <Typography
-                  variant='body2'
-                  sx={{
-                    color: '#667891',
-                    fontSize: '0.9rem',
-                  }}
-                >
-                  Expert insights on diamond investments for long-term value.
-                </Typography>
-              </Box>
-            </Box>
 
-            {/* Trusted Buying Assistance */}
-            <Box
-              sx={{
-                display: 'flex',
-                bgcolor: '#e6f2ff',
-                borderRadius: '8px',
-                overflow: 'hidden',
-                height: '100%',
-              }}
-            >
-              <Box
-                sx={{
-                  width: '80px',
-                  bgcolor: '#0c2e47',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  pt: 3,
-                }}
-              >
-                <Box
-                  sx={{
-                    width: '48px',
-                    height: '48px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
+            <HelpCard
+              icon={
+                <svg
+                  width='40'
+                  height='40'
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
                 >
-                  <svg
-                    width='40'
-                    height='40'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M11.7 15.3c-.4-.4-1-.4-1.4 0l-3.2 3.2-1.4-1.4c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l2.1 2.1c.4.4 1 .4 1.4 0l3.9-3.9c.4-.4.4-1 0-1.4M15 3c-2.2 0-4 1.8-4 4 0 .5.1.9.2 1.3-.7.2-1.4.5-2 .9-.3-.6-.8-1-1.4-1.3C8.9 7.9 9 7.5 9 7c0-2.2-1.8-4-4-4S1 4.8 1 7s1.8 4 4 4h11c.4 0 .7-.1 1-.2.6.4 1.3.7 2 .9-.1.4-.2.8-.2 1.3 0 2.8 2.2 5 5 5s5-2.2 5-5-2.2-5-5-5c-1.2 0-2.3.4-3.1 1.1C21 8.6 21 8.1 21 7.6V7c0-2.2-1.8-4-4-4m-11 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2m15 5c0 1.7-1.3 3-3 3s-3-1.3-3-3 1.3-3 3-3 3 1.3 3 3M15 5c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2'
-                      fill='white'
-                    />
-                  </svg>
-                </Box>
-              </Box>
-              <Box sx={{ p: 3, flex: 1 }}>
-                <Typography
-                  variant='h6'
-                  sx={{
-                    fontSize: '1.25rem',
-                    fontWeight: 700,
-                    color: '#0c2e47',
-                    mb: 1,
-                  }}
+                  <path
+                    d='M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z'
+                    fill='white'
+                  />
+                </svg>
+              }
+              title='Investment Guidance'
+              description='Expert advice on diamond investments to maximize your returns.'
+            />
+
+            <HelpCard
+              icon={
+                <svg
+                  width='40'
+                  height='40'
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
                 >
-                  Trusted Buying Assistance
-                </Typography>
-                <Typography
-                  variant='body2'
-                  sx={{
-                    color: '#667891',
-                    fontSize: '0.9rem',
-                  }}
-                >
-                  Helping you find the perfect diamond with expert guidance and
-                  transparency.
-                </Typography>
-              </Box>
-            </Box>
+                  <path
+                    d='M11.7 15.3c-.4-.4-1-.4-1.4 0l-3.2 3.2-1.4-1.4c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l2.1 2.1c.4.4 1 .4 1.4 0l3.9-3.9c.4-.4.4-1 0-1.4M15 3c-2.2 0-4 1.8-4 4 0 .5.1.9.2 1.3-.7.2-1.4.5-2 .9-.3-.6-.8-1-1.4-1.3C8.9 7.9 9 7.5 9 7c0-2.2-1.8-4-4-4S1 4.8 1 7s1.8 4 4 4h11c.4 0 .7-.1 1-.2.6.4 1.3.7 2 .9-.1.4-.2.8-.2 1.3 0 2.8 2.2 5 5 5s5-2.2 5-5-2.2-5-5-5c-1.2 0-2.3.4-3.1 1.1C21 8.6 21 8.1 21 7.6V7c0-2.2-1.8-4-4-4m-11 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2m15 5c0 1.7-1.3 3-3 3s-3-1.3-3-3 1.3-3 3-3 3 1.3 3 3M15 5c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2'
+                    fill='white'
+                  />
+                </svg>
+              }
+              title='Trusted Buying Assistance'
+              description='Helping you find the perfect diamond with expert guidance and transparency.'
+            />
           </Box>
         </Box>
       </Container>
