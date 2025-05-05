@@ -16,7 +16,6 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <RouterProvider router={router} />
-
         <Toaster
           position="bottom-right"
           reverseOrder={false}

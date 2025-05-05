@@ -9,17 +9,38 @@ import Registration from './Pages/Authentication/Registeration';
 import ClientMaster from './Pages/ClientMaster';
 import CompanyMaster from './Pages/CompanyMaster';
 import Dashboard from './Pages/Dashboard';
-import NotFound from './Pages/NotFound';
+import DiamondListing from './Pages/DiamondListing';
+import ExplorerDiamonds from './Pages/ExplorerDiamonds';
+import OrderTransactions from './Pages/OrderTransactions';
 import Stock from './Pages/Stocks';
 import Subscription from './Pages/Subscription';
 import WebTracking from './Pages/WebTracking';
-import DiamondListing from './Pages/DiamondListing';
-import OrderTransactions from './Pages/OrderTransactions';
+import Website from './Website';
+import About from './Website/About';
+import Contact from './Website/Contact';
+import NotFound from './Website/NotFound';
+import Services from './Website/Services';
 
 export const router = createBrowserRouter([
   {
     path: '*',
     element: <NotFound />,
+  },
+  {
+    path: '/',
+    element: <Website />,
+  },
+  {
+    path: '/contact-us',
+    element: <Contact />,
+  },
+  {
+    path: '/about-us',
+    element: <About />,
+  },
+  {
+    path: '/our-services',
+    element: <Services />,
   },
   {
     path: '/login',
@@ -81,6 +102,10 @@ export const router = createBrowserRouter([
             element: <OrderTransactions />,
           },
         ],
+      },
+      {
+        path: '/explorer-diamonds',
+        element: <ExplorerDiamonds />,
       },
     ],
   },

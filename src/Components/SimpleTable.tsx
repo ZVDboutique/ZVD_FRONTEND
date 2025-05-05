@@ -55,15 +55,7 @@ const SimpleTable = (props: DataGridProps & Props) => {
   };
 
   return (
-    <Grid
-      container
-      sx={{
-        "& .MuiTableContainer-root": {
-          borderTopRightRadius: 0,
-          borderTopLeftRadius: 0,
-        },
-      }}
-    >
+    <Grid container width={"100%"}>
       <Grid size={12}>
         <Show.When isTrue={showHeaderGrid}>
           <Grid
@@ -124,7 +116,14 @@ const SimpleTable = (props: DataGridProps & Props) => {
           </Grid>
         </Show.When>
       </Grid>
-      <Grid size={12}>
+      <Grid
+        size={12}
+        sx={{
+          "& .MuiDataGrid-virtualScrollerContent": {
+            maxHeight: "calc(100vh - 360px)",
+          },
+        }}
+      >
         <TableContainer>
           <DataGrid
             {...props}
