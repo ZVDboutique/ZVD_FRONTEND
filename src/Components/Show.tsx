@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { ReactNode } from "react";
 
 export const Show = ({ children }: { children: ReactNode | null }) => {

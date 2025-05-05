@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { isArray, isEmpty } from "lodash";
 
 export const handleRemoveUnderscore = (dataStr: any) => {
