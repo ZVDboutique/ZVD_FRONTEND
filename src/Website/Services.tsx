@@ -95,8 +95,34 @@ const ServiceCard = ({ icon, title }: { icon: ReactNode; title: string }) => {
         minHeight: '120px',
         display: 'flex',
         flexDirection: 'column',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
+      <Box
+        sx={{
+          position: 'absolute',
+          right: '0',
+          bottom: '0',
+          top: '0',
+          left: '0',
+          opacity: 0.03,
+          transform: 'scale(3)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          '& svg': {
+            width: '48px',
+            height: '48px',
+            fill: 'white',
+          },
+          '& path': {
+            fill: 'white',
+          },
+        }}
+      >
+        {icon}
+      </Box>
       <Box
         sx={{
           bgcolor: '#e6f2ff',
@@ -107,6 +133,8 @@ const ServiceCard = ({ icon, title }: { icon: ReactNode; title: string }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          position: 'relative',
+          zIndex: 1,
         }}
       >
         {icon}
@@ -117,6 +145,8 @@ const ServiceCard = ({ icon, title }: { icon: ReactNode; title: string }) => {
           fontSize: '1rem',
           fontWeight: 600,
           mt: 'auto',
+          position: 'relative',
+          zIndex: 1,
         }}
       >
         {title}
@@ -142,15 +172,21 @@ const HelpCard = ({
         borderRadius: '8px',
         overflow: 'hidden',
         height: '100%',
+        pl: 5,
+        p: 3,
+        position: 'relative',
       }}
     >
       <Box
         sx={{
-          width: '80px',
+          width: '110px',
           bgcolor: '#0c2e47',
           display: 'flex',
           justifyContent: 'center',
           pt: 3,
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
         }}
       >
         <Box
@@ -165,7 +201,7 @@ const HelpCard = ({
           {icon}
         </Box>
       </Box>
-      <Box sx={{ p: 3, flex: 1 }}>
+      <Box sx={{ p: 3, flex: 1, pl: 18 }}>
         <Typography
           variant='h6'
           sx={{
