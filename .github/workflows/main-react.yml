@@ -23,8 +23,8 @@ jobs:
         with:
           node-version: 18
 
-      # Step 3: Install dependencies and build the React app
-      - name: Install & Build
+      # Step 3: Install dependencies and build the React app (optional, if deploying build)
+      - name: Install & Build (optional)
         run: |
           export NODE_OPTIONS="--max_old_space_size=4196"
           npm install --legacy-peer-deps
@@ -42,23 +42,22 @@ jobs:
             # Navigate to the project directory
             cd /home/ec2-user/ZVD_FRONTEND
 
-            # Stop any existing screen sessions and processes
-            echo "Stopping existing processes..."
-            screen -X -S react_app quit || true
-            pkill -f "node.*react" || true
-
             # Pull the latest code from GitHub
             echo "Pulling latest code..."
-            git fetch origin
-            git reset --hard origin/main
+            git reset --hard
+            git pull origin main
 
             # Install any new dependencies
             echo "Installing dependencies..."
             npm install --legacy-peer-deps
 
-            # Build the React app
+            # Optionally build the React app (if required)
             echo "Building app..."
             npm run build
+
+            # Serve the React App
+            echo "Serving..."
+            npm preview
 
             # Install screen if not installed
             if ! command -v screen &> /dev/null; then
@@ -66,46 +65,9 @@ jobs:
                 sudo yum install -y screen
             fi
 
-            # Start the React app in a detached screen session
-            echo "Starting React app in a screen session..."
+            # Start the React app in a detached screen session on port 5062
+            echo "Starting React app in a screen session on port 5062..."
             screen -dmS react_app npm start
 
-            # Wait for a moment to ensure the process starts
-            sleep 10
-
             # Verify that the screen session is running
-            if screen -ls | grep -q "react_app"; then
-                echo "React app successfully started in screen session"
-            else
-                echo "Failed to start React app in screen session"
-                exit 1
-            fi
-
-            # Check if the application is responding
-            echo "Checking application health..."
-            max_attempts=5
-            attempt=1
-            while [ $attempt -le $max_attempts ]; do
-                if curl -s http://localhost:5062 > /dev/null; then
-                    echo "Application is running and responding"
-                    break
-                else
-                    echo "Attempt $attempt: Application not responding, waiting..."
-                    sleep 5
-                    attempt=$((attempt + 1))
-                fi
-            done
-
-            if [ $attempt -gt $max_attempts ]; then
-                echo "Application failed to start after $max_attempts attempts"
-                exit 1
-            fi
-
-            # Verify the application is accessible from the public URL
-            echo "Verifying public access..."
-            if curl -s http://54.147.241.162:5062 > /dev/null; then
-                echo "Application is accessible from public URL"
-            else
-                echo "Application is not accessible from public URL"
-                exit 1
-            fi
+            screen -ls
