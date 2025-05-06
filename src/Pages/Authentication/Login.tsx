@@ -55,7 +55,7 @@ const Login = () => {
 
   const onSubmit = (data: LoginRequest) => {
     mutate(data);
-  };
+  };   
 
   return (
     <AuthLayout image={loginImg}>
