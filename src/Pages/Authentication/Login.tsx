@@ -38,7 +38,7 @@ const Login = () => {
 
   const { mutate, isLoading } = useMutation({
     mutationFn: (data: LoginRequest) =>
-      axiosInstance.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, data),
+      axiosInstance.post(`/auth/login`, data),
     onSuccess: (data) => {
       axiosInstance.interceptors.request.use((config) => {
         config.headers.Authorization = `Bearer ${data.data.token}`;
