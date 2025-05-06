@@ -3,7 +3,7 @@ name: Deploy React App to EC2
 on:
   push:
     branches:
-      - main
+      - main # Trigger when pushing to the main branch
 
 jobs:
   deploy:
@@ -13,56 +13,99 @@ jobs:
       VITE_BASE_URL: ${{ vars.VITE_BASE_URL }}
 
     steps:
+      # Step 1: Checkout code from GitHub repository
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Set up Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
+      # Step 3: Install dependencies and build the React app
       - name: Install & Build
         run: |
-          export NODE_OPTIONS="--max_old_space_size=4096"
+          export NODE_OPTIONS="--max_old_space_size=4196"
           npm install --legacy-peer-deps
           npm run build
 
+      # Step 4: SSH into EC2 instance and deploy the React app
       - name: SSH & Deploy on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.AWS_EC2_IP }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
+          timeout: 700s
           script: |
-            echo "Deploying on EC2..."
-
+            # Navigate to the project directory
             cd /home/ec2-user/ZVD_FRONTEND
 
-            echo "Resetting and pulling latest code..."
-            git reset --hard
-            git pull origin main
+            # Stop any existing screen sessions and processes
+            echo "Stopping existing processes..."
+            screen -X -S react_app quit || true
+            pkill -f "node.*react" || true
 
+            # Pull the latest code from GitHub
+            echo "Pulling latest code..."
+            git fetch origin
+            git reset --hard origin/main
+
+            # Install any new dependencies
             echo "Installing dependencies..."
             npm install --legacy-peer-deps
 
-            echo "Building React app..."
+            # Build the React app
+            echo "Building app..."
             npm run build
 
-            echo "Installing 'serve' globally if not installed..."
-            if ! command -v serve &> /dev/null; then
-              npm install -g serve
-            fi
-
-            echo "Installing screen if not installed..."
+            # Install screen if not installed
             if ! command -v screen &> /dev/null; then
-              sudo yum install -y screen
+                echo "screen could not be found, installing..."
+                sudo yum install -y screen
             fi
 
-            echo "Killing any existing screen session named react_app..."
-            screen -S react_app -X quit || true
+            # Start the React app in a detached screen session
+            echo "Starting React app in a screen session..."
+            screen -dmS react_app npm start
 
-            echo "Starting the app in screen session on port 5062..."
-            screen -dmS react_app bash -c 'serve -s build -l 5062'
+            # Wait for a moment to ensure the process starts
+            sleep 10
 
-            echo "Available screen sessions:"
-            screen -ls
+            # Verify that the screen session is running
+            if screen -ls | grep -q "react_app"; then
+                echo "React app successfully started in screen session"
+            else
+                echo "Failed to start React app in screen session"
+                exit 1
+            fi
+
+            # Check if the application is responding
+            echo "Checking application health..."
+            max_attempts=5
+            attempt=1
+            while [ $attempt -le $max_attempts ]; do
+                if curl -s http://localhost:5062 > /dev/null; then
+                    echo "Application is running and responding"
+                    break
+                else
+                    echo "Attempt $attempt: Application not responding, waiting..."
+                    sleep 5
+                    attempt=$((attempt + 1))
+                fi
+            done
+
+            if [ $attempt -gt $max_attempts ]; then
+                echo "Application failed to start after $max_attempts attempts"
+                exit 1
+            fi
+
+            # Verify the application is accessible from the public URL
+            echo "Verifying public access..."
+            if curl -s http://54.147.241.162:5062 > /dev/null; then
+                echo "Application is accessible from public URL"
+            else
+                echo "Application is not accessible from public URL"
+                exit 1
+            fi
