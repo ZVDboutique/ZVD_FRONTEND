@@ -3,7 +3,7 @@ name: Deploy React App to EC2
 on:
   push:
     branches:
-      - main # Trigger when pushing to the main branch
+      - main
 
 jobs:
   deploy:
@@ -13,61 +13,56 @@ jobs:
       VITE_BASE_URL: ${{ vars.VITE_BASE_URL }}
 
     steps:
-      # Step 1: Checkout code from GitHub repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      # Step 3: Install dependencies and build the React app (optional, if deploying build)
-      - name: Install & Build (optional)
+      - name: Install & Build
         run: |
-          export NODE_OPTIONS="--max_old_space_size=4196"
+          export NODE_OPTIONS="--max_old_space_size=4096"
           npm install --legacy-peer-deps
           npm run build
 
-      # Step 4: SSH into EC2 instance and deploy the React app
       - name: SSH & Deploy on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.AWS_EC2_IP }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
-          timeout: 700s
           script: |
-            # Navigate to the project directory
+            echo "Deploying on EC2..."
+
             cd /home/ec2-user/ZVD_FRONTEND
 
-            # Pull the latest code from GitHub
-            echo "Pulling latest code..."
+            echo "Resetting and pulling latest code..."
             git reset --hard
             git pull origin main
 
-            # Install any new dependencies
             echo "Installing dependencies..."
             npm install --legacy-peer-deps
 
-            # Optionally build the React app (if required)
-            echo "Building app..."
+            echo "Building React app..."
             npm run build
 
-            # Serve the React App
-            echo "Serving..."
-            npm preview
-
-            # Install screen if not installed
-            if ! command -v screen &> /dev/null; then
-                echo "screen could not be found, installing..."
-                sudo yum install -y screen
+            echo "Installing 'serve' globally if not installed..."
+            if ! command -v serve &> /dev/null; then
+              npm install -g serve
             fi
 
-            # Start the React app in a detached screen session on port 5062
-            echo "Starting React app in a screen session on port 5062..."
-            screen -dmS react_app npm start
+            echo "Installing screen if not installed..."
+            if ! command -v screen &> /dev/null; then
+              sudo yum install -y screen
+            fi
 
-            # Verify that the screen session is running
+            echo "Killing any existing screen session named react_app..."
+            screen -S react_app -X quit || true
+
+            echo "Starting the app in screen session on port 5062..."
+            screen -dmS react_app bash -c 'serve -s build -l 5062'
+
+            echo "Available screen sessions:"
             screen -ls
