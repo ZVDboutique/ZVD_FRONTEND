@@ -57,7 +57,7 @@ jobs:
 
             # Serve the React App
             echo "Serving..."
-            npm preview
+            npm run preview
 
             # Install screen if not installed
             if ! command -v screen &> /dev/null; then
