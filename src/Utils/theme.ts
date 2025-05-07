@@ -1,3 +1,4 @@
+import { grey } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 
 declare module "@mui/material/styles" {
@@ -19,7 +20,7 @@ declare module "@mui/material/Button" {
   }
 }
 
-export const theme = createTheme({
+const paletteTheme = {
   palette: {
     primary: {
       main: "#B0DBF9",
@@ -58,6 +59,10 @@ export const theme = createTheme({
       main: "#000000",
     },
   },
+};
+
+export const theme = createTheme({
+  palette: paletteTheme?.palette,
   typography: {
     fontFamily: '"Manrope", "Roboto", "Helvetica", "Arial", sans-serif',
     h1: {
@@ -99,6 +104,15 @@ export const theme = createTheme({
         root: {
           fontFamily: "Inter !important",
           width: `-webkit-fill-available !important`,
+          "& .MuiDataGrid-root .MuiDataGrid-columnHeader ": {
+            outline: "none",
+            borderTop: `solid 1px ${grey[200]}`,
+            borderBottom: `solid 1px ${grey[200]}`,
+            color: paletteTheme.palette.dark.main,
+            background: "#EEF5FA",
+            textTransform: "uppercase",
+            fontSize: 12,
+          },
         },
       },
     },
