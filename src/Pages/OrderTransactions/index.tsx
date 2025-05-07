@@ -109,13 +109,13 @@ const OrderTransactions = () => {
     setOpenModal(true);
   };
 
-  const getStatusFromId = (statusId: number): string => {
-    const statusMap: { [key: number]: string } = {
-      1: 'Pending',
-      2: 'Processing',
-      3: 'Shipped',
-      4: 'Delivered',
-      5: 'Completed',
+  const getStatusFromId = (statusId: string): string => {
+    const statusMap: { [key: string]: string } = {
+      '1': 'Pending',
+      '2': 'Processing',
+      '3': 'Shipped',
+      '4': 'Delivered',
+      '5': 'Completed',
       6: 'Cancelled',
     };
     return statusMap[statusId] || 'Pending';
