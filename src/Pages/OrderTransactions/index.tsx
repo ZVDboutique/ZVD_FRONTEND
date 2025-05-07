@@ -116,7 +116,8 @@ const OrderTransactions = () => {
       '3': 'Shipped',
       '4': 'Delivered',
       '5': 'Completed',
-      6: 'Cancelled',
+      '6': 'Cancelled',
+      '7': 'Updated',
     };
     return statusMap[statusId] || 'Pending';
   };
