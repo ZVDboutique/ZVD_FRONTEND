@@ -115,7 +115,7 @@ const OrderTransactions = () => {
       '2': 'Processing',
       '3': 'Shipped',
       '4': 'Delivered',
-      '5': 'Completed',
+      '5': 'Returned',
       '6': 'Cancelled',
       '7': 'Updated',
     };
