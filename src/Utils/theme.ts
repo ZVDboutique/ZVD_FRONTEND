@@ -25,10 +25,10 @@ export const theme = createTheme({
       main: "#B0DBF9",
     },
     secondary: {
-      main: "#9c27b0",
-      light: "#ba68c8",
-      dark: "#7b1fa2",
-      contrastText: "#ffffff",
+      main: "#123449",
+      light: "#123449",
+      dark: "#123449",
+      contrastText: "#123449",
     },
     error: {
       main: "#d32f2f",

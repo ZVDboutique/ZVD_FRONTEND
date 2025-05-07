@@ -195,7 +195,7 @@ const DiamondFilterModal = ({
         </Accordion>
         <Accordion>
           <AccordionSummary expandIcon={<MdExpandMore size={20} />}>
-            <Typography fontWeight={600}>Clarity</Typography>
+            <Typography fontWeight={600}>Cut List</Typography>
           </AccordionSummary>
           <AccordionDetails
             sx={{
@@ -243,7 +243,7 @@ const DiamondFilterModal = ({
         </Accordion>
         <Accordion>
           <AccordionSummary expandIcon={<MdExpandMore size={20} />}>
-            <Typography fontWeight={600}>Clarity</Typography>
+            <Typography fontWeight={600}>Color</Typography>
           </AccordionSummary>
           <AccordionDetails
             sx={{
@@ -294,7 +294,7 @@ const DiamondFilterModal = ({
         </Accordion>
         <Accordion>
           <AccordionSummary expandIcon={<MdExpandMore size={20} />}>
-            <Typography fontWeight={600}>Clarity</Typography>
+            <Typography fontWeight={600}>Fluorescence Intensity</Typography>
           </AccordionSummary>
           <AccordionDetails
             sx={{
@@ -351,7 +351,7 @@ const DiamondFilterModal = ({
         </Accordion>
         <Accordion>
           <AccordionSummary expandIcon={<MdExpandMore size={20} />}>
-            <Typography fontWeight={600}>Length</Typography>
+            <Typography fontWeight={600}>Measurement</Typography>
           </AccordionSummary>
           <AccordionDetails
             sx={{
