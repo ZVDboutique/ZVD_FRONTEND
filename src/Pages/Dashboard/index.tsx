@@ -8,7 +8,6 @@ import {
   MdPerson,
   MdSearch,
   MdShoppingCart,
-  MdWeb,
 } from "react-icons/md";
 import axiosInstance from "../../Utils/axios";
 
@@ -51,22 +50,6 @@ const Dashboard = () => {
   };
 
   const cards = [
-    {
-      title: "Search Diamonds",
-      icon: <MdSearch size={24} />,
-      userType: ["Admin", "Supplier"],
-    },
-    {
-      title: "Stock",
-      icon: <MdDiamond size={24} />,
-      value: userData.totalStock,
-      userType: ["Admin", "Supplier"],
-    },
-    {
-      title: "Web Tracking",
-      icon: <MdWeb size={24} />,
-      userType: ["Admin"],
-    },
     {
       title: "Total Diamonds",
       value: userData.totalDiamonds,
