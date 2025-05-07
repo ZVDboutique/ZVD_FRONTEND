@@ -57,7 +57,8 @@ jobs:
 
             # Serve the React App
             echo "Serving..."
-            npm preview
+            npm run preview
+            npm run dev -- --host 0.0.0.0 --port 5062
 
             # Install screen if not installed
             if ! command -v screen &> /dev/null; then

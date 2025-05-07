@@ -2,16 +2,16 @@ import { LoadingButton } from '@mui/lab';
 import {
   Box,
   Button,
+  FormControl,
   FormControlLabel,
   Grid,
   IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   Switch,
   TextField,
   Typography,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -23,7 +23,7 @@ import loginImg from '../../assets/login.png';
 import zvdLogo from '../../assets/zvLogo.svg';
 import AuthLayout from '../../Layouts/AuthLayout';
 import { LoginRequest } from '../../Types/auth.types';
-import axiosInstance from '../../Utils/axios';
+import axios from 'axios';
 import ForgotpasswordModal from './ForgotpasswordModal';
 
 const Login = () => {
@@ -42,7 +42,7 @@ const Login = () => {
 
   const { mutate, isLoading } = useMutation({
     mutationFn: (data: LoginRequest) =>
-      axiosInstance.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, data),
+      axios.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, data),
     onSuccess: (data) => {
       localStorage.setItem('token', data.data.token);
       localStorage.setItem('userType', userType);
