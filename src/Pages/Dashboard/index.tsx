@@ -6,78 +6,71 @@ import {
   MdPerson,
   MdSearch,
   MdShoppingCart,
-  MdWeb,
 } from "react-icons/md";
+import { useFetchQuery } from "../../Utils/useQueries";
 
 const Dashboard = () => {
-  const userData = {
-    totalDiamonds: 25,
-    totalSellers: 13,
-    totalSearchToday: 5,
-    addedToCartToday: 17,
-    totalUsers: 34,
-    activeUsers: 23,
-    userRegisteredToday: 12,
-    userNotAttachedWithSeller: 0,
-    totalCompanies: 23,
-  };
+  const { data } = useFetchQuery<{
+    data: {
+      totalDiamonds: null;
+      totalSellers: null;
+      totalSearchToday: null;
+      addedToCartToday: null;
+      totalUsers: null;
+      activeUsers: null;
+      userRegisteredToday: null;
+      userNotAttachedWithSeller: null;
+      totalCompanies: null;
+    };
+  }>({
+    key: ["GET_DASHBOARD_DATA"],
+    route: `/Dashboard/summary`,
+  });
 
   const cards = [
     {
-      title: "Search Diamonds",
-      icon: <MdSearch size={24} />,
-    },
-    {
-      title: "Stock",
-      icon: <MdDiamond size={24} />,
-    },
-    {
-      title: "Web Tracking",
-      icon: <MdWeb size={24} />,
-    },
-    {
       title: "Total Diamonds",
-      value: userData.totalDiamonds,
+      value: data?.data?.totalDiamonds,
       icon: <MdDiamond size={24} />,
     },
     {
       title: "Total Sellers",
-      value: userData.totalSellers,
+      value: data?.data?.totalSellers,
       icon: <MdPerson size={24} />,
     },
     {
       title: "Total search Today",
-      value: userData.totalSearchToday,
+      value: data?.data?.totalSearchToday,
       icon: <MdSearch size={24} />,
     },
     {
       title: "Added To Cart Today",
-      value: userData.addedToCartToday,
+      value: data?.data?.addedToCartToday,
       icon: <MdShoppingCart size={24} />,
     },
     {
       title: "Total Users",
-      value: userData.totalUsers,
+      value: data?.data?.totalUsers,
       icon: <FaUsers size={20} />,
     },
     {
       title: "Total Active Users",
-      value: userData.activeUsers,
+      value: data?.data?.activeUsers,
       icon: <FaUserCheck size={20} />,
     },
     {
       title: "User Registered Today",
-      value: userData.userRegisteredToday,
+      value: data?.data?.userRegisteredToday,
       icon: <FaUserPlus size={20} />,
     },
     {
       title: "User Not Attached With Seller",
-      value: userData.userNotAttachedWithSeller,
+      value: data?.data?.userNotAttachedWithSeller,
       icon: <FaUserTimes size={20} />,
     },
     {
       title: "Total Companies",
-      value: userData.totalCompanies,
+      value: data?.data?.totalCompanies,
       icon: <MdBusiness size={24} />,
     },
   ];
