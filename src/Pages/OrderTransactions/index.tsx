@@ -1,26 +1,26 @@
+import EditIcon from '@mui/icons-material/Edit';
 import {
-  Box,
-  Grid,
-  Typography,
-  IconButton,
-  Stack,
-  Button,
-  Modal,
-  TextField,
-  Paper,
-  Snackbar,
   Alert,
+  Box,
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Grid,
+  IconButton,
+  Modal,
+  Paper,
+  Snackbar,
+  Stack,
+  TextField,
+  Typography,
 } from '@mui/material';
 import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import SimpleTable from '../../Components/SimpleTable';
 import axiosInstance from '../../Utils/axios';
-import EditIcon from '@mui/icons-material/Edit';
 // import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
 import { OrderTransactionData } from '../../Types/Order';
@@ -84,8 +84,6 @@ const OrderTransactions = () => {
       event.stopPropagation();
       event.preventDefault();
     }
-
-    console.log('Edit clicked for id:', id);
 
     const apiItem = orders?.data?.find((order: any) => order.order_id === id);
     if (apiItem) {
@@ -153,7 +151,12 @@ const OrderTransactions = () => {
 
   const handleSave = () => {
     if (isEditing && selectedId) {
-      updateOrderMutation.mutate({ ...orderData, id: selectedId });
+      const orderWithStatusId = {
+        ...orderData,
+        id: selectedId,
+        statusid: getStatusFromId(orderData.status),
+      };
+      updateOrderMutation.mutate(orderWithStatusId);
     }
   };
 
@@ -415,8 +418,8 @@ const OrderTransactions = () => {
                 <option value='Processing'>Processing</option>
                 <option value='Shipped'>Shipped</option>
                 <option value='Delivered'>Delivered</option>
-                <option value='Completed'>Completed</option>
                 <option value='Cancelled'>Cancelled</option>
+                <option value='Returned'>Returned</option>
               </TextField>
             </Grid>
           </Grid>

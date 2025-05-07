@@ -40,7 +40,7 @@ const Login = () => {
     },
   });
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: (data: LoginRequest) =>
       axiosInstance.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, data),
     onSuccess: (data) => {
@@ -48,7 +48,7 @@ const Login = () => {
       localStorage.setItem('userType', userType);
       navigate('/dashboard');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error(error.message || 'Something went wrong.Please try again.');
     },
   });
@@ -185,7 +185,7 @@ const Login = () => {
                 type='submit'
                 fullWidth
                 variant='contained'
-                loading={isPending}
+                loading={isLoading}
                 size='large'
                 sx={{ mt: 3 }}
               >

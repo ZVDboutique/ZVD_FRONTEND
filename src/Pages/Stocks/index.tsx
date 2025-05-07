@@ -1,8 +1,7 @@
 import { Box, Grid, Typography } from '@mui/material';
 import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import { useQuery } from '@tanstack/react-query';
 import SimpleTable from '../../Components/SimpleTable';
-import axiosInstance from '../../Utils/axios';
+import { useFetchQuery } from '../../Utils/useQueries';
 
 const Stock = () => {
   const columns: GridColDef[] = [
@@ -164,9 +163,9 @@ const Stock = () => {
     },
   ];
 
-  const { data: stocksList } = useQuery({
-    queryKey: ['GET_ALL_STOCKS'],
-    queryFn: () => axiosInstance.get(`/stocks/`),
+  const { data: stocksList, isFetching } = useFetchQuery({
+    key: ['GET_ALL_STOCKS'],
+    route: `/Stock`,
   });
 
   console.log('stocksList?.data', stocksList?.data);
@@ -187,7 +186,11 @@ const Stock = () => {
           </Typography>
         </Grid>
         <Grid size={12}>
-          <SimpleTable columns={columns} rows={stocksList?.data || []} />
+          <SimpleTable
+            columns={columns}
+            rows={stocksList?.data || []}
+            loading={isFetching}
+          />
         </Grid>
       </Grid>
     </Box>

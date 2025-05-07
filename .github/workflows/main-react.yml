@@ -3,11 +3,14 @@ name: Deploy React App to EC2
 on:
   push:
     branches:
-      - main  # Trigger when pushing to the main branch
+      - main # Trigger when pushing to the main branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    env:
+      VITE_BASE_URL: ${{ vars.VITE_BASE_URL }}
 
     steps:
       # Step 1: Checkout code from GitHub repository
@@ -23,7 +26,8 @@ jobs:
       # Step 3: Install dependencies and build the React app (optional, if deploying build)
       - name: Install & Build (optional)
         run: |
-          npm install
+          export NODE_OPTIONS="--max_old_space_size=4196"
+          npm install --legacy-peer-deps
           npm run build
 
       # Step 4: SSH into EC2 instance and deploy the React app
@@ -33,6 +37,7 @@ jobs:
           host: ${{ secrets.AWS_EC2_IP }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
+          timeout: 700s
           script: |
             # Navigate to the project directory
             cd /home/ec2-user/ZVD_FRONTEND
@@ -44,27 +49,25 @@ jobs:
 
             # Install any new dependencies
             echo "Installing dependencies..."
-            npm install
+            npm install --legacy-peer-deps
 
             # Optionally build the React app (if required)
             echo "Building app..."
             npm run build
 
-            # Install 'pm2' globally if not already installed
-            echo "Installing pm2..."
-            sudo npm install -g pm2
+            # Serve the React App
+            echo "Serving..."
+            npm preview
 
-            # Kill any existing pm2 process if it exists
-            echo "Killing existing pm2 process..."
-            pm2 delete react_app || true
+            # Install screen if not installed
+            if ! command -v screen &> /dev/null; then
+                echo "screen could not be found, installing..."
+                sudo yum install -y screen
+            fi
 
-            # Serve the app using pm2 (serve the 'build' directory on port 5062)
-            echo "Starting React app in a pm2 process on port 5062..."
-            pm2 serve dist 5062 --name "react_app"
+            # Start the React app in a detached screen session on port 5062
+            echo "Starting React app in a screen session on port 5062..."
+            screen -dmS react_app npm start
 
-            # Enable pm2 to auto-start on reboot
-            pm2 save
-            pm2 startup systemd -u ec2-user --hp /home/ec2-user
-
-            # Verify that the pm2 process is running
-            pm2 list
+            # Verify that the screen session is running
+            screen -ls
