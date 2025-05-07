@@ -1,5 +1,4 @@
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import EditIcon from '@mui/icons-material/Edit';
 import {
   Alert,
   Box,
@@ -17,76 +16,53 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material";
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import SimpleTable from "../../Components/SimpleTable";
-import axiosInstance from "../../Utils/axios";
-
-interface OrderTransactionData {
-  id?: number;
-  order_id: string;
-  buyer_name: string;
-  diamond: string;
-  qty: string;
-  date: string;
-  price: string;
-  status: string;
-  statusid?: number;
-}
-
-interface OrderTransactionRowData {
-  id: number;
-  order_id: string;
-  buyer_name: string;
-  diamond: string;
-  qty: string;
-  date: string;
-  price: string;
-  status: string;
-  statusid?: number;
-}
+} from '@mui/material';
+import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import SimpleTable from '../../Components/SimpleTable';
+import axiosInstance from '../../Utils/axios';
+// import DeleteIcon from '@mui/icons-material/Delete';
+import { useState } from 'react';
+import { OrderTransactionData } from '../../Types/Order';
 
 const OrderTransactions = () => {
   const [openModal, setOpenModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertSeverity, setAlertSeverity] = useState<"success" | "error">(
-    "success",
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertSeverity, setAlertSeverity] = useState<'success' | 'error'>(
+    'success'
   );
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [orderToDelete, setOrderToDelete] = useState<number | null>(null);
   const [orderData, setOrderData] = useState<OrderTransactionData>({
-    order_id: "",
-    buyer_name: "",
-    diamond: "",
-    qty: "",
-    date: "",
-    price: "",
-    status: "Pending",
+    order_id: '',
+    buyer_name: '',
+    diamond: '',
+    qty: '',
+    date: '',
+    price: '',
+    status: 'Pending',
   });
 
   const queryClient = useQueryClient();
 
-  const { data: orders } = useQuery({
-    queryKey: ["GET_ALL_ORDERS"],
-    queryFn: () => axiosInstance.get("/orders/"),
+  const { data: orders, isLoading } = useQuery({
+    queryKey: ['GET_ALL_ORDERS'],
+    queryFn: () => axiosInstance.get('/Order/Order_dashboard'),
   });
-
   const updateOrderMutation = useMutation({
     mutationFn: (order: OrderTransactionData) => {
       return axiosInstance.put(`/orders/${order.id}`, order);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["GET_ALL_ORDERS"] });
-      showAlert("Order updated successfully!", "success");
+      queryClient.invalidateQueries({ queryKey: ['GET_ALL_ORDERS'] });
+      showAlert('Order updated successfully!', 'success');
       handleCloseModal();
     },
     onError: () => {
-      showAlert("Failed to update order", "error");
+      showAlert('Failed to update order', 'error');
     },
   });
 
@@ -95,83 +71,68 @@ const OrderTransactions = () => {
       return axiosInstance.delete(`/orders/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["GET_ALL_ORDERS"] });
-      showAlert("Order deleted successfully!", "success");
+      queryClient.invalidateQueries({ queryKey: ['GET_ALL_ORDERS'] });
+      showAlert('Order deleted successfully!', 'success');
     },
     onError: () => {
-      showAlert("Failed to delete order", "error");
+      showAlert('Failed to delete order', 'error');
     },
   });
 
-  const handleEdit = (id: number, event?: React.MouseEvent) => {
+  const handleEdit = (id: string, event?: React.MouseEvent) => {
     if (event) {
       event.stopPropagation();
       event.preventDefault();
     }
 
-    console.log("Edit clicked for id:", id);
-
-    const apiItem = orders?.data?.find((order: any) => order.id === id);
+    const apiItem = orders?.data?.find((order: any) => order.order_id === id);
     if (apiItem) {
       openEditModal(apiItem);
     } else {
-      console.error("Could not find order with id:", id);
+      console.error('Could not find order with id:', id);
     }
   };
 
-  const openEditModal = (item: OrderTransactionRowData) => {
+  const openEditModal = (item: any) => {
     setOrderData({
-      id: item.id,
+      id: item.order_id,
       order_id: item.order_id,
-      buyer_name: item.buyer_name,
-      diamond: item.diamond,
-      qty: item.qty,
-      date: item.date,
-      price: item.price,
-      status: item.statusid ? getStatusFromId(item.statusid) : item.status,
+      buyer_name: `${item.first_name} ${item.last_name}`,
+      diamond: item.diamond_id.toString(),
+      qty: item.quantity.toString(),
+      date: new Date(item.order_date).toISOString().split('T')[0],
+      price: item.item_total.toString(),
+      status: getStatusFromId(item.statusid),
     });
-    setSelectedId(item.id);
+    setSelectedId(item.order_id);
     setIsEditing(true);
     setOpenModal(true);
   };
 
-  const getStatusFromId = (statusId: number): string => {
-    const statusMap: { [key: number]: string } = {
-      1: "Pending",
-      2: "Processing",
-      3: "Shipped",
-      4: "Delivered",
-      5: "Cancelled",
-      6: "Returned",
+  const getStatusFromId = (statusId: string): string => {
+    const statusMap: { [key: string]: string } = {
+      '1': 'Pending',
+      '2': 'Processing',
+      '3': 'Shipped',
+      '4': 'Delivered',
+      '5': 'Completed',
+      6: 'Cancelled',
     };
-    return statusMap[statusId] || "Pending";
+    return statusMap[statusId] || 'Pending';
   };
 
-  // Convert status name to statusid
-  const getIdFromStatus = (status: string): number => {
-    const idMap: { [key: string]: number } = {
-      Pending: 1,
-      Processing: 2,
-      Shipped: 3,
-      Delivered: 4,
-      Cancelled: 5,
-      Returned: 6,
-    };
-    return idMap[status] || 1;
-  };
+  // const handleDelete = (id: string, event?: React.MouseEvent) => {
+  //   if (event) {
+  //     event.stopPropagation();
+  //   }
 
-  const handleDelete = (id: number, event?: React.MouseEvent) => {
-    if (event) {
-      event.stopPropagation();
-    }
-
-    setOrderToDelete(id);
-    setDeleteDialogOpen(true);
-  };
+  //   setOrderToDelete(id as any);
+  //   setDeleteDialogOpen(true);
+  // };
 
   const confirmDelete = () => {
     if (orderToDelete !== null) {
-      deleteOrderMutation.mutate(orderToDelete);
+      deleteOrderMutation.mutate(orderToDelete as any);
       setDeleteDialogOpen(false);
       setOrderToDelete(null);
     }
@@ -193,7 +154,7 @@ const OrderTransactions = () => {
       const orderWithStatusId = {
         ...orderData,
         id: selectedId,
-        statusid: getIdFromStatus(orderData.status),
+        statusid: getStatusFromId(orderData.status),
       };
       updateOrderMutation.mutate(orderWithStatusId);
     }
@@ -207,7 +168,7 @@ const OrderTransactions = () => {
     }));
   };
 
-  const showAlert = (message: string, severity: "success" | "error") => {
+  const showAlert = (message: string, severity: 'success' | 'error') => {
     setAlertMessage(message);
     setAlertSeverity(severity);
     setAlertOpen(true);
@@ -219,75 +180,94 @@ const OrderTransactions = () => {
 
   const columns: GridColDef[] = [
     {
-      field: "order_id",
-      headerName: "Order ID",
+      field: 'order_id',
+      headerName: 'Order ID',
       flex: 1,
     },
     {
-      field: "buyer_name",
-      headerName: "Buyer Name",
+      field: 'first_name',
+      headerName: 'Buyer Name',
       flex: 1,
-    },
-    {
-      field: "diamond",
-      headerName: "Diamond",
-      flex: 1,
-    },
-    {
-      field: "qty",
-      headerName: "Quantity",
-      flex: 1,
-    },
-    {
-      field: "date",
-      headerName: "Date",
-      flex: 1,
-    },
-    {
-      field: "price",
-      headerName: "Price",
-      flex: 1,
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      flex: 1,
-      valueGetter: (params: any) => {
-        return params.row.statusid
-          ? getStatusFromId(params.row.statusid)
-          : params.row.status;
+      valueGetter: (value: any, row: any) => {
+        if (!value || !row) return '';
+        return `${row.first_name || ''} ${row.last_name || ''}`;
       },
     },
     {
-      field: "actions",
-      headerName: "Action",
+      field: 'diamond_name',
+      headerName: 'Diamond',
+      flex: 1,
+    },
+    {
+      field: 'quantity',
+      headerName: 'Quantity',
+      flex: 1,
+    },
+    {
+      field: 'order_date',
+      headerName: 'Date',
+      flex: 1,
+      valueGetter: (value: any) => {
+        if (!value) return '';
+        try {
+          return new Date(value).toLocaleDateString();
+        } catch (error) {
+          return '';
+        }
+      },
+    },
+    {
+      field: 'item_total',
+      headerName: 'Price',
+      flex: 1,
+    },
+    {
+      field: 'statusid',
+      headerName: 'Status',
+      flex: 1,
+      valueGetter: (value: any) => {
+        return getStatusFromId(value);
+      },
+    },
+    {
+      field: 'actions',
+      headerName: 'Action',
       flex: 1,
       renderCell: (params: GridRenderCellParams) => {
+        if (!params || !params.row) {
+          return <Stack direction='row' spacing={1}></Stack>;
+        }
         return (
-          <Stack direction="row" spacing={1}>
+          <Stack direction='row' spacing={1}>
             <IconButton
-              size="small"
-              onClick={(event) => handleEdit(params.row.id, event)}
-              sx={{ color: "primary.main" }}
-              aria-label="Edit order"
+              size='small'
+              onClick={(event) => handleEdit(params.row.order_id, event)}
+              sx={{ color: 'primary.main' }}
+              aria-label='Edit order'
             >
-              <EditIcon fontSize="small" />
+              <EditIcon fontSize='small' />
             </IconButton>
-            <IconButton
-              size="small"
-              onClick={(event) => handleDelete(params.row.id, event)}
-              sx={{ color: "error.main" }}
-              aria-label="Delete order"
+            {/* <IconButton
+              size='small'
+              onClick={(event) => handleDelete(params.row.order_id, event)}
+              sx={{ color: 'error.main' }}
+              aria-label='Delete order'
             >
-              <DeleteIcon fontSize="small" />
-            </IconButton>
+              <DeleteIcon fontSize='small' />
+            </IconButton> */}
           </Stack>
         );
       },
     },
   ];
 
-  const tableData = orders?.data || [];
+  const tableData =
+    orders?.data && Array.isArray(orders.data)
+      ? orders.data.map((order: any) => ({
+          ...order,
+          id: order.order_id,
+        }))
+      : [];
 
   return (
     <>
@@ -295,7 +275,7 @@ const OrderTransactions = () => {
         sx={{
           p: 2,
           borderRadius: 2,
-          background: "#73C7F933",
+          background: '#73C7F933',
           border: `1px #73C7F9 solid`,
         }}
       >
@@ -303,9 +283,9 @@ const OrderTransactions = () => {
           <Grid
             size={12}
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
               mb: 2,
             }}
           >
@@ -318,6 +298,8 @@ const OrderTransactions = () => {
               columns={columns}
               rows={tableData}
               disableRowSelectionOnClick
+              getRowId={(row) => row.id}
+              loading={isLoading}
             />
           </Grid>
         </Grid>
@@ -326,29 +308,29 @@ const OrderTransactions = () => {
       <Modal
         open={openModal}
         onClose={handleCloseModal}
-        aria-labelledby="edit-order-modal"
+        aria-labelledby='edit-order-modal'
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backdropFilter: "blur(3px)",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backdropFilter: 'blur(3px)',
         }}
       >
         <Paper
           sx={{
-            width: "90%",
+            width: '90%',
             maxWidth: 800,
             p: 4,
             borderRadius: 2,
-            backgroundColor: "#f3f9fd",
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            outline: "none",
+            backgroundColor: '#f3f9fd',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            outline: 'none',
           }}
         >
-          <Typography variant="h5" mb={3}>
+          <Typography variant='h5' mb={3}>
             Edit Order
           </Typography>
 
@@ -356,54 +338,54 @@ const OrderTransactions = () => {
             <Grid size={6}>
               <TextField
                 fullWidth
-                label="Order ID"
-                name="order_id"
+                label='Order ID'
+                name='order_id'
                 value={orderData.order_id}
                 onChange={handleChange}
-                variant="standard"
+                variant='standard'
                 disabled={true}
               />
             </Grid>
             <Grid size={6}>
               <TextField
                 fullWidth
-                label="Buyer Name"
-                name="buyer_name"
+                label='Buyer Name'
+                name='buyer_name'
                 value={orderData.buyer_name}
                 onChange={handleChange}
-                variant="standard"
+                variant='standard'
               />
             </Grid>
             <Grid size={6}>
               <TextField
                 fullWidth
-                label="Diamond"
-                name="diamond"
+                label='Diamond'
+                name='diamond'
                 value={orderData.diamond}
                 onChange={handleChange}
-                variant="standard"
+                variant='standard'
               />
             </Grid>
             <Grid size={6}>
               <TextField
                 fullWidth
-                label="Quantity"
-                name="qty"
+                label='Quantity'
+                name='qty'
                 value={orderData.qty}
                 onChange={handleChange}
-                variant="standard"
-                type="number"
+                variant='standard'
+                type='number'
               />
             </Grid>
             <Grid size={6}>
               <TextField
                 fullWidth
-                label="Date"
-                name="date"
+                label='Date'
+                name='date'
                 value={orderData.date}
                 onChange={handleChange}
-                variant="standard"
-                type="date"
+                variant='standard'
+                type='date'
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -412,52 +394,52 @@ const OrderTransactions = () => {
             <Grid size={6}>
               <TextField
                 fullWidth
-                label="Price"
-                name="price"
+                label='Price'
+                name='price'
                 value={orderData.price}
                 onChange={handleChange}
-                variant="standard"
+                variant='standard'
               />
             </Grid>
             <Grid size={6}>
               <TextField
                 fullWidth
-                label="Status"
-                name="status"
+                label='Status'
+                name='status'
                 value={orderData.status}
                 onChange={handleChange}
-                variant="standard"
+                variant='standard'
                 select
                 SelectProps={{
                   native: true,
                 }}
               >
-                <option value="Pending">Pending</option>
-                <option value="Processing">Processing</option>
-                <option value="Shipped">Shipped</option>
-                <option value="Delivered">Delivered</option>
-                <option value="Cancelled">Cancelled</option>
-                <option value="Returned">Returned</option>
+                <option value='Pending'>Pending</option>
+                <option value='Processing'>Processing</option>
+                <option value='Shipped'>Shipped</option>
+                <option value='Delivered'>Delivered</option>
+                <option value='Cancelled'>Cancelled</option>
+                <option value='Returned'>Returned</option>
               </TextField>
             </Grid>
           </Grid>
 
-          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 5 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 5 }}>
             <Button
-              variant="outlined"
+              variant='outlined'
               onClick={handleCloseModal}
-              sx={{ width: "45%" }}
+              sx={{ width: '45%' }}
             >
               Cancel
             </Button>
             <Button
-              variant="contained"
+              variant='contained'
               onClick={handleSave}
               sx={{
-                width: "45%",
-                backgroundColor: "#73C7F9",
-                "&:hover": {
-                  backgroundColor: "#5ab8ea",
+                width: '45%',
+                backgroundColor: '#73C7F9',
+                '&:hover': {
+                  backgroundColor: '#5ab8ea',
                 },
               }}
             >
@@ -470,21 +452,21 @@ const OrderTransactions = () => {
       <Dialog
         open={deleteDialogOpen}
         onClose={cancelDelete}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
       >
-        <DialogTitle id="alert-dialog-title">Confirm Deletion</DialogTitle>
+        <DialogTitle id='alert-dialog-title'>Confirm Deletion</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText id='alert-dialog-description'>
             Are you sure you want to delete this order? This action cannot be
             undone.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={cancelDelete} color="primary">
+          <Button onClick={cancelDelete} color='primary'>
             Cancel
           </Button>
-          <Button onClick={confirmDelete} color="error" autoFocus>
+          <Button onClick={confirmDelete} color='error' autoFocus>
             Delete
           </Button>
         </DialogActions>
@@ -494,12 +476,12 @@ const OrderTransactions = () => {
         open={alertOpen}
         autoHideDuration={5000}
         onClose={handleCloseAlert}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
         <Alert
           onClose={handleCloseAlert}
           severity={alertSeverity}
-          variant="filled"
+          variant='filled'
         >
           {alertMessage}
         </Alert>

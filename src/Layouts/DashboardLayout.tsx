@@ -17,12 +17,17 @@ import {
 import React, { useState } from "react";
 import {
   MdBusiness,
+  MdDiamond,
   MdInventory,
   MdLogout,
   MdOutlineDashboard,
+  MdOutlineSettingsCell,
   MdPeople,
   MdSettings,
+  MdShoppingCart,
+  MdSubscriptions,
   MdVerifiedUser,
+  MdWeb,
 } from "react-icons/md";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { theme } from "../Utils/theme";
@@ -32,6 +37,7 @@ const drawerWidth = 240;
 
 const DashboardLayout: React.FC = () => {
   const { pathname } = useLocation();
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const navigate = useNavigate();
@@ -45,12 +51,78 @@ const DashboardLayout: React.FC = () => {
   };
 
   const menuItems = [
-    { text: "Dashboard", icon: MdOutlineDashboard, path: "/dashboard" },
-    { text: "Stocks", icon: MdInventory, path: "/stock" },
-    { text: "Admin Users", icon: MdPeople, path: "/adminUser" },
-    { text: "Company Master", icon: MdBusiness, path: "/company" },
-    { text: "Client Master", icon: MdPeople, path: "/clients" },
+    {
+      text: "Dashboard",
+      icon: MdOutlineDashboard,
+      path: "/dashboard",
+      isActive: pathname === "/dashboard",
+      userType: ["Admin", "Supplier"],
+    },
+    {
+      text: "Stocks",
+      icon: MdInventory,
+      path: "/stock",
+      isActive: pathname === "/stock",
+      userType: ["Admin"],
+    },
+    {
+      text: "Admin Users",
+      icon: MdPeople,
+      path: "/adminUser",
+      isActive: pathname === "/adminUser",
+      userType: ["Admin"],
+    },
+    {
+      text: "Company Master",
+      icon: MdBusiness,
+      path: "/company",
+      isActive: pathname === "/company",
+      userType: ["Admin"],
+    },
+    {
+      text: "Client Master",
+      icon: MdPeople,
+      path: "/clients",
+      isActive: pathname === "/clients",
+      userType: ["Admin"],
+    },
+    {
+      text: "Web Tracking",
+      icon: MdWeb,
+      path: "/web-tracking",
+      isActive: pathname === "/web-tracking",
+      userType: ["Admin"],
+    },
+    {
+      text: "Subscription",
+      icon: MdSubscriptions,
+      path: "/subscription",
+      isActive: pathname === "/subscription",
+      userType: ["Admin"],
+    },
+    {
+      text: "Settings",
+      icon: MdOutlineSettingsCell,
+      path: "/settings",
+      isActive: pathname === "/settings",
+      userType: ["Admin"],
+    },
+    {
+      text: "Diamond Listing",
+      icon: MdDiamond,
+      path: "/diamond-listing",
+      isActive: pathname === "/diamond-listing",
+      userType: ["Supplier"],
+    },
+    {
+      text: "Orders & Transactions",
+      icon: MdShoppingCart,
+      path: "/orders-transactions",
+      isActive: pathname === "/orders-transactions",
+      userType: ["Supplier"],
+    },
   ];
+  const userType = localStorage.getItem("userType") || "";
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar
@@ -113,38 +185,28 @@ const DashboardLayout: React.FC = () => {
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
           <List>
-            {menuItems.map((item) => (
-              <ListItem key={item.text} disablePadding>
-                <ListItemButton
-                  onClick={() => navigate(item.path)}
-                  sx={{
-                    bgcolor:
-                      pathname === item.path ? theme.palette.primary.main : "",
-                    color:
-                      pathname === item.path
+            {menuItems
+              .filter((item) => item.userType.includes(userType))
+              .map((item) => (
+                <ListItem key={item.text} disablePadding>
+                  <ListItemButton
+                    onClick={() => navigate(item.path)}
+                    sx={{
+                      background: item.isActive
+                        ? theme.palette.primary.main
+                        : theme.palette.secondary.main,
+                      color: item.isActive
                         ? theme.palette.secondary.main
                         : theme.palette.primary.main,
-                    display: "flex",
-                    gap: 2,
-                    transition: "background 0.3s",
-                    "&:hover": {
-                      bgcolor: `${theme.palette.primary.main}22`,
-                    },
-                  }}
-                >
-                  {
-                    <item.icon
-                      color={
-                        pathname === item.path
-                          ? theme.palette.secondary.main
-                          : theme.palette.primary.main
-                      }
-                    />
-                  }
-                  <Typography>{item.text}</Typography>
-                </ListItemButton>
-              </ListItem>
-            ))}
+                      display: "flex",
+                      gap: 2,
+                    }}
+                  >
+                    {<item.icon color={theme.palette.primary.main} />}
+                    <Typography>{item.text}</Typography>
+                  </ListItemButton>
+                </ListItem>
+              ))}
           </List>
         </Box>
       </Drawer>
