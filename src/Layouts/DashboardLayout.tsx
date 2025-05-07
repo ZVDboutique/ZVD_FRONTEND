@@ -21,13 +21,10 @@ import {
   MdInventory,
   MdLogout,
   MdOutlineDashboard,
-  MdOutlineSettingsCell,
   MdPeople,
   MdSettings,
   MdShoppingCart,
-  MdSubscriptions,
   MdVerifiedUser,
-  MdWeb,
 } from "react-icons/md";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { theme } from "../Utils/theme";
@@ -84,27 +81,6 @@ const DashboardLayout: React.FC = () => {
       icon: MdPeople,
       path: "/clients",
       isActive: pathname === "/clients",
-      userType: ["Admin"],
-    },
-    {
-      text: "Web Tracking",
-      icon: MdWeb,
-      path: "/web-tracking",
-      isActive: pathname === "/web-tracking",
-      userType: ["Admin"],
-    },
-    {
-      text: "Subscription",
-      icon: MdSubscriptions,
-      path: "/subscription",
-      isActive: pathname === "/subscription",
-      userType: ["Admin"],
-    },
-    {
-      text: "Settings",
-      icon: MdOutlineSettingsCell,
-      path: "/settings",
-      isActive: pathname === "/settings",
       userType: ["Admin"],
     },
     {
@@ -202,7 +178,15 @@ const DashboardLayout: React.FC = () => {
                       gap: 2,
                     }}
                   >
-                    {<item.icon color={theme.palette.primary.main} />}
+                    {
+                      <item.icon
+                        color={
+                          item.isActive
+                            ? theme.palette.secondary.main
+                            : theme.palette.primary.main
+                        }
+                      />
+                    }
                     <Typography>{item.text}</Typography>
                   </ListItemButton>
                 </ListItem>
