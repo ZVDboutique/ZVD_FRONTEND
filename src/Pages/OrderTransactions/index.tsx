@@ -48,11 +48,10 @@ const OrderTransactions = () => {
 
   const queryClient = useQueryClient();
 
-  const { data: orders } = useQuery({
+  const { data: orders, isLoading } = useQuery({
     queryKey: ['GET_ALL_ORDERS'],
     queryFn: () => axiosInstance.get('/Order/Order_dashboard'),
   });
-
   const updateOrderMutation = useMutation({
     mutationFn: (order: OrderTransactionData) => {
       return axiosInstance.put(`/orders/${order.id}`, order);
@@ -183,48 +182,58 @@ const OrderTransactions = () => {
       flex: 1,
     },
     {
-      field: 'buyer_name',
+      field: 'first_name',
       headerName: 'Buyer Name',
       flex: 1,
-      valueGetter: (params: any) =>
-        `${params.row.first_name} ${params.row.last_name}`,
+      valueGetter: (value: any, row: any) => {
+        if (!value || !row) return '';
+        return `${row.first_name || ''} ${row.last_name || ''}`;
+      },
     },
     {
-      field: 'diamond',
+      field: 'diamond_name',
       headerName: 'Diamond',
       flex: 1,
-      valueGetter: (params: any) => params.row.diamond_name,
     },
     {
-      field: 'qty',
+      field: 'quantity',
       headerName: 'Quantity',
       flex: 1,
-      valueGetter: (params: any) => params.row.quantity,
     },
     {
-      field: 'date',
+      field: 'order_date',
       headerName: 'Date',
       flex: 1,
-      valueGetter: (params: any) =>
-        new Date(params.row.order_date).toLocaleDateString(),
+      valueGetter: (value: any) => {
+        if (!value) return '';
+        try {
+          return new Date(value).toLocaleDateString();
+        } catch (error) {
+          return '';
+        }
+      },
     },
     {
-      field: 'price',
+      field: 'item_total',
       headerName: 'Price',
       flex: 1,
-      valueGetter: (params: any) => params.row.item_total,
     },
     {
-      field: 'status',
+      field: 'statusid',
       headerName: 'Status',
       flex: 1,
-      valueGetter: (params: any) => getStatusFromId(params.row.statusid),
+      valueGetter: (value: any) => {
+        return getStatusFromId(value);
+      },
     },
     {
       field: 'actions',
       headerName: 'Action',
       flex: 1,
       renderCell: (params: GridRenderCellParams) => {
+        if (!params || !params.row) {
+          return <Stack direction='row' spacing={1}></Stack>;
+        }
         return (
           <Stack direction='row' spacing={1}>
             <IconButton
@@ -249,7 +258,13 @@ const OrderTransactions = () => {
     },
   ];
 
-  const tableData = orders?.data || [];
+  const tableData =
+    orders?.data && Array.isArray(orders.data)
+      ? orders.data.map((order: any) => ({
+          ...order,
+          id: order.order_id,
+        }))
+      : [];
 
   return (
     <>
@@ -280,6 +295,8 @@ const OrderTransactions = () => {
               columns={columns}
               rows={tableData}
               disableRowSelectionOnClick
+              getRowId={(row) => row.id}
+              loading={isLoading}
             />
           </Grid>
         </Grid>
