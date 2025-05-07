@@ -17,12 +17,14 @@ import {
 import React, { useState } from 'react';
 import {
   MdBusiness,
+  MdDiamond,
   MdInventory,
   MdLogout,
   MdOutlineDashboard,
   MdOutlineSettingsCell,
   MdPeople,
   MdSettings,
+  MdShoppingCart,
   MdSubscriptions,
   MdVerifiedUser,
   MdWeb,
@@ -46,25 +48,68 @@ const DashboardLayout: React.FC = () => {
   };
 
   const menuItems = [
-    { text: 'Dashboard', icon: MdOutlineDashboard, path: '/dashboard' },
-    { text: 'Stocks', icon: MdInventory, path: '/stock' },
-    { text: 'Admin Users', icon: MdPeople, path: '/adminUser' },
-    { text: 'Company Master', icon: MdBusiness, path: '/company' },
-    { text: 'Client Master', icon: MdPeople, path: '/clients' },
-    { text: 'Web Tracking', icon: MdWeb, path: '/web-tracking' },
-    { text: 'Subscription', icon: MdSubscriptions, path: '/subscription' },
-    { text: 'Settings', icon: MdOutlineSettingsCell, path: '/settings' },
-    // {
-    //   text: 'Diamond Listing',
-    //   icon: MdOutlineDashboard,
-    //   path: '/diamond-listing',
-    // },
-    // {
-    //   text: 'Orders & Transactions',
-    //   icon: MdOutlineDashboard,
-    //   path: '/orders-transactions',
-    // },
+    {
+      text: 'Dashboard',
+      icon: MdOutlineDashboard,
+      path: '/dashboard',
+      userType: ['Admin', 'Supplier'],
+    },
+    {
+      text: 'Stocks',
+      icon: MdInventory,
+      path: '/stock',
+      userType: ['Admin'],
+    },
+    {
+      text: 'Admin Users',
+      icon: MdPeople,
+      path: '/adminUser',
+      userType: ['Admin'],
+    },
+    {
+      text: 'Company Master',
+      icon: MdBusiness,
+      path: '/company',
+      userType: ['Admin'],
+    },
+    {
+      text: 'Client Master',
+      icon: MdPeople,
+      path: '/clients',
+      userType: ['Admin'],
+    },
+    {
+      text: 'Web Tracking',
+      icon: MdWeb,
+      path: '/web-tracking',
+      userType: ['Admin'],
+    },
+    {
+      text: 'Subscription',
+      icon: MdSubscriptions,
+      path: '/subscription',
+      userType: ['Admin'],
+    },
+    {
+      text: 'Settings',
+      icon: MdOutlineSettingsCell,
+      path: '/settings',
+      userType: ['Admin'],
+    },
+    {
+      text: 'Diamond Listing',
+      icon: MdDiamond,
+      path: '/diamond-listing',
+      userType: ['Supplier'],
+    },
+    {
+      text: 'Orders & Transactions',
+      icon: MdShoppingCart,
+      path: '/orders-transactions',
+      userType: ['Supplier'],
+    },
   ];
+  const userType = localStorage.getItem('userType') || '';
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar
@@ -127,21 +172,23 @@ const DashboardLayout: React.FC = () => {
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
-            {menuItems.map((item) => (
-              <ListItem key={item.text} disablePadding>
-                <ListItemButton
-                  onClick={() => navigate(item.path)}
-                  sx={{
-                    color: theme.palette.primary.main,
-                    display: 'flex',
-                    gap: 2,
-                  }}
-                >
-                  {<item.icon color={theme.palette.primary.main} />}
-                  <Typography>{item.text}</Typography>
-                </ListItemButton>
-              </ListItem>
-            ))}
+            {menuItems
+              .filter((item) => item.userType.includes(userType))
+              .map((item) => (
+                <ListItem key={item.text} disablePadding>
+                  <ListItemButton
+                    onClick={() => navigate(item.path)}
+                    sx={{
+                      color: theme.palette.primary.main,
+                      display: 'flex',
+                      gap: 2,
+                    }}
+                  >
+                    {<item.icon color={theme.palette.primary.main} />}
+                    <Typography>{item.text}</Typography>
+                  </ListItemButton>
+                </ListItem>
+              ))}
           </List>
         </Box>
       </Drawer>

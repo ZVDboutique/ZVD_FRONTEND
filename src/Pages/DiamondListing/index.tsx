@@ -24,30 +24,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useState } from 'react';
-
-interface DiamondData {
-  id?: number;
-  diamond_name: string;
-  carat: string;
-  cut: string;
-  color: string;
-  clarity: string;
-  price: string;
-  image: File | null;
-  status?: string;
-}
-
-interface DiamondRowData {
-  id: number;
-  image: string;
-  diamond_name: string;
-  carat: string;
-  cut: string;
-  color: string;
-  clarity: string;
-  price: string;
-  status: string;
-}
+import {
+  DiamondData,
+  DiamondRowData,
+  DiamondStockData,
+} from '../../Types/Diamond';
 
 const DiamondListing = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -67,34 +48,81 @@ const DiamondListing = () => {
     color: '',
     clarity: '',
     price: '',
-    image: null,
+    imageUrl: '',
     status: 'Available',
+    shape: '',
+    certificate_url: '',
+    fluorescence: '',
+    length: '',
+    width: '',
+    depth: '',
+    diameter: '',
+    stock_quantity: '1',
+    is_certified: true,
   });
 
   const queryClient = useQueryClient();
 
   const { data: diamonds } = useQuery({
-    queryKey: ['GET_ALL_DIAMONDS'],
-    queryFn: () => axiosInstance.get('/diamonds/'),
+    queryKey: ['GET_DIAMOND_STOCK'],
+    queryFn: () => axiosInstance.get('/DiamondStockData/get-stock'),
   });
 
-  // Create diamond mutation
+  const mapStockDataToTableData = (
+    stockData: DiamondStockData[]
+  ): DiamondRowData[] => {
+    return stockData.map((diamond) => ({
+      id: diamond.diamondId,
+      image: diamond.imageUrl,
+      diamond_name: diamond.name,
+      carat: diamond.caratWeight.toString(),
+      cut: diamond.cutQuality,
+      color: diamond.colorGrade,
+      clarity: diamond.clarityGrade,
+      price: diamond.price.toString(),
+      status: diamond.isAvailable ? 'Available' : 'Not Available',
+      shape: diamond.shapeName || '',
+      certificate_url: diamond.certificateUrl || '',
+      fluorescence: diamond.fluorescenceIntensity || '',
+      length: diamond.length ? diamond.length.toString() : '',
+      width: diamond.width ? diamond.width.toString() : '',
+      depth: diamond.depth ? diamond.depth.toString() : '',
+      diameter: diamond.diameter ? diamond.diameter.toString() : '',
+      stock_quantity: diamond.stockQuantity
+        ? diamond.stockQuantity.toString()
+        : '1',
+      is_certified: diamond.isCertified || false,
+    }));
+  };
+
   const createDiamondMutation = useMutation({
     mutationFn: (newDiamond: DiamondData) => {
-      const formData = new FormData();
-      Object.entries(newDiamond).forEach(([key, value]) => {
-        if (value !== null) {
-          formData.append(key, value);
-        }
-      });
-      return axiosInstance.post('/diamonds/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const payload = {
+        diamondId: 0,
+        shapeName: newDiamond.shape || 'Round',
+        caratWeight: parseFloat(newDiamond.carat) || 0,
+        cutQuality: newDiamond.cut,
+        colorGrade: newDiamond.color,
+        clarityGrade: newDiamond.clarity,
+        certificateUrl: newDiamond.certificate_url || '',
+        imageUrl: newDiamond.imageUrl,
+        fluorescenceIntensity: newDiamond.fluorescence || 'None',
+        length: parseFloat(newDiamond.length) || 0,
+        width: parseFloat(newDiamond.width) || 0,
+        depth: parseFloat(newDiamond.depth) || 0,
+        diameter: parseFloat(newDiamond.diameter) || 0,
+        price: parseFloat(newDiamond.price) || 0,
+        stockQuantity: parseInt(newDiamond.stock_quantity) || 1,
+        isAvailable: newDiamond.status === 'Available',
+        shapeId: 0,
+        isCertified: newDiamond.is_certified,
+        name: newDiamond.diamond_name,
+      };
+
+      return axiosInstance.post('/DiamondStockData/add-diamond', payload);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['GET_ALL_DIAMONDS'] });
+      queryClient.invalidateQueries({ queryKey: ['GET_DIAMOND_STOCK'] });
       showAlert('Diamond created successfully!', 'success');
       handleCloseModal();
     },
@@ -105,20 +133,35 @@ const DiamondListing = () => {
 
   const updateDiamondMutation = useMutation({
     mutationFn: (diamond: DiamondData) => {
-      const formData = new FormData();
-      Object.entries(diamond).forEach(([key, value]) => {
-        if (value !== null && key !== 'id') {
-          formData.append(key, value);
-        }
-      });
-      return axiosInstance.put(`/diamonds/${diamond.id}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const payload = {
+        diamondId: diamond.id || 0,
+        shapeName: diamond.shape || 'Round',
+        caratWeight: parseFloat(diamond.carat) || 0,
+        cutQuality: diamond.cut,
+        colorGrade: diamond.color,
+        clarityGrade: diamond.clarity,
+        certificateUrl: diamond.certificate_url || '',
+        imageUrl: diamond.imageUrl,
+        fluorescenceIntensity: diamond.fluorescence || 'None',
+        length: parseFloat(diamond.length) || 0,
+        width: parseFloat(diamond.width) || 0,
+        depth: parseFloat(diamond.depth) || 0,
+        diameter: parseFloat(diamond.diameter) || 0,
+        price: parseFloat(diamond.price) || 0,
+        stockQuantity: parseInt(diamond.stock_quantity) || 1,
+        isAvailable: diamond.status === 'Available',
+        shapeId: 0,
+        isCertified: diamond.is_certified,
+        name: diamond.diamond_name,
+      };
+
+      return axiosInstance.put(
+        `/DiamondStockData/update/${diamond.id}`,
+        payload
+      );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['GET_ALL_DIAMONDS'] });
+      queryClient.invalidateQueries({ queryKey: ['GET_DIAMOND_STOCK'] });
       showAlert('Diamond updated successfully!', 'success');
       handleCloseModal();
     },
@@ -129,10 +172,10 @@ const DiamondListing = () => {
 
   const deleteDiamondMutation = useMutation({
     mutationFn: (id: number) => {
-      return axiosInstance.delete(`/diamonds/${id}`);
+      return axiosInstance.delete(`/DiamondStockData/delete/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['GET_ALL_DIAMONDS'] });
+      queryClient.invalidateQueries({ queryKey: ['GET_DIAMOND_STOCK'] });
       showAlert('Diamond deleted successfully!', 'success');
     },
     onError: () => {
@@ -148,18 +191,37 @@ const DiamondListing = () => {
 
     console.log('Edit clicked for id:', id);
 
-    const mockItem = mockData.find((item) => item.id === id);
-    if (mockItem) {
-      openEditModal(mockItem);
-      return;
-    }
-
-    const apiItem = diamonds?.data?.find((diamond: any) => diamond.id === id);
+    const apiItem = diamonds?.data?.find(
+      (diamond: DiamondStockData) => diamond.diamondId === id
+    );
     if (apiItem) {
-      openEditModal(apiItem);
+      openEditModal(mapStockItemToRowData(apiItem));
     } else {
       console.error('Could not find diamond with id:', id);
     }
+  };
+
+  const mapStockItemToRowData = (item: DiamondStockData): DiamondRowData => {
+    return {
+      id: item.diamondId,
+      image: item.imageUrl,
+      diamond_name: item.name,
+      carat: item.caratWeight.toString(),
+      cut: item.cutQuality,
+      color: item.colorGrade,
+      clarity: item.clarityGrade,
+      price: item.price.toString(),
+      status: item.isAvailable ? 'Available' : 'Not Available',
+      shape: item.shapeName || '',
+      certificate_url: item.certificateUrl || '',
+      fluorescence: item.fluorescenceIntensity || '',
+      length: item.length ? item.length.toString() : '',
+      width: item.width ? item.width.toString() : '',
+      depth: item.depth ? item.depth.toString() : '',
+      diameter: item.diameter ? item.diameter.toString() : '',
+      stock_quantity: item.stockQuantity ? item.stockQuantity.toString() : '1',
+      is_certified: item.isCertified || false,
+    };
   };
 
   const openEditModal = (item: DiamondRowData) => {
@@ -171,8 +233,17 @@ const DiamondListing = () => {
       color: item.color,
       clarity: item.clarity,
       price: item.price,
-      image: null,
+      imageUrl: item.image,
       status: item.status,
+      shape: item.shape || '',
+      certificate_url: item.certificate_url || '',
+      fluorescence: item.fluorescence || '',
+      length: item.length || '',
+      width: item.width || '',
+      depth: item.depth || '',
+      diameter: item.diameter || '',
+      stock_quantity: item.stock_quantity || '1',
+      is_certified: item.is_certified || true,
     });
     setSelectedId(item.id);
     setIsEditing(true);
@@ -209,8 +280,17 @@ const DiamondListing = () => {
       color: '',
       clarity: '',
       price: '',
-      image: null,
+      imageUrl: '',
       status: 'Available',
+      shape: '',
+      certificate_url: '',
+      fluorescence: '',
+      length: '',
+      width: '',
+      depth: '',
+      diameter: '',
+      stock_quantity: '1',
+      is_certified: true,
     });
     setIsEditing(false);
     setSelectedId(null);
@@ -237,15 +317,6 @@ const DiamondListing = () => {
       ...prev,
       [name]: value,
     }));
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setDiamondData((prev) => ({
-        ...prev,
-        image: e.target.files ? e.target.files[0] : null,
-      }));
-    }
   };
 
   const showAlert = (message: string, severity: 'success' | 'error') => {
@@ -342,32 +413,9 @@ const DiamondListing = () => {
     },
   ];
 
-  const mockData: DiamondRowData[] = [
-    {
-      id: 1,
-      image: '',
-      diamond_name: 'Round Brilliant',
-      carat: '1.5',
-      cut: 'Excellent',
-      color: 'D',
-      clarity: 'VS1',
-      price: '$15,000',
-      status: 'Available',
-    },
-    {
-      id: 2,
-      image: '',
-      diamond_name: 'Princess Cut',
-      carat: '2.0',
-      cut: 'Very Good',
-      color: 'E',
-      clarity: 'VS2',
-      price: '$20,000',
-      status: 'Available',
-    },
-  ];
-
-  const tableData = diamonds?.data || mockData;
+  const tableData = diamonds?.data
+    ? mapStockDataToTableData(diamonds.data)
+    : [];
 
   return (
     <>
@@ -438,6 +486,8 @@ const DiamondListing = () => {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             outline: 'none',
+            maxHeight: '90vh',
+            overflow: 'auto',
           }}
         >
           <Typography variant='h5' mb={3}>
@@ -451,6 +501,16 @@ const DiamondListing = () => {
                 label='Diamond Name'
                 name='diamond_name'
                 value={diamondData.diamond_name}
+                onChange={handleChange}
+                variant='standard'
+              />
+            </Grid>
+            <Grid size={6}>
+              <TextField
+                fullWidth
+                label='Shape'
+                name='shape'
+                value={diamondData.shape}
                 onChange={handleChange}
                 variant='standard'
               />
@@ -505,34 +565,86 @@ const DiamondListing = () => {
                 variant='standard'
               />
             </Grid>
-            <Grid size={12} sx={{ mt: 2 }}>
-              <Typography variant='body1' mb={1}>
-                Diamond Image
-              </Typography>
-              <Button
-                component='label'
-                variant='contained'
-                sx={{
-                  backgroundColor: '#a8d8f3',
-                  color: 'black',
-                  '&:hover': {
-                    backgroundColor: '#73C7F9',
-                  },
-                }}
-              >
-                Choose File
-                <input
-                  hidden
-                  accept='image/*'
-                  type='file'
-                  onChange={handleFileChange}
-                />
-              </Button>
-              {diamondData.image && diamondData.image instanceof File && (
-                <Typography variant='caption' display='block' mt={1}>
-                  Selected: {diamondData.image.name}
-                </Typography>
-              )}
+            <Grid size={6}>
+              <TextField
+                fullWidth
+                label='Stock Quantity'
+                name='stock_quantity'
+                value={diamondData.stock_quantity}
+                onChange={handleChange}
+                variant='standard'
+              />
+            </Grid>
+            <Grid size={6}>
+              <TextField
+                fullWidth
+                label='Fluorescence'
+                name='fluorescence'
+                value={diamondData.fluorescence}
+                onChange={handleChange}
+                variant='standard'
+              />
+            </Grid>
+            <Grid size={6}>
+              <TextField
+                fullWidth
+                label='Certificate URL'
+                name='certificate_url'
+                value={diamondData.certificate_url}
+                onChange={handleChange}
+                variant='standard'
+              />
+            </Grid>
+            <Grid size={6}>
+              <TextField
+                fullWidth
+                label='Length (mm)'
+                name='length'
+                value={diamondData.length}
+                onChange={handleChange}
+                variant='standard'
+              />
+            </Grid>
+            <Grid size={6}>
+              <TextField
+                fullWidth
+                label='Width (mm)'
+                name='width'
+                value={diamondData.width}
+                onChange={handleChange}
+                variant='standard'
+              />
+            </Grid>
+            <Grid size={6}>
+              <TextField
+                fullWidth
+                label='Depth (mm)'
+                name='depth'
+                value={diamondData.depth}
+                onChange={handleChange}
+                variant='standard'
+              />
+            </Grid>
+            <Grid size={6}>
+              <TextField
+                fullWidth
+                label='Diameter (mm)'
+                name='diameter'
+                value={diamondData.diameter}
+                onChange={handleChange}
+                variant='standard'
+              />
+            </Grid>
+            <Grid size={6}>
+              <TextField
+                fullWidth
+                label='Image URL'
+                name='imageUrl'
+                value={diamondData.imageUrl}
+                onChange={handleChange}
+                variant='standard'
+                placeholder='https://example.com/image.jpg'
+              />
             </Grid>
           </Grid>
 
