@@ -30,7 +30,6 @@ jobs:
           npm install --legacy-peer-deps
           npm run build
 
-      # Step 4: SSH into EC2 instance and deploy the React app
       - name: SSH & Deploy on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -57,18 +56,7 @@ jobs:
 
             # Serve the React App
             echo "Serving..."
-            npm run preview
-            npm run dev -- --host 0.0.0.0 --port 5062
-
-            # Install screen if not installed
-            if ! command -v screen &> /dev/null; then
-                echo "screen could not be found, installing..."
-                sudo yum install -y screen
-            fi
-
-            # Start the React app in a detached screen session on port 5062
-            echo "Starting React app in a screen session on port 5062..."
-            screen -dmS react_app npm start
+            screen -dmS react_app npm run preview
 
             # Verify that the screen session is running
             screen -ls

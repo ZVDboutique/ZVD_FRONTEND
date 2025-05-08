@@ -1,9 +1,11 @@
-import { Box, Button, Card, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, Grid, Typography } from "@mui/material";
+import { useState } from "react";
 import { FaUser } from "react-icons/fa";
-import { LuSearch } from "react-icons/lu";
 import heroSectionBg from "../../assets/heroSectionBg.svg";
 import zvdLogo from "../../assets/zvLogo.svg";
+import { Show } from "../../Components/Show";
 import { DiamondFilterInterface } from "../../Interface/diamondFilterinterface";
+import ProfileModal from "./ProfileModal";
 
 const HeroSecion = ({
   filtersParams,
@@ -12,6 +14,8 @@ const HeroSecion = ({
   setFilterParams: (a: DiamondFilterInterface) => void;
   filtersParams: DiamondFilterInterface;
 }) => {
+  const [showProfileModal, setShowProfileModal] = useState(false);
+
   const diamondTypeData = [
     {
       name: "Natural Diamonds",
@@ -51,184 +55,174 @@ const HeroSecion = ({
   ];
 
   return (
-    <Grid
-      container
-      spacing={2}
-      sx={{
-        backgroundImage: `url(${heroSectionBg})`,
-        bgcolor: "#90D5FF33",
-        borderRadius: 6,
-      }}
-      position={"relative"}
-    >
-      <Grid size={4}>
-        <img src="/neckless.svg" alt="" />
-      </Grid>
+    <>
       <Grid
-        size={4}
-        display={"flex"}
-        alignItems={"center"}
-        justifyContent={"center"}
+        container
+        spacing={2}
+        sx={{
+          backgroundImage: `url(${heroSectionBg})`,
+          bgcolor: "#90D5FF33",
+          borderRadius: 6,
+        }}
+        position={"relative"}
       >
-        <img src={zvdLogo} alt="" />
-      </Grid>
-      <Grid
-        size={4}
-        display={"flex"}
-        flexDirection={"column"}
-        justifyContent={"space-between"}
-        alignItems={"flex-end"}
-      >
-        <Box
-          sx={{
-            backdropFilter: "blur(10px)",
-            bgcolor: "#73C7F933",
-            borderRadius: "200px 0 0 200px",
-            p: 3,
-            mt: 4,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 2,
-          }}
+        <Grid size={4}>
+          <img src="/neckless.svg" alt="" />
+        </Grid>
+        <Grid
+          size={4}
+          display={"flex"}
+          alignItems={"center"}
+          justifyContent={"center"}
         >
-          <TextField
-            fullWidth
-            slotProps={{
-              input: {
-                startAdornment: (
-                  <LuSearch
-                    color="#fff"
-                    size={24}
-                    style={{ marginRight: 10 }}
-                  />
-                ),
-              },
-            }}
+          <img src={zvdLogo} alt="" />
+        </Grid>
+        <Grid
+          size={4}
+          display={"flex"}
+          flexDirection={"column"}
+          justifyContent={"space-between"}
+          alignItems={"flex-end"}
+        >
+          <Box
             sx={{
-              bgcolor: "#246A95",
-              borderRadius: 20,
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderRadius: 20,
-              },
-              input: { color: "#fff" },
+              backdropFilter: "blur(10px)",
+              bgcolor: "#73C7F933",
+              borderRadius: "200px 0 0 200px",
+              p: 3,
+              mt: 4,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 2,
             }}
-            placeholder="Search....."
-          />
-          <Button
-            fullWidth
-            sx={{
-              bgcolor: "#246A95",
-              color: "#fff",
-              borderRadius: 20,
-              p: 2,
-            }}
-            startIcon={<FaUser />}
           >
-            Jhone Farra
-          </Button>
-        </Box>
-        <img src="/fingureRing.svg" alt="" />
-      </Grid>
-      <Grid container size={12} spacing={5} mx={5}>
-        {diamondTypeData.map((dataItem, index) => {
-          return (
-            <Grid size={12 / 5} key={index} position={"relative"}>
-              <Card
-                sx={{
-                  position: "absolute",
-                  py: 1,
-                  px: 3,
-                  top: -20,
-                  right: -10,
-                  boxShadow: "0 0 30px -15px #000",
-                  minWidth: 200,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  background:
-                    filtersParams?.type === dataItem.type ? "#D2ECFB" : "#fff",
-                  color: "#123449",
-                  transition: "all 0.3s",
-                }}
-              >
-                {dataItem.name}
-              </Card>
-              <Card
-                sx={{
-                  background:
-                    filtersParams?.type === dataItem.type
-                      ? "#123449"
-                      : "#D2ECFB",
-                  color:
-                    filtersParams?.type === dataItem.type ? "#fff" : "#123449",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  px: 5,
-                  py: 5,
-                  gap: 2,
-                  boxShadow: "0 0 30px -15px #000",
-                  transition: "all 0.3s",
-                  minHeight: "100%",
-                }}
-              >
-                <div
-                  style={{
+            <Button
+              fullWidth
+              sx={{
+                bgcolor: "#246A95",
+                color: "#fff",
+                borderRadius: 20,
+                px: 5,
+                py: 2,
+              }}
+              startIcon={<FaUser />}
+              onClick={() => {
+                setShowProfileModal(true);
+              }}
+            >
+              Jhone Farra
+            </Button>
+          </Box>
+          <img src="/fingureRing.svg" alt="" />
+        </Grid>
+        <Grid container size={12} spacing={3} mx={5}>
+          {diamondTypeData.map((dataItem, index) => {
+            return (
+              <Grid size={12 / 5} key={index} position={"relative"}>
+                <Card
+                  sx={{
+                    position: "absolute",
+                    py: 1,
+                    px: 3,
+                    top: -20,
+                    right: -10,
+                    boxShadow: "0 0 30px -15px #000",
+                    minWidth: 200,
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    height: 60,
-                    width: 60,
-                    borderRadius: 10,
-                    transition: "all 0.3s",
                     background:
                       filtersParams?.type === dataItem.type
                         ? "#D2ECFB"
                         : "#fff",
-                  }}
-                >
-                  <img src={`/${dataItem.img}.svg`} alt="" />
-                </div>
-                <Typography textAlign={"center"}>
-                  {dataItem.description}
-                </Typography>
-                <Button
-                  sx={{
                     color: "#123449",
-                    bgcolor: "#fff",
-                    borderRadius: 100,
-                    px: 5,
-                    py: 1,
-                  }}
-                  onClick={() => {
-                    setFilterParams({
-                      type: dataItem.type,
-                      shape: "",
-                      caratMin: "",
-                      caratMax: "",
-                      color: "",
-                      clarity: "",
-                      cut: "",
-                      priceMin: "",
-                      priceMax: "",
-                      fluorescenceIntensity: "",
-                      lengthMin: "",
-                      lengthMax: "",
-                      widthMin: "",
-                      widthMax: "",
-                    });
+                    transition: "all 0.3s",
                   }}
                 >
-                  Select
-                </Button>
-              </Card>
-            </Grid>
-          );
-        })}
+                  {dataItem.name}
+                </Card>
+                <Card
+                  sx={{
+                    background:
+                      filtersParams?.type === dataItem.type
+                        ? "#123449"
+                        : "#D2ECFB",
+                    color:
+                      filtersParams?.type === dataItem.type
+                        ? "#fff"
+                        : "#123449",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    px: 2,
+                    py: 4,
+                    gap: 2,
+                    boxShadow: "0 0 30px -15px #000",
+                    transition: "all 0.3s",
+                    minHeight: "100%",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: 60,
+                      width: 60,
+                      borderRadius: 10,
+                      transition: "all 0.3s",
+                      background:
+                        filtersParams?.type === dataItem.type
+                          ? "#D2ECFB"
+                          : "#fff",
+                    }}
+                  >
+                    <img src={`/${dataItem.img}.svg`} alt="" />
+                  </div>
+                  <Typography textAlign={"center"} mt={"auto"} mb={"auto"}>
+                    {dataItem.description}
+                  </Typography>
+                  <Button
+                    sx={{
+                      color: "#123449",
+                      bgcolor: "#fff",
+                      borderRadius: 100,
+                      px: 5,
+                      py: 1,
+                    }}
+                    onClick={() => {
+                      setFilterParams({
+                        type: dataItem.type,
+                        shape: "",
+                        caratMin: "",
+                        caratMax: "",
+                        color: "",
+                        clarity: "",
+                        cut: "",
+                        priceMin: "",
+                        priceMax: "",
+                        fluorescenceIntensity: "",
+                        lengthMin: "",
+                        lengthMax: "",
+                        widthMin: "",
+                        widthMax: "",
+                      });
+                    }}
+                  >
+                    Select
+                  </Button>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
       </Grid>
-    </Grid>
+      <Show.When isTrue={showProfileModal}>
+        <ProfileModal open={showProfileModal} setOpen={setShowProfileModal} />
+      </Show.When>
+    </>
   );
 };
 
