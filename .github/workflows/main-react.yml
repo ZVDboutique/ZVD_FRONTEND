@@ -17,14 +17,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Need to Configure this crediatianls
-      # - name: Configure AWS credentials
-      #   uses: aws-actions/configure-aws-credentials@v2
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: ap-south-1
-
       # Step 2: Set up Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -38,13 +30,6 @@ jobs:
           npm install --legacy-peer-deps
           npm run build
 
-      # Need to Configure this S3 Bucket
-      # - name: Upload production build to S3 bucket
-      #   run: |
-      #     aws s3 sync build ${{ vars.STAGE_S3_BUCKET_URI }}
-      #     aws cloudfront create-invalidation --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} --paths '/*'
-
-      # Step 4: SSH into EC2 instance and deploy the React app
       - name: SSH & Deploy on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -71,18 +56,7 @@ jobs:
 
             # Serve the React App
             echo "Serving..."
-            npm run preview
-            npm run dev -- --host 0.0.0.0 --port 5062
-
-            # Install screen if not installed
-            if ! command -v screen &> /dev/null; then
-                echo "screen could not be found, installing..."
-                sudo yum install -y screen
-            fi
-
-            # Start the React app in a detached screen session on port 5062
-            echo "Starting React app in a screen session on port 5062..."
-            screen -dmS react_app npm start
+            screen -dmS react_app npm run preview
 
             # Verify that the screen session is running
             screen -ls
