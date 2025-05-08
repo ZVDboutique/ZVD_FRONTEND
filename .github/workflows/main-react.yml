@@ -45,7 +45,7 @@ jobs:
             cd /home/ec2-user/ZVD_FRONTEND
 
             # Pull the latest code from GitHub
-            echo "Pulling latest code..."
+            echo "Pulling latest code...."
             git reset --hard
             git pull origin main
 
