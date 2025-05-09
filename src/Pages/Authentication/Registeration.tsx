@@ -1,18 +1,18 @@
-import { Button, Grid, IconButton, TextField, Typography } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
-import { Controller, FormProvider, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { GoArrowLeft, GoArrowRight } from "react-icons/go";
-import { HiEye, HiEyeOff } from "react-icons/hi";
-import { useLocation, useNavigate } from "react-router-dom";
-import signUPImg from "../../assets/signUp.png";
-import zvdLogo from "../../assets/zvLogo.svg";
-import AuthLayout from "../../Layouts/AuthLayout";
-import { RegisterRequest } from "../../Types/auth.types";
-import axiosInstance from "../../Utils/axios";
-import CompanyInformation from "./CompanyInformation";
-import KycVerfication from "./KycVerfication";
+import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { GoArrowLeft, GoArrowRight } from 'react-icons/go';
+import { HiEye, HiEyeOff } from 'react-icons/hi';
+import { useLocation, useNavigate } from 'react-router-dom';
+import signUPImg from '../../assets/signUp.png';
+import zvdLogo from '../../assets/zvLogo.svg';
+import AuthLayout from '../../Layouts/AuthLayout';
+import { RegisterRequest } from '../../Types/auth.types';
+import axiosInstance from '../../Utils/axios';
+import CompanyInformation from './CompanyInformation';
+import KycVerfication from './KycVerfication';
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -20,32 +20,33 @@ const Registration = () => {
   const { search } = useLocation();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const form = useForm<RegisterRequest>({
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      customer_type_id: "",
-      primaryEmail: "",
-      secondaryEmail: "",
-      primaryContact: "",
-      secondaryContact: "",
-      whatsappNumber: "",
-      password: "",
-      confirmPassword: "",
+      firstName: '',
+      lastName: '',
+      customer_type_id: '',
+      primaryEmail: '',
+      secondaryEmail: '',
+      primaryContact: '',
+      secondaryContact: '',
+      whatsappNumber: '',
+      password: '',
+      confirmPassword: '',
       isKycDone: false,
       isPartOfCompany: false,
       isNotify: true,
-      panCardNumber: "",
-      doc_type_name: "",
-      otp: "",
-      companyName: "",
-      diamondHub: "",
-      companyAddress: "",
-      companyEmail: "",
-      companyContact: "",
-      contactPersonEmail: "",
-      contactPersonPhone: "",
+      panCardNumber: '',
+      doc_type_name: '',
+      otp: '',
+      companyName: '',
+      diamondHub: '',
+      companyAddress: '',
+      companyEmail: '',
+      companyContact: '',
+      contactPersonEmail: '',
+      contactPersonPhone: '',
     },
   });
 
@@ -53,34 +54,34 @@ const Registration = () => {
     mutationFn: (data: RegisterRequest) =>
       axiosInstance.post(
         `${import.meta.env.VITE_BASE_URL}/SignupRequest/signup`,
-        data,
+        data
       ),
     onSuccess: (data) => {
-      localStorage.setItem("token", data.data.token);
-      navigate("/dashboard");
+      localStorage.setItem('token', data.data.token);
+      navigate('/dashboard');
     },
     onError: (error: any) => {
-      toast.error(error.message || "Something went wrong.Please try again.");
+      toast.error(error.message || 'Something went wrong.Please try again.');
     },
   });
 
   const onSubmit = (data: RegisterRequest) => {
-    if (search === "") {
+    if (search === '') {
       navigate(`/sign-up?kyc-verification`);
     }
     if (
-      search === "?kyc-verification" &&
-      form.getValues("doc_type_name") === "Adhaar Card"
+      search === '?kyc-verification' &&
+      form.getValues('doc_type_name') === 'Adhaar Card'
     ) {
-      form.setValue("showAdharConfiramtionModal", true);
+      form.setValue('showAdharConfiramtionModal', true);
     }
     if (
-      search === "?kyc-verification" &&
-      form.getValues("doc_type_name") !== "Adhaar Card"
+      search === '?kyc-verification' &&
+      form.getValues('doc_type_name') !== 'Adhaar Card'
     ) {
       navigate(`/sign-up?company-information`);
     }
-    if (search === "?company-information") {
+    if (search === '?company-information') {
       mutate(data);
     }
   };
@@ -90,37 +91,37 @@ const Registration = () => {
       <FormProvider {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          style={{ width: "90%", height: "100%" }}
+          style={{ width: '90%', height: '100%' }}
         >
-          {search === "" && (
+          {search === '' && (
             <Grid
               container
               spacing={2}
-              justifyContent={"space-between"}
-              height={"100%"}
+              justifyContent={'space-between'}
+              height={'100%'}
             >
-              <Grid size={12} textAlign={"center"}>
+              <Grid size={12} textAlign={'center'}>
                 <img
                   src={zvdLogo}
                   style={{
-                    width: "30%",
-                    height: "-webkit-fill-available",
-                    backgroundRepeat: "no-repeat",
+                    width: '30%',
+                    height: '-webkit-fill-available',
+                    backgroundRepeat: 'no-repeat',
                   }}
                 />
               </Grid>
-              <Grid size={12} container height={"fit-content"} spacing={2}>
-                <Grid size={12} textAlign={"center"}>
+              <Grid size={12} container height={'fit-content'} spacing={2}>
+                <Grid size={12} textAlign={'center'}>
                   <Typography fontWeight={600}>User Details</Typography>
                 </Grid>
                 <Grid size={6}>
                   <Controller
-                    name="firstName"
+                    name='firstName'
                     control={form.control}
                     rules={{
                       required: {
-                        value: search === "",
-                        message: "",
+                        value: search === '',
+                        message: '',
                       },
                     }}
                     render={({ field, fieldState: { error } }) => {
@@ -128,9 +129,9 @@ const Registration = () => {
                         <TextField
                           {...field}
                           fullWidth
-                          variant="standard"
-                          placeholder="Enter your First Name"
-                          label="First Name"
+                          variant='standard'
+                          placeholder='Enter your First Name'
+                          label='First Name'
                           error={!!error}
                           helperText={error?.message}
                         />
@@ -140,12 +141,12 @@ const Registration = () => {
                 </Grid>
                 <Grid size={6}>
                   <Controller
-                    name="lastName"
+                    name='lastName'
                     control={form.control}
                     rules={{
                       required: {
-                        value: search === "",
-                        message: "",
+                        value: search === '',
+                        message: '',
                       },
                     }}
                     render={({ field, fieldState: { error } }) => {
@@ -153,9 +154,9 @@ const Registration = () => {
                         <TextField
                           {...field}
                           fullWidth
-                          variant="standard"
-                          placeholder="Enter your Last name"
-                          label="Last name"
+                          variant='standard'
+                          placeholder='Enter your Last name'
+                          label='Last name'
                           error={!!error}
                           helperText={error?.message}
                         />
@@ -165,12 +166,12 @@ const Registration = () => {
                 </Grid>
                 <Grid size={6}>
                   <Controller
-                    name="primaryEmail"
+                    name='primaryEmail'
                     control={form.control}
                     rules={{
                       required: {
-                        value: search === "",
-                        message: "",
+                        value: search === '',
+                        message: '',
                       },
                     }}
                     render={({ field, fieldState: { error } }) => {
@@ -178,9 +179,9 @@ const Registration = () => {
                         <TextField
                           {...field}
                           fullWidth
-                          variant="standard"
-                          placeholder="Enter your Primary Email"
-                          label="Primary Email"
+                          variant='standard'
+                          placeholder='Enter your Primary Email'
+                          label='Primary Email'
                           error={!!error}
                           helperText={error?.message}
                         />
@@ -190,16 +191,16 @@ const Registration = () => {
                 </Grid>
                 <Grid size={6}>
                   <Controller
-                    name="secondaryEmail"
+                    name='secondaryEmail'
                     control={form.control}
                     render={({ field, fieldState: { error } }) => {
                       return (
                         <TextField
                           {...field}
                           fullWidth
-                          variant="standard"
-                          placeholder="Enter your Secondary Email"
-                          label="Secondary Email"
+                          variant='standard'
+                          placeholder='Enter your Secondary Email'
+                          label='Secondary Email'
                           error={!!error}
                           helperText={error?.message}
                         />
@@ -209,12 +210,12 @@ const Registration = () => {
                 </Grid>
                 <Grid size={6}>
                   <Controller
-                    name="primaryContact"
+                    name='primaryContact'
                     control={form.control}
                     rules={{
                       required: {
-                        value: search === "",
-                        message: "",
+                        value: search === '',
+                        message: '',
                       },
                     }}
                     render={({ field, fieldState: { error } }) => {
@@ -222,9 +223,9 @@ const Registration = () => {
                         <TextField
                           {...field}
                           fullWidth
-                          variant="standard"
-                          placeholder="Enter your Primary Contact"
-                          label="Primary Contact"
+                          variant='standard'
+                          placeholder='Enter your Primary Contact'
+                          label='Primary Contact'
                           error={!!error}
                           helperText={error?.message}
                         />
@@ -234,16 +235,16 @@ const Registration = () => {
                 </Grid>
                 <Grid size={6}>
                   <Controller
-                    name="secondaryContact"
+                    name='secondaryContact'
                     control={form.control}
                     render={({ field, fieldState: { error } }) => {
                       return (
                         <TextField
                           {...field}
                           fullWidth
-                          variant="standard"
-                          placeholder="Enter your Secondary Contact"
-                          label="Secondary Contact"
+                          variant='standard'
+                          placeholder='Enter your Secondary Contact'
+                          label='Secondary Contact'
                           error={!!error}
                           helperText={error?.message}
                         />
@@ -253,12 +254,12 @@ const Registration = () => {
                 </Grid>
                 <Grid size={12}>
                   <Controller
-                    name="whatsappNumber"
+                    name='whatsappNumber'
                     control={form.control}
                     rules={{
                       required: {
-                        value: search === "",
-                        message: "",
+                        value: search === '',
+                        message: '',
                       },
                     }}
                     render={({ field, fieldState: { error } }) => {
@@ -266,9 +267,9 @@ const Registration = () => {
                         <TextField
                           {...field}
                           fullWidth
-                          variant="standard"
-                          placeholder="Enter your Whatsapp Number"
-                          label="Whatsapp Number"
+                          variant='standard'
+                          placeholder='Enter your Whatsapp Number'
+                          label='Whatsapp Number'
                           error={!!error}
                           helperText={error?.message}
                         />
@@ -278,12 +279,12 @@ const Registration = () => {
                 </Grid>
                 <Grid size={12}>
                   <Controller
-                    name="password"
+                    name='password'
                     control={form.control}
                     rules={{
                       required: {
-                        value: search === "",
-                        message: "",
+                        value: search === '',
+                        message: '',
                       },
                     }}
                     render={({ field, fieldState: { error } }) => {
@@ -291,10 +292,10 @@ const Registration = () => {
                         <TextField
                           {...field}
                           fullWidth
-                          variant="standard"
-                          placeholder="Enter your password"
-                          label="Password"
-                          type="password"
+                          variant='standard'
+                          placeholder='Enter your password'
+                          label='Password'
+                          type={showPassword ? 'text' : 'password'}
                           error={!!error}
                           helperText={error?.message}
                           slotProps={{
@@ -319,12 +320,12 @@ const Registration = () => {
                 </Grid>
                 <Grid size={12}>
                   <Controller
-                    name="confirmPassword"
+                    name='confirmPassword'
                     control={form.control}
                     rules={{
                       required: {
-                        value: search === "",
-                        message: "",
+                        value: search === '',
+                        message: '',
                       },
                     }}
                     render={({ field, fieldState: { error } }) => {
@@ -332,19 +333,21 @@ const Registration = () => {
                         <TextField
                           {...field}
                           fullWidth
-                          variant="standard"
-                          placeholder="Enter your Confirm Password"
-                          label="Confirm Password"
-                          type="password"
+                          variant='standard'
+                          placeholder='Enter your Confirm Password'
+                          label='Confirm Password'
+                          type={showConfirmPassword ? 'text' : 'password'}
                           error={!!error}
                           helperText={error?.message}
                           slotProps={{
                             input: {
                               endAdornment: (
                                 <IconButton
-                                  onClick={() => setShowPassword(!showPassword)}
+                                  onClick={() =>
+                                    setShowConfirmPassword(!showConfirmPassword)
+                                  }
                                 >
-                                  {showPassword ? (
+                                  {showConfirmPassword ? (
                                     <HiEyeOff size={20} />
                                   ) : (
                                     <HiEye size={20} />
@@ -360,14 +363,14 @@ const Registration = () => {
                 </Grid>
                 <Grid
                   size={12}
-                  display={"flex"}
-                  alignItems={"center"}
-                  justifyContent={"space-between"}
+                  display={'flex'}
+                  alignItems={'center'}
+                  justifyContent={'space-between'}
                 >
                   <Button
-                    variant="outlined"
-                    size="large"
-                    color="dark"
+                    variant='outlined'
+                    size='large'
+                    color='dark'
                     sx={{ mt: 3 }}
                     startIcon={<GoArrowLeft />}
                     onClick={() => {
@@ -377,9 +380,9 @@ const Registration = () => {
                     Back
                   </Button>
                   <Button
-                    type="submit"
-                    variant="contained"
-                    size="large"
+                    type='submit'
+                    variant='contained'
+                    size='large'
                     sx={{ mt: 3 }}
                     endIcon={<GoArrowRight />}
                   >
@@ -389,8 +392,8 @@ const Registration = () => {
               </Grid>
             </Grid>
           )}
-          {search === "?kyc-verification" && <KycVerfication />}
-          {search === "?company-information" && <CompanyInformation />}
+          {search === '?kyc-verification' && <KycVerfication />}
+          {search === '?company-information' && <CompanyInformation />}
         </form>
       </FormProvider>
     </AuthLayout>
