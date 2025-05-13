@@ -36,13 +36,16 @@ jobs:
           host: ${{ secrets.AWS_EC2_IP }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.AWS_EC2_KEY }}
-          timeout: 700s
+          debug: true
+          script_stop: true
           script: |
+            whoami
+            hostname
             # Navigate to the project directory
             cd /home/ec2-user/ZVD_FRONTEND
 
             # Pull the latest code from GitHub
-            echo "Pulling latest code..."
+            echo "Pulling latest code...."
             git reset --hard
             git pull origin main
 
@@ -54,9 +57,9 @@ jobs:
             echo "Building app..."
             npm run build
 
-            # Serve the React App
-            echo "Serving..."
-            screen -dmS react_app npm run preview
-
+            # Start Vite preview in detached screen on port 5062
+            echo "Starting vite preview in screen session..."
+            screen -dmS vite_preview bash -c "npm run preview -- --port 5062 --host"
+            
             # Verify that the screen session is running
             screen -ls
