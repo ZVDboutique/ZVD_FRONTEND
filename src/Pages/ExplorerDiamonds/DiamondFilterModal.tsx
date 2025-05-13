@@ -138,7 +138,7 @@ const DiamondFilterModal = ({
   ) : (
     <Grid container>
       <Grid size={12}>
-        {accordiansData?.map((dataItem) => {
+        {accordiansData?.map((dataItem: any) => {
           return (
             <Accordion>
               <AccordionSummary expandIcon={<MdExpandMore size={20} />}>
@@ -151,7 +151,7 @@ const DiamondFilterModal = ({
                   gap: 2,
                 }}
               >
-                {dataItem?.listData?.map((data, index: number) => {
+                {dataItem?.listData?.map((data: any, index: number) => {
                   return (
                     <Button
                       key={index}
@@ -191,7 +191,7 @@ const DiamondFilterModal = ({
                       }}
                     >
                       <img
-                        src="labRing.svg"
+                        src={dataItem?.imageUrl}
                         alt=""
                         color={
                           (filtersParams as Record<string, any>)[
@@ -202,7 +202,7 @@ const DiamondFilterModal = ({
                             : "#123449"
                         }
                       />
-                      <Typography>
+                      <Typography color={dataItem?.hexvalue}>
                         {(data as Record<string, any>)[dataItem.valueField]}
                       </Typography>
                     </Button>

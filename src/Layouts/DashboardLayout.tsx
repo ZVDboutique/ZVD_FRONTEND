@@ -2,9 +2,8 @@ import {
   AppBar,
   Avatar,
   Box,
-  Divider,
+  Button,
   Drawer,
-  IconButton,
   List,
   ListItem,
   ListItemButton,
@@ -22,18 +21,21 @@ import {
   MdLogout,
   MdOutlineDashboard,
   MdPeople,
-  MdSettings,
   MdShoppingCart,
-  MdVerifiedUser,
 } from "react-icons/md";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { theme } from "../Utils/theme";
 import zvdLogo from "../assets/zvLogo.svg";
+import { useAppContext } from "../Utils/appContext";
 
 const drawerWidth = 240;
 
 const DashboardLayout: React.FC = () => {
   const { pathname } = useLocation();
+
+  const { userData } = useAppContext();
+
+  console.log("userData", userData);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -45,6 +47,8 @@ const DashboardLayout: React.FC = () => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+    localStorage.clear();
+    window.location.reload();
   };
 
   const menuItems = [
@@ -111,9 +115,46 @@ const DashboardLayout: React.FC = () => {
       >
         <Toolbar>
           <img src={zvdLogo} width={"10%"} />
-          <IconButton onClick={handleMenuOpen} size="small" sx={{ ml: "auto" }}>
-            <Avatar sx={{ width: 50, height: 50 }}>JD</Avatar>
-          </IconButton>
+          <Button
+            onClick={handleMenuOpen}
+            size="small"
+            sx={{ ml: "auto" }}
+            color="dark"
+          >
+            <Box display={"flex"} alignItems={"center"} gap={1}>
+              <Avatar
+                sx={{
+                  borderRadius: 2,
+                  textTransform: "uppercase",
+                  color: theme.palette.primary.main,
+                  background: theme.palette.secondary.main,
+                }}
+              >
+                {userData?.first_name?.charAt(0)}
+                {userData?.last_name?.charAt(0)}
+              </Avatar>
+              <Box display={"flex"} flexDirection={"column"}>
+                <Typography
+                  textAlign={"left"}
+                  lineHeight={1}
+                  textTransform={"capitalize"}
+                  fontSize={12}
+                  fontWeight={600}
+                >
+                  {userData?.first_name}
+                </Typography>
+                <Typography
+                  textAlign={"left"}
+                  lineHeight={1}
+                  textTransform={"capitalize"}
+                  fontSize={12}
+                  fontWeight={600}
+                >
+                  {userData?.last_name}
+                </Typography>
+              </Box>
+            </Box>
+          </Button>
           <Menu
             anchorEl={anchorEl}
             id="account-menu"
@@ -123,19 +164,6 @@ const DashboardLayout: React.FC = () => {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem onClick={handleMenuClose}>
-              <ListItemIcon>
-                <MdVerifiedUser fontSize="small" />
-              </ListItemIcon>
-              Profile
-            </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
-              <ListItemIcon>
-                <MdSettings fontSize="small" />
-              </ListItemIcon>
-              Settings
-            </MenuItem>
-            <Divider />
             <MenuItem onClick={handleMenuClose}>
               <ListItemIcon>
                 <MdLogout fontSize="small" />
