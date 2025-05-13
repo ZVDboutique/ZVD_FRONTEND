@@ -5,8 +5,15 @@ import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { MdPassword } from "react-icons/md";
 import axiosInstance from "../../Utils/axios";
+import { useLocation } from "react-router-dom";
 
 const ForgotpasswordPage = () => {
+  const { search } = useLocation();
+
+  const token = new URLSearchParams(search).get("token");
+
+  const id = new URLSearchParams(search).get("id");
+
   const { handleSubmit, control } = useForm<{
     password: any;
     confirmPassword: any;
@@ -18,10 +25,10 @@ const ForgotpasswordPage = () => {
   });
 
   const { mutate, isLoading } = useMutation({
-    mutationFn: (data: { password: any; confirmPassword: any }) =>
+    mutationFn: (data: any) =>
       axiosInstance.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/SignupRequest/forgot-password`,
-        data,
+        `${import.meta.env.VITE_APP_BASE_URL}/SignupRequest/reset-password`,
+        data
       ),
     onSuccess: () => {
       toast.success("Password reset link sent to your email.");
@@ -34,7 +41,11 @@ const ForgotpasswordPage = () => {
   return (
     <form
       onSubmit={handleSubmit((values) => {
-        mutate(values);
+        mutate({
+          password: values?.password,
+          token: token,
+          id: id,
+        });
       })}
     >
       <Box
