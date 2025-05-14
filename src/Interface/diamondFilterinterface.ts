@@ -43,28 +43,33 @@ export interface DiamondListInterface {
 export interface ShapeInterface {
   id: number;
   shape_Name: string;
+  imageUrl: string;
   diamond_Id: number;
 }
 export interface ClarityGradeInterface {
   id: number;
   clarity_grade: string;
+  imageUrl: string;
   diamond_id: number;
 }
 export interface ColorGradeInterface {
   id: number;
   color_grade: string;
+  imageUrl: string;
   diamond_id: number;
 }
 
 export interface FluorescenceInterface {
   id: number;
   intensity: string;
+  imageUrl: string;
   diamond_id: number;
 }
 
 export interface PriceInterface {
   id: number;
   diamond_Id: number;
+  imageUrl: string;
   shape_Id: number;
   price: number;
   created_At: string;
@@ -72,6 +77,7 @@ export interface PriceInterface {
 
 export interface CutInterface {
   id: number;
+  imageUrl: string;
   cut_Quality: string;
   diamond_Id: number;
 }
@@ -79,6 +85,7 @@ export interface CutInterface {
 export interface MeasurementInterface {
   id: number;
   diamond_Id: number;
+  imageUrl: string;
   length: number;
   width: number;
   depth: number;

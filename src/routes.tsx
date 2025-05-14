@@ -3,9 +3,11 @@ import PrivateRoute from "./Components/PrivateRoute";
 import DashboardLayout from "./Layouts/DashboardLayout";
 import AdminUser from "./Pages/AdminUsers";
 import CompanyInformation from "./Pages/Authentication/CompanyInformation";
+import ForgotpasswordPage from "./Pages/Authentication/FrogotPasswordPage";
 import KycVerfication from "./Pages/Authentication/KycVerfication";
 import Login from "./Pages/Authentication/Login";
 import Registration from "./Pages/Authentication/Registeration";
+import UserConfirmation from "./Pages/Authentication/UserConfirmation";
 import ClientMaster from "./Pages/ClientMaster";
 import CompanyMaster from "./Pages/CompanyMaster";
 import Dashboard from "./Pages/Dashboard";
@@ -36,6 +38,14 @@ export const router = createBrowserRouter([
   {
     path: "/about-us",
     element: <About />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotpasswordPage />,
+  },
+  {
+    path: "/user-confirmation",
+    element: <UserConfirmation />,
   },
   {
     path: "/login",
