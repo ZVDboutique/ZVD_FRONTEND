@@ -6,9 +6,9 @@ import React, { ReactNode, createContext, useContext, useState } from "react";
 const AppContext = createContext<any | undefined>(undefined);
 
 interface AppContextProviderProps {
-  children: ReactNode;
-  userData: any;
-  setUserData: any;
+  children?: ReactNode;
+  userData?: any;
+  setUserData?: any;
 }
 interface AppContextProps {
   userData: {
