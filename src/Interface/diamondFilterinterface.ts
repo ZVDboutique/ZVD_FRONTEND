@@ -1,13 +1,13 @@
 export interface DiamondFilterInterface {
-  shape: any;
+  shape: any[] | null;
+  color: any[] | null;
+  clarity: any[] | null;
+  cut: any[] | null;
+  fluorescenceIntensity: any[] | null;
   caratMin: any;
   caratMax: any;
-  color: any;
-  clarity: any;
-  cut: any;
   priceMin: any;
   priceMax: any;
-  fluorescenceIntensity: any;
   lengthMin: any;
   lengthMax: any;
   widthMin: any;

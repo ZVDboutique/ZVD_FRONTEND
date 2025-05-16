@@ -2,6 +2,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   Button,
   Grid,
   Typography,
@@ -17,6 +18,7 @@ import {
   MeasurementInterface,
   ShapeInterface,
 } from "../../Interface/diamondFilterinterface";
+import { theme } from "../../Utils/theme";
 import { useFetchQuery } from "../../Utils/useQueries";
 
 const DiamondFilterModal = ({
@@ -86,50 +88,58 @@ const DiamondFilterModal = ({
     {
       listData: shapesList?.data,
       name: "Shapes",
-      fieldUpdate: "shape",
+      fieldUpdate: "shape" as keyof DiamondFilterInterface,
       valueField: "shape_Name",
+      multiple: true,
     },
     {
       listData: clarityList?.data,
       name: "Clarity",
-      fieldUpdate: "clarity",
+      fieldUpdate: "clarity" as keyof DiamondFilterInterface,
       valueField: "clarity_grade",
+      multiple: true,
     },
     {
       listData: colorList?.data,
       name: "Colors",
-      fieldUpdate: "color",
+      fieldUpdate: "color" as keyof DiamondFilterInterface,
       valueField: "color_grade",
+      multiple: true,
     },
     {
       listData: cutList?.data,
       name: "Cut",
-      fieldUpdate: "cut",
+      fieldUpdate: "cut" as keyof DiamondFilterInterface,
       valueField: "cut_Quality",
+      multiple: true,
     },
     {
       listData: priceList?.data,
       name: "Price",
-      fieldUpdate: "price",
+      fieldUpdate: "price" as keyof DiamondFilterInterface,
       valueField: "price",
+      multiple: false,
     },
     {
       listData: fluorescenceList?.data,
       name: "Fluorescence Intensity",
-      fieldUpdate: "fluorescenceIntensity",
+      fieldUpdate: "fluorescenceIntensity" as keyof DiamondFilterInterface,
       valueField: "intensity",
+      multiple: true,
     },
     {
       listData: measurementData?.data,
       name: "Width Measurement",
-      fieldUpdate: "widthMin",
+      fieldUpdate: "widthMin" as keyof DiamondFilterInterface,
       valueField: "width",
+      multiple: false,
     },
     {
       listData: measurementData?.data,
       name: "Length Measurement",
-      fieldUpdate: "lengthMin",
+      fieldUpdate: "lengthMin" as keyof DiamondFilterInterface,
       valueField: "length",
+      multiple: false,
     },
   ];
 
@@ -138,80 +148,122 @@ const DiamondFilterModal = ({
   ) : (
     <Grid container>
       <Grid size={12}>
-        {accordiansData?.map((dataItem: any) => {
-          return (
-            <Accordion>
-              <AccordionSummary expandIcon={<MdExpandMore size={20} />}>
-                <Typography fontWeight={600}>{dataItem.name}</Typography>
-              </AccordionSummary>
-              <AccordionDetails
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 2,
-                }}
-              >
-                {dataItem?.listData?.map((data: any, index: number) => {
-                  return (
-                    <Button
-                      key={index}
-                      onClick={() => {
-                        setFilterParams({
-                          ...filtersParams,
-                          [dataItem.fieldUpdate]: (data as Record<string, any>)[
-                            dataItem.valueField
-                          ],
-                        });
-                      }}
-                      sx={{
-                        minWidth: 100,
-                        maxWidth: 100,
-                        minHeight: 100,
-                        borderRadius: 2,
-                        boxShadow: "0 0 6px -1px #000",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flexDirection: "column",
-                        color:
-                          (filtersParams as Record<string, any>)[
-                            dataItem.fieldUpdate
-                          ] ===
-                          (data as Record<string, any>)[dataItem.valueField]
-                            ? "#fff"
-                            : "#123449",
-                        bgcolor:
-                          (filtersParams as Record<string, any>)[
-                            dataItem.fieldUpdate
-                          ] ===
-                          (data as Record<string, any>)[dataItem.valueField]
-                            ? "#123449"
-                            : "#fff",
-                        p: 2,
-                      }}
-                    >
-                      <img
-                        src={dataItem?.imageUrl}
-                        alt=""
-                        color={
-                          (filtersParams as Record<string, any>)[
-                            dataItem.fieldUpdate
-                          ] ===
-                          (data as Record<string, any>)[dataItem.valueField]
-                            ? "#fff"
-                            : "#123449"
-                        }
-                      />
-                      <Typography color={dataItem?.hexvalue}>
-                        {(data as Record<string, any>)[dataItem.valueField]}
-                      </Typography>
-                    </Button>
-                  );
-                })}
-              </AccordionDetails>
-            </Accordion>
-          );
-        })}
+        {accordiansData?.map(
+          (dataItem: {
+            listData: any;
+            name: string;
+            fieldUpdate: keyof DiamondFilterInterface;
+            valueField: string;
+            imageUrl?: string;
+            hexvalue?: string;
+            multiple?: boolean;
+          }) => {
+            return (
+              <Accordion>
+                <AccordionSummary expandIcon={<MdExpandMore size={20} />}>
+                  <Box
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                    alignItems={"center"}
+                    width={`-webkit-fill-available`}
+                  >
+                    <Typography fontWeight={600}>{dataItem.name}</Typography>
+                    {!dataItem.multiple && (
+                      <Button
+                        color="error"
+                        size="small"
+                        variant="outlined"
+                        onClick={() => {
+                          setFilterParams({
+                            ...filtersParams,
+                            [dataItem.fieldUpdate]: null,
+                          });
+                        }}
+                      >
+                        Reset {dataItem.name} Filter
+                      </Button>
+                    )}
+                  </Box>
+                </AccordionSummary>
+                <AccordionDetails
+                  sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 2,
+                  }}
+                >
+                  {dataItem?.listData?.map((data: any, index: number) => {
+                    const field = dataItem.fieldUpdate;
+                    const value = data[dataItem.valueField];
+
+                    const isSelected = dataItem.multiple
+                      ? (filtersParams[field] || []).includes(value)
+                      : filtersParams[field] === value;
+
+                    console.log(
+                      "🚀🚀🚀 ~ {dataItem?.listData?.map ~ dataItem?.imageUrl:",
+                      dataItem,
+                    );
+                    return (
+                      <Button
+                        key={index}
+                        onClick={() => {
+                          if (dataItem.multiple) {
+                            const currentValues = filtersParams[field] || [];
+                            const updatedValues = currentValues.includes(value)
+                              ? currentValues.filter((v: any) => v !== value)
+                              : [...currentValues, value];
+
+                            setFilterParams({
+                              ...filtersParams,
+                              [field]: updatedValues,
+                            });
+                          } else {
+                            setFilterParams({
+                              ...filtersParams,
+                              [field]: value,
+                            });
+                          }
+                        }}
+                        sx={{
+                          minWidth: 100,
+                          maxWidth: 100,
+                          minHeight: 100,
+                          borderRadius: 2,
+                          boxShadow: "0 0 6px -1px #000",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          flexDirection: "column",
+                          p: 2,
+                          color: theme.palette.secondary.main,
+                        }}
+                        variant={isSelected ? "contained" : "outlined"}
+                      >
+                        <img
+                          src={data?.imageUrl}
+                          height={"auto"}
+                          style={{
+                            width: `-webkit-fill-available`,
+                          }}
+                          alt=""
+                          color={isSelected ? "primary" : "inherit"}
+                        />
+                        <Typography
+                          sx={{
+                            fontWeight: isSelected ? 600 : 500,
+                          }}
+                        >
+                          {(data as Record<string, any>)[dataItem.valueField]}
+                        </Typography>
+                      </Button>
+                    );
+                  })}
+                </AccordionDetails>
+              </Accordion>
+            );
+          },
+        )}
       </Grid>
     </Grid>
   );
