@@ -5,6 +5,7 @@ import heroSectionBg from "../../assets/heroSectionBg.svg";
 import zvdLogo from "../../assets/zvLogo.svg";
 import { Show } from "../../Components/Show";
 import { DiamondFilterInterface } from "../../Interface/diamondFilterinterface";
+import { useAppContext } from "../../Utils/appContext";
 import ProfileModal from "./ProfileModal";
 
 const HeroSecion = ({
@@ -15,6 +16,8 @@ const HeroSecion = ({
   filtersParams: DiamondFilterInterface;
 }) => {
   const [showProfileModal, setShowProfileModal] = useState(false);
+
+  const { userData } = useAppContext();
 
   const diamondTypeData = [
     {
@@ -111,7 +114,8 @@ const HeroSecion = ({
                 setShowProfileModal(true);
               }}
             >
-              Jhone Farra
+              {userData?.first_name} {"  "}
+              {userData?.last_name}
             </Button>
           </Box>
           <img src="/fingureRing.svg" alt="" />
@@ -195,15 +199,15 @@ const HeroSecion = ({
                     onClick={() => {
                       setFilterParams({
                         type: dataItem.type,
-                        shape: "",
+                        shape: [],
                         caratMin: "",
                         caratMax: "",
-                        color: "",
-                        clarity: "",
-                        cut: "",
+                        color: [],
+                        clarity: [],
+                        cut: [],
                         priceMin: "",
                         priceMax: "",
-                        fluorescenceIntensity: "",
+                        fluorescenceIntensity: [],
                         lengthMin: "",
                         lengthMax: "",
                         widthMin: "",
