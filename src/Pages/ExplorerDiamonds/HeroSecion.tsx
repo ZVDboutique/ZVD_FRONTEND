@@ -25,7 +25,7 @@ const HeroSecion = ({
       img: "naturalDiamonds",
       type: "naturalDiamonds",
       description:
-        "Natural diamonds are rare, Earth-formed gems with timeless brilliance.",
+        "Natural diamonds are rare, Earth-formed gems with timeless brilliance",
     },
     {
       name: "Lab Grown Diamonds",
