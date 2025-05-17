@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { ReactNode, createContext, useContext, useState } from "react";
+import React, { ReactNode, createContext, useContext, useState } from 'react';
 
 // ========================================================================================//
 
@@ -61,8 +61,10 @@ interface AppContextProps {
 
 const AppContextProvider: React.FC<AppContextProviderProps> = ({
   children,
+  userData: userDataProp,
+  setUserData: setUserDataProp,
 }) => {
-  const [userData, setUserData] = useState<{
+  const [userDataState, setUserDataState] = useState<{
     id: number;
     first_name: string;
     last_name: string;
@@ -86,6 +88,9 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({
     ismobilenoconfirmed: boolean;
   }>();
 
+  const userData = userDataProp !== undefined ? userDataProp : userDataState;
+  const setUserData = setUserDataProp || setUserDataState;
+
   const value = { userData, setUserData };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
@@ -94,7 +99,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({
 const useAppContext = () => {
   const context = useContext<AppContextProps>(AppContext);
   if (!context) {
-    throw new Error("useAppContext must be used within an AppContextProvider");
+    throw new Error('useAppContext must be used within an AppContextProvider');
   }
   return context;
 };
