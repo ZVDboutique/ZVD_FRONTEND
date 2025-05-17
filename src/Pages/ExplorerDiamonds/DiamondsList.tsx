@@ -22,7 +22,32 @@ const DiamondsList = ({
   const { data } = useFetchQuery<{ data: DiamondListInterface[] }>({
     key: ["GET_ALL_DIAMONDS_LIST", filtersParams],
     route: `/DiamondStockData/diamonds-stock`,
-    requestBody: filtersParams,
+    requestBody: {
+      shape:
+        filtersParams.shape?.length === 0
+          ? null
+          : JSON.stringify(filtersParams.shape),
+      color:
+        filtersParams.color?.length === 0
+          ? null
+          : JSON.stringify(filtersParams.color),
+      clarity:
+        filtersParams.clarity?.length === 0
+          ? null
+          : JSON.stringify(filtersParams.clarity),
+      cut:
+        filtersParams.cut?.length === 0
+          ? null
+          : JSON.stringify(filtersParams.cut),
+      fluorescenceIntensity:
+        filtersParams.fluorescenceIntensity?.length === 0
+          ? null
+          : JSON.stringify(filtersParams.fluorescenceIntensity),
+      caratMin: filtersParams.caratMin || "",
+      priceMin: filtersParams.priceMin || "",
+      lengthMin: filtersParams.lengthMin || "",
+      widthMin: filtersParams.widthMin || "",
+    },
   });
 
   return (

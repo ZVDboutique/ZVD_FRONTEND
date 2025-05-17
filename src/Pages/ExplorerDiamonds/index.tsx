@@ -6,20 +6,20 @@ import HeroSecion from "./HeroSecion";
 
 const ExplorerDiamonds = () => {
   const [filtersParams, setFilterParams] = useState<DiamondFilterInterface>({
-    shape: "",
-    caratMin: "",
-    caratMax: "",
-    color: "",
-    clarity: "",
-    cut: "",
-    priceMin: "",
-    priceMax: "",
-    fluorescenceIntensity: "",
-    lengthMin: "",
-    lengthMax: "",
-    widthMin: "",
-    widthMax: "",
-    type: "",
+    shape: null,
+    color: [],
+    clarity: [],
+    cut: [],
+    fluorescenceIntensity: [],
+    priceMin: null,
+    caratMin: null,
+    caratMax: null,
+    priceMax: null,
+    lengthMin: null,
+    lengthMax: null,
+    widthMin: null,
+    widthMax: null,
+    type: [],
   });
 
   return (
